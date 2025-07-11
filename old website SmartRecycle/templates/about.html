@@ -1,53 +1,373 @@
-{% extends "base.html" %}
+{% extends "base-ultra.html" %}
 
-{% block title %}About Us - SmartRecycle{% endblock %}
+{% block title %}About Us - SmartRecycle | Our Mission & Team{% endblock %}
+
+{% block extra_css %}
+<style>
+    .about-hero {
+        background: linear-gradient(135deg, rgba(0, 150, 136, 0.9), rgba(76, 175, 80, 0.8)), url('https://images.unsplash.com/photo-1569163139394-de44cb40ef2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+        background-size: cover;
+        background-position: center;
+        padding: 6rem 0;
+        color: white;
+        position: relative;
+    }
+    
+    .about-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(0, 150, 136, 0.3), rgba(76, 175, 80, 0.3));
+        animation: pulse 4s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.6; }
+    }
+    
+    .mission-vision-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin: 3rem 0;
+    }
+    
+    .mission-card {
+        background: white;
+        border-radius: 25px;
+        padding: 2.5rem;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s ease;
+        border-top: 5px solid var(--primary-color);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .mission-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.05), rgba(139, 195, 74, 0.05));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .mission-card:hover::before {
+        opacity: 1;
+    }
+    
+    .mission-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+    
+    .mission-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2rem;
+        font-size: 2rem;
+        color: white;
+    }
+    
+    .team-showcase {
+        background: linear-gradient(135deg, #f8f9fa, #e3f2fd);
+        padding: 4rem 0;
+        margin: 4rem 0;
+        border-radius: 30px;
+    }
+    
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin: 3rem 0;
+    }
+    
+    .team-member {
+        background: white;
+        border-radius: 25px;
+        padding: 2.5rem;
+        text-align: center;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .team-member::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    }
+    
+    .team-member:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+    
+    .team-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 3rem;
+        color: white;
+        position: relative;
+    }
+    
+    .team-avatar::after {
+        content: '';
+        position: absolute;
+        inset: 5px;
+        border-radius: 50%;
+        background: white;
+        z-index: 1;
+    }
+    
+    .team-avatar i {
+        position: relative;
+        z-index: 2;
+        color: var(--primary-color);
+    }
+    
+    .team-role {
+        color: var(--primary-color);
+        font-weight: 600;
+        margin: 0.5rem 0;
+    }
+    
+    .team-skills {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    .skill-tag {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 0.3rem 0.8rem;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+    
+    .stats-showcase {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 4rem 0;
+        margin: 4rem 0;
+        border-radius: 30px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stats-showcase::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+        background-size: 50px 50px;
+        animation: float 20s linear infinite;
+    }
+    
+    @keyframes float {
+        0% { transform: translateX(-50px); }
+        100% { transform: translateX(50px); }
+    }
+    
+    .impact-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin: 3rem 0;
+    }
+    
+    .impact-stat {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .impact-number {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+    
+    .timeline-section {
+        padding: 4rem 0;
+        margin: 4rem 0;
+    }
+    
+    .timeline {
+        position: relative;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        transform: translateX(-50%);
+    }
+    
+    .timeline-item {
+        position: relative;
+        margin: 2rem 0;
+        width: 50%;
+    }
+    
+    .timeline-item:nth-child(odd) {
+        left: 0;
+        padding-right: 2rem;
+        text-align: right;
+    }
+    
+    .timeline-item:nth-child(even) {
+        left: 50%;
+        padding-left: 2rem;
+        text-align: left;
+    }
+    
+    .timeline-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+    
+    .timeline-item:nth-child(odd) .timeline-content::after {
+        content: '';
+        position: absolute;
+        right: -10px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 10px solid transparent;
+        border-left-color: white;
+    }
+    
+    .timeline-item:nth-child(even) .timeline-content::after {
+        content: '';
+        position: absolute;
+        left: -10px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 10px solid transparent;
+        border-right-color: white;
+    }
+    
+    .timeline-dot {
+        position: absolute;
+        right: -30px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        border: 4px solid white;
+        box-shadow: 0 0 0 4px var(--primary-color);
+    }
+    
+    .timeline-item:nth-child(even) .timeline-dot {
+        left: -30px;
+        right: auto;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero">
-    <div class="hero-content">
-        <h1>🌱 About SmartRecycle</h1>
-        <p>Empowering communities to turn eco-actions into real-world impact</p>
-        <p class="text-center" style="color: #666; font-style: italic;">Learn about our mission, vision, and the team behind the platform</p>
-    </div>
-</section>
-
-<!-- Mission & Vision -->
-<section class="container">
-    <div class="section">
-        <div style="background: linear-gradient(135deg, #E8F5E8, #F1F8E9); padding: 3rem; border-radius: 20px;">
-            <div class="cards-grid">
-                <div class="card">
-                    <i class="fas fa-bullseye" style="color: #4CAF50;"></i>
-                    <h3>Our Mission</h3>
-                    <p>To create a sustainable future by making waste management smart, accessible, and rewarding. We believe every small action contributes to a larger environmental impact.</p>
-                </div>
-                
-                <div class="card">
-                    <i class="fas fa-eye" style="color: #2196F3;"></i>
-                    <h3>Our Vision</h3>
-                    <p>A world where waste is viewed as a resource, communities are empowered to make eco-friendly choices, and technology bridges the gap between intention and action.</p>
-                </div>
-                
-                <div class="card">
-                    <i class="fas fa-heart" style="color: #FF9800;"></i>
-                    <h3>Our Values</h3>
-                    <p>Sustainability, Innovation, Community, Transparency, and Impact. These values guide every feature we build and every partnership we form.</p>
-                </div>
+<!-- Ultra-Premium Hero Section -->
+<section class="about-hero">
+    <div class="container">
+        <div class="hero-content text-center">
+            <div class="hero-badge">
+                <span>🌱 Our Story</span>
             </div>
+            <h1 class="hero-title">
+                <span class="gradient-text">About SmartRecycle</span>
+                <br>
+                <span class="subtitle">Building a Sustainable Future</span>
+            </h1>
+            <p class="hero-description">
+                Empowering communities worldwide to transform waste into wealth through 
+                innovative technology and collaborative action. Learn about our mission, 
+                vision, and the passionate team making it happen.
+            </p>
         </div>
     </div>
 </section>
 
-<!-- Problem Statement -->
+<!-- Mission, Vision & Values -->
 <section class="container">
     <div class="section">
-        <h2>🌍 The Problem We're Solving</h2>
-        <div class="problem-stats">
-            <div class="stat-card">
-                <div class="stat-icon">🗑️</div>
-                <h3>Massive Waste Crisis</h3>
-                <p>Cities worldwide generate <strong>2+ billion tons</strong> of waste annually, with most ending up in landfills instead of being recycled or reused.</p>
+        <div class="section-header text-center">
+            <h2 class="section-title">🎯 Our Foundation</h2>
+            <p class="section-subtitle">The principles that drive our circular economy revolution</p>
+        </div>
+        
+        <div class="mission-vision-grid">
+            <div class="mission-card">
+                <div class="mission-icon">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <h3>Our Mission</h3>
+                <p>To create a sustainable future by making waste management smart, accessible, and rewarding. We believe every small action contributes to a larger environmental impact, and technology can bridge the gap between intention and action.</p>
+            </div>
+            
+            <div class="mission-card">
+                <div class="mission-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <h3>Our Vision</h3>
+                <p>A world where waste is viewed as a resource, communities are empowered to make eco-friendly choices, and circular economy principles are integrated into daily life through seamless digital experiences.</p>
+            </div>
+            
+            <div class="mission-card">
+                <div class="mission-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Our Values</h3>
+                <p>Sustainability, Innovation, Community, Transparency, and Impact. These values guide every feature we build, every partnership we form, and every decision we make as we work toward our environmental goals.</p>
+            </div>
+        </div>
+    </div>
+</section>
             </div>
             
             <div class="stat-card">

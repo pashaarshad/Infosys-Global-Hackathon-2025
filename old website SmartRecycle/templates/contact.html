@@ -1,0 +1,1364 @@
+{% extends "base-ultra.html" %}
+
+{% block title %}Contact Us - SmartRecycle{% endblock %}
+
+{% block content %}
+<!-- Animated Back Arrow -->
+<div class="back-arrow" onclick="goHome()">
+    <i class="fas fa-arrow-left"></i>
+    <span>Return to Home</span>
+</div>
+
+<!-- Hero Section -->
+<section class="hero-ultra">
+    <div class="hero-content-ultra">
+        <div class="hero-animation">
+            <div class="floating-icons">
+                <div class="icon-float icon-1">📞</div>
+                <div class="icon-float icon-2">💬</div>
+                <div class="icon-float icon-3">📧</div>
+                <div class="icon-float icon-4">🤝</div>
+            </div>
+        </div>
+        <div class="hero-text-ultra" data-aos="fade-up">
+            <h1 class="gradient-text">📞 Contact Us</h1>
+            <p class="hero-subtitle">Get in touch with our team for support, partnerships, or feedback</p>
+            <div class="hero-features">
+                <div class="feature-item" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fas fa-headset"></i>
+                    <span>24/7 Support</span>
+                </div>
+                <div class="feature-item" data-aos="fade-up" data-aos-delay="300">
+                    <i class="fas fa-reply"></i>
+                    <span>Quick Response</span>
+                </div>
+                <div class="feature-item" data-aos="fade-up" data-aos-delay="400">
+                    <i class="fas fa-handshake"></i>
+                    <span>Expert Assistance</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wave-animation">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
+            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
+            <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- Contact Form & Information -->
+<section class="section-ultra">
+    <div class="container-ultra">
+        <div class="contact-layout-ultra">
+            <!-- Contact Form -->
+            <div class="contact-form-ultra" data-aos="fade-right">
+                <div class="form-header-ultra">
+                    <h2>💬 Send us a Message</h2>
+                    <p>We'd love to hear from you! Send us a message and we'll respond as soon as possible.</p>
+                </div>
+                
+                <form id="contactForm" class="contact-form-fields" onsubmit="handleContactSubmit(event)">
+                    <div class="form-row-ultra">
+                        <div class="form-group-ultra">
+                            <label for="contactName" class="form-label-ultra">
+                                <i class="fas fa-user"></i>
+                                Full Name *
+                            </label>
+                            <input type="text" id="contactName" name="name" class="form-input-ultra" 
+                                   placeholder="Enter your full name" required>
+                            <div class="form-feedback"></div>
+                        </div>
+                        
+                        <div class="form-group-ultra">
+                            <label for="contactEmail" class="form-label-ultra">
+                                <i class="fas fa-envelope"></i>
+                                Email Address *
+                            </label>
+                            <input type="email" id="contactEmail" name="email" class="form-input-ultra" 
+                                   placeholder="your.email@example.com" required>
+                            <div class="form-feedback"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row-ultra">
+                        <div class="form-group-ultra">
+                            <label for="contactPhone" class="form-label-ultra">
+                                <i class="fas fa-phone"></i>
+                                Phone Number
+                            </label>
+                            <input type="tel" id="contactPhone" name="phone" class="form-input-ultra" 
+                                   placeholder="+91 9876543210">
+                            <div class="form-feedback"></div>
+                        </div>
+                        
+                        <div class="form-group-ultra">
+                            <label for="contactSubject" class="form-label-ultra">
+                                <i class="fas fa-tag"></i>
+                                Subject *
+                            </label>
+                            <select id="contactSubject" name="subject" class="form-input-ultra" required>
+                                <option value="">Select a subject</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="support">Technical Support</option>
+                                <option value="partnership">Partnership Opportunity</option>
+                                <option value="feedback">Feedback & Suggestions</option>
+                                <option value="bug">Report a Bug</option>
+                                <option value="feature">Feature Request</option>
+                                <option value="media">Media & Press</option>
+                                <option value="pickup">Pickup Issues</option>
+                                <option value="rewards">Rewards & Points</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <div class="form-feedback"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group-ultra">
+                        <label for="contactMessage" class="form-label-ultra">
+                            <i class="fas fa-comment"></i>
+                            Message *
+                        </label>
+                        <textarea id="contactMessage" name="message" class="form-input-ultra textarea-ultra" 
+                                  placeholder="Tell us how we can help you..." rows="6" required></textarea>
+                        <div class="form-feedback"></div>
+                        <div class="character-count">
+                            <span id="charCount">0</span>/1000 characters
+                        </div>
+                    </div>
+                    
+                    <div class="form-group-ultra">
+                        <label class="checkbox-container-ultra">
+                            <input type="checkbox" id="newsletter" name="newsletter">
+                            <span class="checkmark-ultra"></span>
+                            <span class="checkbox-text">Subscribe to our newsletter for updates on sustainability and platform news</span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group-ultra">
+                        <label class="checkbox-container-ultra">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <span class="checkmark-ultra"></span>
+                            <span class="checkbox-text">I agree to the <a href="#" onclick="showTerms()">Terms of Service</a> and <a href="#" onclick="showPrivacy()">Privacy Policy</a> *</span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="form-button-ultra" id="submitBtn">
+                        <span class="btn-text">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Message
+                        </span>
+                        <span class="btn-loading" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            Sending...
+                        </span>
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Contact Information -->
+            <div class="contact-info-ultra" data-aos="fade-left">
+                <div class="info-header-ultra">
+                    <h2>📍 Get in Touch</h2>
+                    <p>Multiple ways to reach us - choose what works best for you!</p>
+                </div>
+                
+                <div class="contact-methods-ultra">
+                    <div class="contact-method-ultra email-method" onclick="openEmailClient()">
+                        <div class="method-icon-ultra">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="method-content-ultra">
+                            <h4>Email Support</h4>
+                            <p>support@smartrecycle.com</p>
+                            <span class="response-time">Response within 24 hours</span>
+                        </div>
+                        <div class="method-action">
+                            <i class="fas fa-external-link-alt"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method-ultra phone-method" onclick="makePhoneCall()">
+                        <div class="method-icon-ultra">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="method-content-ultra">
+                            <h4>Phone Support</h4>
+                            <p>+91 1800-123-4567</p>
+                            <span class="response-time">24/7 Available</span>
+                        </div>
+                        <div class="method-action">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method-ultra chat-method" onclick="openLiveChat()">
+                        <div class="method-icon-ultra">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="method-content-ultra">
+                            <h4>Live Chat</h4>
+                            <p>Chat with our team</p>
+                            <span class="response-time">Instant response</span>
+                        </div>
+                        <div class="method-action">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method-ultra address-method">
+                        <div class="method-icon-ultra">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="method-content-ultra">
+                            <h4>Office Address</h4>
+                            <p>Electronic City, Bangalore<br>Karnataka 560100, India</p>
+                            <span class="response-time">Mon-Fri: 9 AM - 6 PM</span>
+                        </div>
+                        <div class="method-action">
+                            <i class="fas fa-directions"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Social Media -->
+                <div class="social-section-ultra">
+                    <h3>Follow Us</h3>
+                    <div class="social-links-ultra">
+                        <a href="#" class="social-link-ultra facebook" onclick="openSocial('facebook')">
+                            <i class="fab fa-facebook-f"></i>
+                            <span>Facebook</span>
+                        </a>
+                        <a href="#" class="social-link-ultra twitter" onclick="openSocial('twitter')">
+                            <i class="fab fa-twitter"></i>
+                            <span>Twitter</span>
+                        </a>
+                        <a href="#" class="social-link-ultra instagram" onclick="openSocial('instagram')">
+                            <i class="fab fa-instagram"></i>
+                            <span>Instagram</span>
+                        </a>
+                        <a href="#" class="social-link-ultra linkedin" onclick="openSocial('linkedin')">
+                            <i class="fab fa-linkedin-in"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="method-content">
+                            <h4>Phone Support</h4>
+                            <p>+91 9876543210</p>
+                            <span class="response-time">Mon-Fri: 9 AM - 6 PM IST</span>
+                        </div>
+                    </div>
+
+                    <div class="contact-method">
+                        <div class="method-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="method-content">
+                            <h4>Office Address</h4>
+                            <p>123 Green Tech Plaza<br>New Delhi, India - 110001</p>
+                            <span class="response-time">Visits by appointment only</span>
+                        </div>
+                    </div>
+
+                    <div class="contact-method">
+                        <div class="method-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="method-content">
+                            <h4>Live Chat</h4>
+                            <p>Available on website</p>
+                            <span class="response-time">Mon-Fri: 10 AM - 5 PM IST</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <h4>🌐 Follow Us</h4>
+                    <div class="social-buttons">
+                        <a href="#" class="social-btn twitter">
+                            <i class="fab fa-twitter"></i> Twitter
+                        </a>
+                        <a href="#" class="social-btn linkedin">
+                            <i class="fab fa-linkedin"></i> LinkedIn
+                        </a>
+                        <a href="#" class="social-btn instagram">
+                            <i class="fab fa-instagram"></i> Instagram
+                        </a>
+                        <a href="#" class="social-btn github">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="container">
+    <div class="section">
+        <h2>❓ Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>How does SmartRecycle help with waste management?</h4>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>SmartRecycle provides a comprehensive platform for waste sorting guidance, pickup scheduling, impact tracking, and rewards. You can identify recyclable items, find nearby recycling centers, request collection services, and earn points for your eco-friendly actions.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Is the platform free to use?</h4>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! SmartRecycle is completely free for individual users. Our basic features including waste identification, recycler locations, and impact tracking are available at no cost. Premium features for businesses and organizations may have associated fees.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>How do I earn and redeem green points?</h4>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>You earn points by submitting recyclables (2 points/kg), requesting pickups (10 points), proper e-waste disposal (15 points), and daily platform engagement (5 points). Points can be redeemed for discounts, donations to environmental causes, certificates, or eco-friendly products.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>What types of waste can I check using your platform?</h4>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Our waste guide covers plastic items, paper & cardboard, glass containers, metal cans, e-waste (electronics & batteries), organic waste, and many other common household items. Simply type in any item to get instant guidance on proper disposal.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>How accurate is the environmental impact tracking?</h4>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Our impact calculations are based on standard environmental data from reputable sources like EPA and research institutions. While estimates may vary based on regional factors, we strive to provide realistic approximations of carbon savings, water conservation, and resource protection.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Can businesses and organizations use SmartRecycle?</h4>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Absolutely! We offer enterprise solutions for businesses, schools, and organizations wanting to implement comprehensive waste management programs. Contact us for custom pricing and features including bulk pickup scheduling, team challenges, and detailed analytics.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Support Categories -->
+<section class="container">
+    <div class="section" style="background: linear-gradient(135deg, #E8F5E8, #F1F8E9); padding: 3rem; border-radius: 20px;">
+        <h2>🛠️ Support Categories</h2>
+        <div class="support-grid">
+            <div class="support-card">
+                <div class="support-icon">🔧</div>
+                <h4>Technical Support</h4>
+                <p>Issues with platform functionality, bugs, or technical difficulties</p>
+                <div class="support-contact">
+                    <strong>Email:</strong> tech@smartrecycle.com<br>
+                    <strong>Response:</strong> Within 4 hours
+                </div>
+            </div>
+
+            <div class="support-card">
+                <div class="support-icon">🤝</div>
+                <h4>Partnership Inquiries</h4>
+                <p>Collaboration opportunities, business partnerships, and enterprise solutions</p>
+                <div class="support-contact">
+                    <strong>Email:</strong> partnerships@smartrecycle.com<br>
+                    <strong>Response:</strong> Within 24 hours
+                </div>
+            </div>
+
+            <div class="support-card">
+                <div class="support-icon">📰</div>
+                <h4>Media & Press</h4>
+                <p>Press inquiries, media kits, interviews, and promotional materials</p>
+                <div class="support-contact">
+                    <strong>Email:</strong> media@smartrecycle.com<br>
+                    <strong>Response:</strong> Within 12 hours
+                </div>
+            </div>
+
+            <div class="support-card">
+                <div class="support-icon">💡</div>
+                <h4>Feature Requests</h4>
+                <p>Suggestions for new features, improvements, and platform enhancements</p>
+                <div class="support-contact">
+                    <strong>Email:</strong> feedback@smartrecycle.com<br>
+                    <strong>Response:</strong> Within 48 hours
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Emergency Contact -->
+<section class="container">
+    <div class="section">
+        <div class="emergency-contact">
+            <div class="emergency-header">
+                <h2>🚨 Emergency Waste Disposal</h2>
+                <p>For hazardous materials requiring immediate attention</p>
+            </div>
+            
+            <div class="emergency-grid">
+                <div class="emergency-item">
+                    <div class="emergency-type">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h4>Chemical/Hazardous Waste</h4>
+                    </div>
+                    <div class="emergency-contact-info">
+                        <p><strong>Hotline:</strong> 1800-112-112</p>
+                        <p><strong>Email:</strong> emergency@pollution.gov.in</p>
+                    </div>
+                </div>
+                
+                <div class="emergency-item">
+                    <div class="emergency-type">
+                        <i class="fas fa-ambulance"></i>
+                        <h4>Medical Waste</h4>
+                    </div>
+                    <div class="emergency-contact-info">
+                        <p><strong>Hotline:</strong> 1800-180-1104</p>
+                        <p><strong>Email:</strong> medwaste@health.gov.in</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="container">
+    <div class="section text-center">
+        <div style="background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white; padding: 3rem; border-radius: 20px;">
+            <h2 style="color: white;">🌱 Ready to Make a Difference?</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; color: rgba(255,255,255,0.9);">
+                Don't wait! Start your sustainable journey today and become part of the solution.
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="{{ url_for('waste_guide') }}" class="cta-button" style="background: white; color: #2E7D32;">
+                    <i class="fas fa-play"></i> Try Platform Now
+                </a>
+                <a href="{{ url_for('about') }}" class="cta-button" style="background: rgba(255,255,255,0.2); border: 2px solid white;">
+                    <i class="fas fa-info-circle"></i> Learn More
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Enhanced Contact Page Functions
+
+// Back to home navigation
+function goHome() {
+    document.body.style.animation = 'fadeOut 0.3s ease';
+    setTimeout(() => {
+        window.location.href = "{{ url_for('home') }}";
+    }, 300);
+}
+
+// Handle contact form submission
+function handleContactSubmit(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnLoading = submitBtn.querySelector('.btn-loading');
+    
+    // Get form data
+    const formData = new FormData(form);
+    const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: formData.get('phone') || '',
+        subject: formData.get('subject'),
+        message: formData.get('message'),
+        newsletter: formData.get('newsletter') === 'on',
+        terms: formData.get('terms') === 'on'
+    };
+    
+    // Validate required fields
+    if (!validateForm(data)) {
+        return;
+    }
+    
+    // Show loading state
+    btnText.style.display = 'none';
+    btnLoading.style.display = 'inline-flex';
+    submitBtn.disabled = true;
+    
+    // Simulate form submission
+    setTimeout(() => {
+        // Simulate success
+        showSuccessMessage();
+        form.reset();
+        updateCharacterCount();
+        
+        // Reset button
+        btnText.style.display = 'inline-flex';
+        btnLoading.style.display = 'none';
+        submitBtn.disabled = false;
+        
+        // In real app, would make actual API call:
+        // submitContactForm(data);
+    }, 2000);
+}
+
+// Validate form data
+function validateForm(data) {
+    // Clear previous validation styles
+    clearValidationStyles();
+    
+    let isValid = true;
+    
+    // Name validation
+    if (!data.name.trim()) {
+        showFieldError('contactName', 'Full name is required');
+        isValid = false;
+    } else if (data.name.trim().length < 2) {
+        showFieldError('contactName', 'Name must be at least 2 characters');
+        isValid = false;
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!data.email.trim()) {
+        showFieldError('contactEmail', 'Email address is required');
+        isValid = false;
+    } else if (!emailRegex.test(data.email)) {
+        showFieldError('contactEmail', 'Please enter a valid email address');
+        isValid = false;
+    }
+    
+    // Phone validation (optional but if provided, should be valid)
+    if (data.phone && data.phone.length > 0) {
+        const phoneRegex = /^\+?[\d\s\-\(\)]{10,}$/;
+        if (!phoneRegex.test(data.phone.replace(/\s/g, ''))) {
+            showFieldError('contactPhone', 'Please enter a valid phone number');
+            isValid = false;
+        }
+    }
+    
+    // Subject validation
+    if (!data.subject) {
+        showFieldError('contactSubject', 'Please select a subject');
+        isValid = false;
+    }
+    
+    // Message validation
+    if (!data.message.trim()) {
+        showFieldError('contactMessage', 'Message is required');
+        isValid = false;
+    } else if (data.message.trim().length < 10) {
+        showFieldError('contactMessage', 'Message must be at least 10 characters');
+        isValid = false;
+    } else if (data.message.length > 1000) {
+        showFieldError('contactMessage', 'Message must be less than 1000 characters');
+        isValid = false;
+    }
+    
+    // Terms validation
+    if (!data.terms) {
+        showMessage('Please accept the Terms of Service and Privacy Policy', 'warning');
+        isValid = false;
+    }
+    
+    return isValid;
+}
+
+// Show field-specific error
+function showFieldError(fieldId, message) {
+    const field = document.getElementById(fieldId);
+    const feedback = field.parentNode.querySelector('.form-feedback');
+    
+    field.classList.add('error');
+    feedback.textContent = message;
+    feedback.classList.add('error');
+}
+
+// Clear validation styles
+function clearValidationStyles() {
+    const fields = ['contactName', 'contactEmail', 'contactPhone', 'contactSubject', 'contactMessage'];
+    fields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        const feedback = field.parentNode.querySelector('.form-feedback');
+        
+        field.classList.remove('error', 'success');
+        feedback.textContent = '';
+        feedback.classList.remove('error', 'success');
+    });
+}
+
+// Show success message
+function showSuccessMessage() {
+    const successModal = document.createElement('div');
+    successModal.className = 'success-modal-overlay';
+    successModal.innerHTML = `
+        <div class="success-modal">
+            <div class="success-animation">
+                <div class="success-checkmark">
+                    <div class="check-icon">
+                        <span class="icon-line line-tip"></span>
+                        <span class="icon-line line-long"></span>
+                        <div class="icon-circle"></div>
+                        <div class="icon-fix"></div>
+                    </div>
+                </div>
+            </div>
+            <h3>Message Sent Successfully! ✅</h3>
+            <p>Thank you for contacting SmartRecycle! We've received your message and will get back to you soon.</p>
+            <div class="success-details">
+                <div class="detail-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Expected response within 24 hours</span>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>Confirmation sent to your email</span>
+                </div>
+            </div>
+            <button onclick="closeSuccessModal()" class="success-btn">
+                <i class="fas fa-check"></i>
+                Got it!
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(successModal);
+    
+    // Show with animation
+    setTimeout(() => {
+        successModal.style.opacity = '1';
+        successModal.querySelector('.success-modal').style.transform = 'scale(1)';
+    }, 10);
+    
+    // Auto-close after 8 seconds
+    setTimeout(() => {
+        closeSuccessModal();
+    }, 8000);
+}
+
+// Close success modal
+function closeSuccessModal() {
+    const modal = document.querySelector('.success-modal-overlay');
+    if (modal) {
+        modal.style.opacity = '0';
+        modal.querySelector('.success-modal').style.transform = 'scale(0.9)';
+        
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
+    }
+}
+
+// Contact method actions
+function openEmailClient() {
+    showMessage('📧 Opening email client...', 'info');
+    setTimeout(() => {
+        window.open('mailto:support@smartrecycle.com', '_self');
+    }, 500);
+}
+
+function makePhoneCall() {
+    showMessage('📞 Initiating phone call...', 'info');
+    setTimeout(() => {
+        window.open('tel:+911800123567', '_self');
+    }, 500);
+}
+
+function openLiveChat() {
+    showMessage('💬 Opening live chat...', 'info');
+    // In real app, this would open a chat widget
+    setTimeout(() => {
+        showMessage('💬 Live chat feature coming soon! Please use email or phone for now.', 'info');
+    }, 1000);
+}
+
+// Social media actions
+function openSocial(platform) {
+    const urls = {
+        facebook: 'https://facebook.com/smartrecycle',
+        twitter: 'https://twitter.com/smartrecycle',
+        instagram: 'https://instagram.com/smartrecycle',
+        linkedin: 'https://linkedin.com/company/smartrecycle'
+    };
+    
+    showMessage(`Opening ${platform.charAt(0).toUpperCase() + platform.slice(1)}...`, 'info');
+    setTimeout(() => {
+        window.open(urls[platform], '_blank');
+    }, 500);
+}
+
+// FAQ toggle functionality
+function toggleFAQ(questionElement) {
+    const faqItem = questionElement.parentElement;
+    const answer = faqItem.querySelector('.faq-answer-ultra');
+    const icon = questionElement.querySelector('i');
+    
+    // Close all other FAQs
+    document.querySelectorAll('.faq-item-ultra').forEach(item => {
+        if (item !== faqItem && item.classList.contains('active')) {
+            item.classList.remove('active');
+            item.querySelector('.faq-answer-ultra').style.maxHeight = '0';
+            item.querySelector('.faq-question-ultra i').style.transform = 'rotate(0deg)';
+        }
+    });
+    
+    // Toggle current FAQ
+    if (faqItem.classList.contains('active')) {
+        faqItem.classList.remove('active');
+        answer.style.maxHeight = '0';
+        icon.style.transform = 'rotate(0deg)';
+    } else {
+        faqItem.classList.add('active');
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+        icon.style.transform = 'rotate(180deg)';
+    }
+}
+
+// Support category actions
+function openSupport(category) {
+    const subjects = {
+        technical: 'support',
+        partnership: 'partnership',
+        media: 'media',
+        feedback: 'feature'
+    };
+    
+    const subjectSelect = document.getElementById('contactSubject');
+    if (subjectSelect) {
+        subjectSelect.value = subjects[category] || 'general';
+        subjectSelect.dispatchEvent(new Event('change'));
+    }
+    
+    // Scroll to form
+    document.querySelector('.contact-form-ultra').scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+    });
+    
+    showMessage(`Form updated for ${category} inquiry`, 'info');
+}
+
+// Emergency contact actions
+function callEmergency(number) {
+    showMessage(`🚨 Calling emergency hotline ${number}...`, 'info');
+    setTimeout(() => {
+        window.open(`tel:${number}`, '_self');
+    }, 500);
+}
+
+// Terms and privacy actions
+function showTerms() {
+    showMessage('📋 Opening Terms of Service...', 'info');
+    // In real app, would open terms modal or page
+}
+
+function showPrivacy() {
+    showMessage('🔒 Opening Privacy Policy...', 'info');
+    // In real app, would open privacy modal or page
+}
+
+// Schedule demo action
+function scheduleDemo() {
+    showMessage('📅 Demo scheduling feature coming soon!', 'info');
+    // In real app, would open demo scheduling interface
+}
+
+// Character count for message field
+function updateCharacterCount() {
+    const messageField = document.getElementById('contactMessage');
+    const charCount = document.getElementById('charCount');
+    
+    if (messageField && charCount) {
+        const length = messageField.value.length;
+        charCount.textContent = length;
+        
+        // Update color based on length
+        const countContainer = charCount.parentElement;
+        if (length > 900) {
+            countContainer.style.color = '#F44336';
+        } else if (length > 800) {
+            countContainer.style.color = '#FF9800';
+        } else {
+            countContainer.style.color = '#666';
+        }
+    }
+}
+
+// Real-time form validation
+function setupRealTimeValidation() {
+    const fields = [
+        { id: 'contactName', validator: validateName },
+        { id: 'contactEmail', validator: validateEmail },
+        { id: 'contactPhone', validator: validatePhone },
+        { id: 'contactMessage', validator: validateMessage }
+    ];
+    
+    fields.forEach(field => {
+        const element = document.getElementById(field.id);
+        if (element) {
+            element.addEventListener('blur', () => field.validator(element));
+            element.addEventListener('input', () => {
+                if (element.classList.contains('error')) {
+                    field.validator(element);
+                }
+            });
+        }
+    });
+    
+    // Message field character count
+    const messageField = document.getElementById('contactMessage');
+    if (messageField) {
+        messageField.addEventListener('input', updateCharacterCount);
+    }
+}
+
+// Field validators
+function validateName(field) {
+    const value = field.value.trim();
+    const feedback = field.parentNode.querySelector('.form-feedback');
+    
+    if (value.length === 0) {
+        field.classList.remove('error', 'success');
+        feedback.textContent = '';
+    } else if (value.length < 2) {
+        field.classList.add('error');
+        field.classList.remove('success');
+        feedback.textContent = 'Name must be at least 2 characters';
+        feedback.classList.add('error');
+    } else {
+        field.classList.add('success');
+        field.classList.remove('error');
+        feedback.textContent = 'Looks good!';
+        feedback.classList.add('success');
+        feedback.classList.remove('error');
+    }
+}
+
+function validateEmail(field) {
+    const value = field.value.trim();
+    const feedback = field.parentNode.querySelector('.form-feedback');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (value.length === 0) {
+        field.classList.remove('error', 'success');
+        feedback.textContent = '';
+    } else if (!emailRegex.test(value)) {
+        field.classList.add('error');
+        field.classList.remove('success');
+        feedback.textContent = 'Please enter a valid email address';
+        feedback.classList.add('error');
+    } else {
+        field.classList.add('success');
+        field.classList.remove('error');
+        feedback.textContent = 'Email looks good!';
+        feedback.classList.add('success');
+        feedback.classList.remove('error');
+    }
+}
+
+function validatePhone(field) {
+    const value = field.value.trim();
+    const feedback = field.parentNode.querySelector('.form-feedback');
+    const phoneRegex = /^\+?[\d\s\-\(\)]{10,}$/;
+    
+    if (value.length === 0) {
+        field.classList.remove('error', 'success');
+        feedback.textContent = '';
+    } else if (!phoneRegex.test(value.replace(/\s/g, ''))) {
+        field.classList.add('error');
+        field.classList.remove('success');
+        feedback.textContent = 'Please enter a valid phone number';
+        feedback.classList.add('error');
+    } else {
+        field.classList.add('success');
+        field.classList.remove('error');
+        feedback.textContent = 'Phone number looks good!';
+        feedback.classList.add('success');
+        feedback.classList.remove('error');
+    }
+}
+
+function validateMessage(field) {
+    const value = field.value.trim();
+    const feedback = field.parentNode.querySelector('.form-feedback');
+    
+    if (value.length === 0) {
+        field.classList.remove('error', 'success');
+        feedback.textContent = '';
+    } else if (value.length < 10) {
+        field.classList.add('error');
+        field.classList.remove('success');
+        feedback.textContent = 'Message must be at least 10 characters';
+        feedback.classList.add('error');
+    } else if (value.length > 1000) {
+        field.classList.add('error');
+        field.classList.remove('success');
+        feedback.textContent = 'Message must be less than 1000 characters';
+        feedback.classList.add('error');
+    } else {
+        field.classList.add('success');
+        field.classList.remove('error');
+        feedback.textContent = 'Message looks good!';
+        feedback.classList.add('success');
+        feedback.classList.remove('error');
+    }
+}
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize AOS
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+    }
+    
+    // Setup real-time validation
+    setupRealTimeValidation();
+    
+    // Initialize character count
+    updateCharacterCount();
+    
+    // Add smooth scrolling for contact method clicks
+    const contactMethods = document.querySelectorAll('.contact-method-ultra');
+    contactMethods.forEach(method => {
+        method.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px)';
+        });
+        
+        method.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeSuccessModal();
+        }
+        if (e.key === 'h' && e.ctrlKey) {
+            e.preventDefault();
+            goHome();
+        }
+    });
+});
+
+// Add custom styles for enhanced contact page
+const contactStyles = document.createElement('style');
+contactStyles.textContent = `
+    .success-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(5px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .success-modal {
+        background: white;
+        padding: 3rem;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 500px;
+        width: 90%;
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    
+    .success-animation {
+        margin-bottom: 2rem;
+    }
+    
+    .success-checkmark {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: block;
+        stroke-width: 2;
+        stroke: #4CAF50;
+        stroke-miterlimit: 10;
+        margin: 0 auto;
+        position: relative;
+        background: #4CAF50;
+    }
+    
+    .success-checkmark .check-icon {
+        width: 80px;
+        height: 80px;
+        position: relative;
+        border-radius: 50%;
+        box-sizing: content-box;
+        border: 4px solid #4CAF50;
+    }
+    
+    .check-icon::before {
+        top: 3px;
+        left: -2px;
+        width: 30px;
+        transform-origin: 100% 50%;
+        border-radius: 100px 0 0 100px;
+    }
+    
+    .check-icon::after {
+        top: 0;
+        left: 30px;
+        width: 60px;
+        transform-origin: 0 50%;
+        border-radius: 0 100px 100px 0;
+        animation: rotate-circle 4.25s ease-in;
+    }
+    
+    .check-icon::before, .check-icon::after {
+        content: '';
+        height: 100px;
+        position: absolute;
+        background: white;
+        transform: rotate(-45deg);
+    }
+    
+    .check-icon .icon-line {
+        height: 5px;
+        background-color: #4CAF50;
+        display: block;
+        border-radius: 2px;
+        position: absolute;
+        z-index: 10;
+    }
+    
+    .check-icon .icon-line.line-tip {
+        top: 46px;
+        left: 14px;
+        width: 25px;
+        transform: rotate(45deg);
+        animation: icon-line-tip 0.75s;
+    }
+    
+    .check-icon .icon-line.line-long {
+        top: 38px;
+        right: 8px;
+        width: 47px;
+        transform: rotate(-45deg);
+        animation: icon-line-long 0.75s;
+    }
+    
+    .check-icon .icon-circle {
+        top: -4px;
+        left: -4px;
+        z-index: 10;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        position: absolute;
+        box-sizing: content-box;
+        border: 4px solid rgba(76, 175, 80, .5);
+    }
+    
+    .check-icon .icon-fix {
+        top: 8px;
+        width: 5px;
+        left: 26px;
+        z-index: 1;
+        height: 85px;
+        position: absolute;
+        transform: rotate(-45deg);
+        background-color: white;
+    }
+    
+    @keyframes rotate-circle {
+        0% { transform: rotate(-45deg); }
+        5% { transform: rotate(-45deg); }
+        12% { transform: rotate(-405deg); }
+        100% { transform: rotate(-405deg); }
+    }
+    
+    @keyframes icon-line-tip {
+        0% { width: 0; left: 1px; top: 19px; }
+        54% { width: 0; left: 1px; top: 19px; }
+        70% { width: 50px; left: -8px; top: 37px; }
+        84% { width: 17px; left: 21px; top: 48px; }
+        100% { width: 25px; left: 14px; top: 45px; }
+    }
+    
+    @keyframes icon-line-long {
+        0% { width: 0; right: 46px; top: 54px; }
+        65% { width: 0; right: 46px; top: 54px; }
+        84% { width: 55px; right: 0px; top: 35px; }
+        100% { width: 47px; right: 8px; top: 38px; }
+    }
+    
+    .success-details {
+        margin: 2rem 0;
+        text-align: left;
+    }
+    
+    .success-details .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 1rem 0;
+        color: #666;
+    }
+    
+    .success-details .detail-item i {
+        color: #4CAF50;
+        width: 20px;
+    }
+    
+    .success-btn {
+        background: linear-gradient(135deg, #4CAF50, #2E7D32);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 25px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .success-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+    }
+    
+    .form-feedback {
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+        min-height: 1.2rem;
+    }
+    
+    .form-feedback.error {
+        color: #F44336;
+    }
+    
+    .form-feedback.success {
+        color: #4CAF50;
+    }
+    
+    .form-input-ultra.error {
+        border-color: #F44336;
+        box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.1);
+    }
+    
+    .form-input-ultra.success {
+        border-color: #4CAF50;
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+    }
+    
+    .faq-answer-ultra {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        padding: 0 1.5rem;
+    }
+    
+    .faq-item-ultra.active .faq-answer-ultra {
+        padding: 1rem 1.5rem;
+    }
+    
+    .character-count {
+        text-align: right;
+        font-size: 0.875rem;
+        color: #666;
+        margin-top: 0.5rem;
+    }
+`;
+
+document.head.appendChild(contactStyles);
+</script>
+{% endblock %}
+            cursor: pointer;
+            background: #F9F9F9;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            background: #F1F8E9;
+        }
+        
+        .faq-question h4 {
+            margin: 0;
+            color: #2E7D32;
+        }
+        
+        .faq-question i {
+            color: #4CAF50;
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-answer {
+            display: none;
+            padding: 1.5rem;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .support-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .support-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .support-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .support-contact {
+            background: #F1F8E9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+        
+        .emergency-contact {
+            background: linear-gradient(135deg, #FFEBEE, #FFCDD2);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid #F44336;
+        }
+        
+        .emergency-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .emergency-header h2 {
+            color: #D32F2F;
+            margin-bottom: 0.5rem;
+        }
+        
+        .emergency-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .emergency-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .emergency-type {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .emergency-type i {
+            color: #F44336;
+            font-size: 1.5rem;
+        }
+        
+        .emergency-type h4 {
+            margin: 0;
+            color: #D32F2F;
+        }
+        
+        .emergency-contact-info p {
+            margin: 0.5rem 0;
+            color: #333;
+        }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            cursor: pointer;
+            line-height: 1.4;
+        }
+        
+        .checkbox-container input[type="checkbox"] {
+            margin: 0;
+            width: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .social-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .emergency-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .support-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    `;
+    document.head.appendChild(contactStyles);
+</script>
+{% endblock %}

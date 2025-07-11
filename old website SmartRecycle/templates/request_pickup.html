@@ -1,0 +1,1022 @@
+{% extends "base-ultra.html" %}
+
+{% block title %}Request Pickup - SmartRecycle | Smart Waste Collection{% endblock %}
+
+{% block extra_css %}
+<style>
+    .pickup-hero {
+        background: linear-gradient(135deg, rgba(255, 152, 0, 0.9), rgba(255, 193, 7, 0.8)), url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+        background-size: cover;
+        background-position: center;
+        padding: 6rem 0;
+        color: white;
+        position: relative;
+    }
+    
+    .pickup-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(255, 152, 0, 0.3), rgba(255, 193, 7, 0.3));
+        animation: pulse 4s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.6; }
+    }
+    
+    .pickup-form-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 30px;
+        padding: 3rem;
+        margin: -80px auto 3rem;
+        max-width: 800px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        position: relative;
+        z-index: 10;
+    }
+    
+    .form-step {
+        display: none;
+        animation: slideIn 0.5s ease-in-out;
+    }
+    
+    .form-step.active {
+        display: block;
+    }
+    
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateX(20px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    
+    .step-indicator {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 3rem;
+    }
+    
+    .step {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #e0e0e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 1rem;
+        color: #666;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    .step.active {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        transform: scale(1.1);
+    }
+    
+    .step.completed {
+        background: var(--primary-color);
+        color: white;
+    }
+    
+    .step::after {
+        content: '';
+        position: absolute;
+        right: -2rem;
+        width: 2rem;
+        height: 2px;
+        background: #e0e0e0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    
+    .step:last-child::after {
+        display: none;
+    }
+    
+    .form-group-enhanced {
+        position: relative;
+        margin-bottom: 2rem;
+    }
+    
+    .form-input-enhanced {
+        width: 100%;
+        padding: 1.2rem 1.5rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 15px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: white;
+    }
+    
+    .form-input-enhanced:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 20px rgba(76, 175, 80, 0.2);
+        transform: translateY(-2px);
+    }
+    
+    .form-label-enhanced {
+        position: absolute;
+        top: 1.2rem;
+        left: 1.5rem;
+        color: #666;
+        transition: all 0.3s ease;
+        pointer-events: none;
+        background: white;
+        padding: 0 0.5rem;
+    }
+    
+    .form-input-enhanced:focus + .form-label-enhanced,
+    .form-input-enhanced:valid + .form-label-enhanced {
+        top: -10px;
+        font-size: 0.9rem;
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+    
+    .waste-type-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+    
+    .waste-type-card {
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 15px;
+        padding: 1.5rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .waste-type-card:hover {
+        border-color: var(--primary-color);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .waste-type-card.selected {
+        border-color: var(--primary-color);
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1));
+    }
+    
+    .waste-type-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        display: block;
+    }
+    
+    .pickup-summary {
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1));
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 2rem 0;
+        border: 2px solid var(--primary-color);
+    }
+    
+    .btn-step {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 25px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin: 0 0.5rem;
+    }
+    
+    .btn-step:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(76, 175, 80, 0.3);
+    }
+    
+    .btn-step:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    .btn-secondary-step {
+        background: #6c757d;
+    }
+    
+    .estimated-cost {
+        background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1));
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border: 2px solid #ffc107;
+        text-align: center;
+    }
+    
+    .tracking-info {
+        background: linear-gradient(135deg, rgba(33, 150, 243, 0.1), rgba(3, 169, 244, 0.1));
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border: 2px solid #2196f3;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Ultra-Premium Hero Section -->
+<section class="pickup-hero">
+    <div class="container">
+        <div class="hero-content text-center">
+            <div class="hero-badge">
+                <span>🚛 Smart Collection</span>
+            </div>
+            <h1 class="hero-title">
+                <span class="gradient-text">Request Pickup</span>
+                <br>
+                <span class="subtitle">Convenient Waste Collection</span>
+            </h1>
+            <p class="hero-description">
+                Schedule smart waste collection with real-time tracking, 
+                route optimization, and instant cost estimation.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Multi-Step Pickup Form -->
+<section class="container">
+    <div class="pickup-form-container">
+        <div class="text-center mb-4">
+            <h2 class="section-title">📋 Smart Pickup Request</h2>
+            <p class="section-subtitle">Let's schedule your waste collection in 3 easy steps</p>
+        </div>
+        
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+            <div class="step active" id="step-1">1</div>
+            <div class="step" id="step-2">2</div>
+            <div class="step" id="step-3">3</div>
+        </div>
+        
+        <form id="pickup-form" onsubmit="event.preventDefault(); submitPickupRequest();">
+            <!-- Step 1: Personal Information -->
+            <div class="form-step active" id="form-step-1">
+                <h3 class="text-center mb-4">👤 Personal Information</h3>
+                
+                <div class="form-group-enhanced">
+                    <input type="text" id="name" name="name" class="form-input-enhanced" required>
+                    <label for="name" class="form-label-enhanced">
+                        <i class="fas fa-user"></i> Full Name
+                    </label>
+                </div>
+
+                <div class="form-group-enhanced">
+                    <textarea id="address" name="address" class="form-input-enhanced" rows="3" required></textarea>
+                    <label for="address" class="form-label-enhanced">
+                        <i class="fas fa-map-marker-alt"></i> Complete Address
+                    </label>
+                </div>
+
+                <div class="form-group-enhanced">
+                    <input type="tel" id="contact" name="contact" class="form-input-enhanced" required>
+                    <label for="contact" class="form-label-enhanced">
+                        <i class="fas fa-phone"></i> Contact Number
+                    </label>
+                </div>
+
+                <div class="form-group-enhanced">
+                    <input type="email" id="email" name="email" class="form-input-enhanced">
+                    <label for="email" class="form-label-enhanced">
+                        <i class="fas fa-envelope"></i> Email (Optional)
+                    </label>
+                </div>
+                
+                <div class="text-center">
+                    <button type="button" class="btn-step" onclick="nextStep()">
+                        Next Step <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Waste Type Selection -->
+            <div class="form-step" id="form-step-2">
+                <h3 class="text-center mb-4">♻️ Select Waste Types</h3>
+                
+                <div class="waste-type-grid">
+                    <div class="waste-type-card" onclick="selectWasteType('plastic')">
+                        <span class="waste-type-icon">🍼</span>
+                        <h4>Plastic Items</h4>
+                        <p>Bottles, containers, packaging</p>
+                        <div class="pricing">₹5-10 per kg</div>
+                    </div>
+                    
+                    <div class="waste-type-card" onclick="selectWasteType('paper')">
+                        <span class="waste-type-icon">📰</span>
+                        <h4>Paper & Cardboard</h4>
+                        <p>Newspapers, magazines, boxes</p>
+                        <div class="pricing">₹8-12 per kg</div>
+                    </div>
+                    
+                    <div class="waste-type-card" onclick="selectWasteType('glass')">
+                        <span class="waste-type-icon">🍷</span>
+                        <h4>Glass Items</h4>
+                        <p>Bottles, jars, containers</p>
+                        <div class="pricing">₹3-6 per kg</div>
+                    </div>
+                    
+                    <div class="waste-type-card" onclick="selectWasteType('metal')">
+                        <span class="waste-type-icon">🥤</span>
+                        <h4>Metal Items</h4>
+                        <p>Cans, utensils, appliances</p>
+                        <div class="pricing">₹15-25 per kg</div>
+                    </div>
+                    
+                    <div class="waste-type-card" onclick="selectWasteType('electronics')">
+                        <span class="waste-type-icon">📱</span>
+                        <h4>Electronics</h4>
+                        <p>Phones, computers, gadgets</p>
+                        <div class="pricing">₹20-50 per kg</div>
+                    </div>
+                    
+                    <div class="waste-type-card" onclick="selectWasteType('mixed')">
+                        <span class="waste-type-icon">🗂️</span>
+                        <h4>Mixed Waste</h4>
+                        <p>Combination of items</p>
+                        <div class="pricing">₹8-15 per kg</div>
+                    </div>
+                </div>
+                
+                <div class="form-group-enhanced">
+                    <input type="number" id="estimated_weight" name="estimated_weight" class="form-input-enhanced" min="1" max="1000" required>
+                    <label for="estimated_weight" class="form-label-enhanced">
+                        <i class="fas fa-weight-hanging"></i> Estimated Weight (kg)
+                    </label>
+                </div>
+                
+                <div class="estimated-cost" id="cost-display" style="display: none;">
+                    <h4>💰 Estimated Collection Cost</h4>
+                    <div class="cost-amount" id="cost-amount">₹0</div>
+                    <p>Final cost will be calculated after weighing</p>
+                </div>
+                
+                <div class="text-center">
+                    <button type="button" class="btn-step btn-secondary-step" onclick="prevStep()">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button type="button" class="btn-step" onclick="nextStep()">
+                        Next Step <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Schedule & Confirmation -->
+            <div class="form-step" id="form-step-3">
+                <h3 class="text-center mb-4">📅 Schedule & Confirmation</h3>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group-enhanced">
+                            <input type="date" id="pickup_date" name="pickup_date" class="form-input-enhanced" required>
+                            <label for="pickup_date" class="form-label-enhanced">
+                                <i class="fas fa-calendar-alt"></i> Pickup Date
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group-enhanced">
+                            <select id="time_slot" name="time_slot" class="form-input-enhanced" required>
+                                <option value="">Select Time Slot</option>
+                                <option value="morning">🌅 Morning (8 AM - 12 PM)</option>
+                                <option value="afternoon">☀️ Afternoon (12 PM - 4 PM)</option>
+                                <option value="evening">🌇 Evening (4 PM - 8 PM)</option>
+                            </select>
+                            <label for="time_slot" class="form-label-enhanced">
+                                <i class="fas fa-clock"></i> Time Slot
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group-enhanced">
+                    <textarea id="special_instructions" name="special_instructions" class="form-input-enhanced" rows="3"></textarea>
+                    <label for="special_instructions" class="form-label-enhanced">
+                        <i class="fas fa-sticky-note"></i> Special Instructions (Optional)
+                    </label>
+                </div>
+                
+                <!-- Pickup Summary -->
+                <div class="pickup-summary">
+                    <h4 class="text-center mb-3">📋 Pickup Summary</h4>
+                    <div id="summary-content">
+                        <!-- Summary will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Tracking Information -->
+                <div class="tracking-info">
+                    <h4><i class="fas fa-map-marker-alt"></i> Real-Time Tracking</h4>
+                    <p>After confirmation, you'll receive:</p>
+                    <ul>
+                        <li>📱 SMS updates with pickup status</li>
+                        <li>🚛 Live tracking of collection vehicle</li>
+                        <li>⏰ Estimated arrival time</li>
+                        <li>💰 Final payment after weighing</li>
+                    </ul>
+                </div>
+                
+                <div class="text-center">
+                    <button type="button" class="btn-step btn-secondary-step" onclick="prevStep()">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button type="submit" class="btn-step" id="submit-btn">
+                        <i class="fas fa-check-circle"></i> Confirm Pickup Request
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Success Modal -->
+<div id="success-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="text-center">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+            <h2 style="color: var(--primary-color);">Pickup Request Confirmed!</h2>
+            <p>Your pickup has been scheduled successfully.</p>
+            <div class="request-id" id="request-id-display"></div>
+            <div class="tracking-link">
+                <a href="{{ url_for('track_impact') }}" class="btn btn-primary">
+                    <i class="fas fa-chart-line"></i> Track Your Impact
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Back to Home Button -->
+<div class="text-center" style="margin: 3rem 0;">
+    <a href="{{ url_for('home') }}" class="btn btn-secondary btn-lg">
+        <i class="fas fa-arrow-left"></i>
+        Return to Home
+    </a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Enhanced form submission with validation
+    function submitPickupRequest() {
+        const form = document.getElementById('pickup-form');
+        const submitBtn = document.querySelector('.form-button');
+        const formData = new FormData(form);
+        
+        const data = {
+            name: formData.get('name'),
+            address: formData.get('address'),
+            contact: formData.get('contact'),
+            waste_type: formData.get('waste_type'),
+            quantity: formData.get('quantity'),
+            pickup_time: formData.get('pickup_time'),
+            notes: formData.get('notes') || ''
+        };
+
+        // Validate required fields
+        const requiredFields = ['name', 'address', 'contact', 'waste_type', 'quantity', 'pickup_time'];
+        const missingFields = requiredFields.filter(field => !data[field] || data[field].trim() === '');
+        
+        if (missingFields.length > 0) {
+            showMessage('Please fill in all required fields', 'warning');
+            return;
+        }
+
+        // Validate contact number
+        const contactRegex = /^[\+]?[0-9\s\-\(\)]{10,15}$/;
+        if (!contactRegex.test(data.contact)) {
+            showMessage('Please enter a valid contact number', 'warning');
+            return;
+        }
+
+        // Check terms acceptance
+        const termsCheckbox = document.getElementById('terms');
+        if (!termsCheckbox.checked) {
+            showMessage('Please accept the terms and conditions', 'warning');
+            return;
+        }
+
+        // Show loading state
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting Request...';
+        submitBtn.disabled = true;
+
+        fetch('/submit-pickup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                showSuccessMessage(result.message);
+                form.reset();
+                
+                // Show points earned notification
+                setTimeout(() => {
+                    showMessage('🎉 You earned 10 green points for this request!', 'success');
+                }, 2000);
+                
+                // Show next steps
+                setTimeout(() => {
+                    showNextSteps();
+                }, 4000);
+            } else {
+                showMessage('Error submitting request. Please try again.', 'error');
+            }
+            
+            // Reset button
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Pickup Request';
+            submitBtn.disabled = false;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showMessage('Error submitting request. Please try again.', 'error');
+            
+            // Reset button
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Pickup Request';
+            submitBtn.disabled = false;
+        });
+    }
+
+    function showSuccessMessage(message) {
+        const successDiv = document.createElement('div');
+        successDiv.className = 'success-message fade-in';
+        successDiv.innerHTML = `
+            <div style="background: linear-gradient(135deg, #4CAF50, #388E3C); color: white; padding: 2rem; border-radius: 15px; text-align: center; margin: 2rem 0;">
+                <i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <h3>Request Submitted Successfully! ✅</h3>
+                <p style="margin: 1rem 0; font-size: 1.1rem;">${message}</p>
+                <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 10px; margin-top: 1rem;">
+                    <p><strong>What happens next?</strong></p>
+                    <ul style="list-style: none; margin: 0.5rem 0;">
+                        <li>📧 Email confirmation sent</li>
+                        <li>📞 Confirmation call within 24 hours</li>
+                        <li>🚛 Pickup scheduled within 2-3 days</li>
+                        <li>🎁 Points credited after collection</li>
+                    </ul>
+                </div>
+            </div>
+        `;
+        
+        const formContainer = document.querySelector('.form-container');
+        formContainer.appendChild(successDiv);
+        successDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showNextSteps() {
+        const nextStepsDiv = document.createElement('div');
+        nextStepsDiv.className = 'next-steps fade-in';
+        nextStepsDiv.innerHTML = `
+            <div style="background: linear-gradient(135deg, #2196F3, #1976D2); color: white; padding: 2rem; border-radius: 15px; text-align: center; margin: 2rem 0;">
+                <h3>🚀 What's Next?</h3>
+                <p>While you wait for pickup, explore more ways to help the environment:</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+                    <a href="/track-impact" class="cta-button" style="background: white; color: #1976D2;">
+                        📊 Track Impact
+                    </a>
+                    <a href="/rewards" class="cta-button" style="background: rgba(255,255,255,0.2); border: 2px solid white;">
+                        🎁 View Rewards
+                    </a>
+                </div>
+            </div>
+        `;
+        
+        const formContainer = document.querySelector('.form-container');
+        formContainer.appendChild(nextStepsDiv);
+    }
+
+    // Auto-format phone number
+    document.getElementById('contact').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 0 && !value.startsWith('91')) {
+            if (value.length === 10) {
+                value = '91' + value;
+            }
+        }
+        if (value.length > 0) {
+            e.target.value = '+' + value;
+        }
+    });
+
+    // Dynamic form validation
+    document.querySelectorAll('.form-input').forEach(input => {
+        input.addEventListener('blur', function() {
+            validateField(this);
+        });
+    });
+
+    function validateField(field) {
+        let isValid = true;
+        const value = field.value.trim();
+        
+        // Remove previous validation styling
+        field.style.borderColor = '';
+        
+        if (field.hasAttribute('required') && !value) {
+            isValid = false;
+        }
+        
+        // Specific validations
+        if (field.type === 'tel' && value) {
+            const contactRegex = /^[\+]?[0-9\s\-\(\)]{10,15}$/;
+            if (!contactRegex.test(value)) {
+                isValid = false;
+            }
+        }
+        
+        // Apply styling
+        if (!isValid && value) {
+            field.style.borderColor = '#F44336';
+        } else if (value) {
+            field.style.borderColor = '#4CAF50';
+        }
+        
+        return isValid;
+    }
+
+    // Add CSS for custom checkbox
+    const checkboxStyle = document.createElement('style');
+    checkboxStyle.textContent = `
+        .checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            cursor: pointer;
+            line-height: 1.4;
+        }
+        
+        .checkbox-container input[type="checkbox"] {
+            margin: 0;
+            width: auto;
+        }
+        
+        .success-message, .next-steps {
+            animation: slideInFromBottom 0.5s ease;
+        }
+        
+        @keyframes slideInFromBottom {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    `;
+    document.head.appendChild(checkboxStyle);
+</script>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    let currentStep = 1;
+    let selectedWasteTypes = [];
+    let estimatedCost = 0;
+    
+    // Waste type pricing (per kg in INR)
+    const wastePricing = {
+        'plastic': { min: 5, max: 10, icon: '🍼' },
+        'paper': { min: 8, max: 12, icon: '📰' },
+        'glass': { min: 3, max: 6, icon: '🍷' },
+        'metal': { min: 15, max: 25, icon: '🥤' },
+        'electronics': { min: 20, max: 50, icon: '📱' },
+        'mixed': { min: 8, max: 15, icon: '🗂️' }
+    };
+
+    function nextStep() {
+        if (validateStep(currentStep)) {
+            // Hide current step
+            document.getElementById(`form-step-${currentStep}`).classList.remove('active');
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            document.getElementById(`step-${currentStep}`).classList.add('completed');
+            
+            currentStep++;
+            
+            // Show next step
+            document.getElementById(`form-step-${currentStep}`).classList.add('active');
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            
+            // Update summary for step 3
+            if (currentStep === 3) {
+                updateSummary();
+                setMinDate();
+            }
+        }
+    }
+
+    function prevStep() {
+        if (currentStep > 1) {
+            // Hide current step
+            document.getElementById(`form-step-${currentStep}`).classList.remove('active');
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            
+            currentStep--;
+            
+            // Show previous step
+            document.getElementById(`form-step-${currentStep}`).classList.add('active');
+            document.getElementById(`step-${currentStep}`).classList.remove('completed');
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+        }
+    }
+
+    function validateStep(step) {
+        let isValid = true;
+        
+        if (step === 1) {
+            const requiredFields = ['name', 'address', 'contact'];
+            requiredFields.forEach(field => {
+                const input = document.getElementById(field);
+                if (!input.value.trim()) {
+                    input.style.borderColor = '#f44336';
+                    isValid = false;
+                } else {
+                    input.style.borderColor = '#e0e0e0';
+                }
+            });
+            
+            // Validate phone number
+            const contact = document.getElementById('contact').value;
+            const phoneRegex = /^[\+]?[0-9]{10,15}$/;
+            if (!phoneRegex.test(contact.replace(/\s/g, ''))) {
+                document.getElementById('contact').style.borderColor = '#f44336';
+                alert('Please enter a valid phone number');
+                isValid = false;
+            }
+        }
+        
+        if (step === 2) {
+            if (selectedWasteTypes.length === 0) {
+                alert('Please select at least one waste type');
+                isValid = false;
+            }
+            
+            const weight = document.getElementById('estimated_weight').value;
+            if (!weight || weight < 1 || weight > 1000) {
+                document.getElementById('estimated_weight').style.borderColor = '#f44336';
+                alert('Please enter a valid weight (1-1000 kg)');
+                isValid = false;
+            }
+        }
+        
+        return isValid;
+    }
+
+    function selectWasteType(type) {
+        const card = event.currentTarget;
+        
+        if (selectedWasteTypes.includes(type)) {
+            // Deselect
+            selectedWasteTypes = selectedWasteTypes.filter(t => t !== type);
+            card.classList.remove('selected');
+        } else {
+            // Select
+            selectedWasteTypes.push(type);
+            card.classList.add('selected');
+        }
+        
+        updateCostEstimate();
+    }
+
+    function updateCostEstimate() {
+        const weight = parseFloat(document.getElementById('estimated_weight').value) || 0;
+        
+        if (selectedWasteTypes.length > 0 && weight > 0) {
+            let totalCost = 0;
+            
+            selectedWasteTypes.forEach(type => {
+                const pricing = wastePricing[type];
+                const avgPrice = (pricing.min + pricing.max) / 2;
+                totalCost += avgPrice * weight / selectedWasteTypes.length;
+            });
+            
+            estimatedCost = Math.round(totalCost);
+            
+            document.getElementById('cost-display').style.display = 'block';
+            document.getElementById('cost-amount').textContent = `₹${estimatedCost}`;
+        } else {
+            document.getElementById('cost-display').style.display = 'none';
+        }
+    }
+
+    function updateSummary() {
+        const name = document.getElementById('name').value;
+        const address = document.getElementById('address').value;
+        const contact = document.getElementById('contact').value;
+        const weight = document.getElementById('estimated_weight').value;
+        
+        const wasteTypesText = selectedWasteTypes.map(type => 
+            `${wastePricing[type].icon} ${type.charAt(0).toUpperCase() + type.slice(1)}`
+        ).join(', ');
+        
+        const summaryHTML = `
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>👤 Contact Details</h5>
+                    <p><strong>Name:</strong> ${name}</p>
+                    <p><strong>Contact:</strong> ${contact}</p>
+                    <p><strong>Address:</strong> ${address}</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>♻️ Waste Details</h5>
+                    <p><strong>Types:</strong> ${wasteTypesText}</p>
+                    <p><strong>Weight:</strong> ${weight} kg</p>
+                    <p><strong>Estimated Cost:</strong> ₹${estimatedCost}</p>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('summary-content').innerHTML = summaryHTML;
+    }
+
+    function setMinDate() {
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        
+        const dateInput = document.getElementById('pickup_date');
+        dateInput.min = tomorrow.toISOString().split('T')[0];
+        
+        // Set default to tomorrow
+        dateInput.value = tomorrow.toISOString().split('T')[0];
+    }
+
+    function submitPickupRequest() {
+        if (!validateStep(3)) return;
+        
+        const formData = new FormData(document.getElementById('pickup-form'));
+        formData.append('waste_types', JSON.stringify(selectedWasteTypes));
+        formData.append('estimated_cost', estimatedCost);
+        
+        // Show loading
+        const submitBtn = document.getElementById('submit-btn');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        submitBtn.disabled = true;
+        
+        // Simulate API call
+        setTimeout(() => {
+            // Generate request ID
+            const requestId = 'SR' + Date.now().toString().slice(-6);
+            
+            // Show success modal
+            document.getElementById('request-id-display').innerHTML = `
+                <div class="request-id-card">
+                    <h4>Your Request ID</h4>
+                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary-color);">${requestId}</div>
+                    <p>Save this ID for tracking</p>
+                </div>
+            `;
+            
+            document.getElementById('success-modal').style.display = 'flex';
+            
+            // Create celebration effect
+            createCelebrationEffect();
+            
+            // Reset form
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+            
+        }, 2000);
+    }
+
+    function createCelebrationEffect() {
+        const emojis = ['🎉', '🚛', '♻️', '✨', '🌱', '💚'];
+        
+        for (let i = 0; i < 20; i++) {
+            setTimeout(() => {
+                const emoji = document.createElement('div');
+                emoji.style.position = 'fixed';
+                emoji.style.fontSize = '2rem';
+                emoji.style.pointerEvents = 'none';
+                emoji.style.zIndex = '9999';
+                emoji.style.left = Math.random() * window.innerWidth + 'px';
+                emoji.style.top = '-50px';
+                emoji.style.animation = 'fall 4s linear forwards';
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                
+                document.body.appendChild(emoji);
+                
+                setTimeout(() => {
+                    emoji.remove();
+                }, 4000);
+            }, i * 100);
+        }
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+        // Auto-populate from session storage if coming from waste guide
+        const selectedItem = sessionStorage.getItem('selectedItem');
+        if (selectedItem) {
+            // Auto-select appropriate waste type based on item
+            const itemToTypeMap = {
+                'plastic bottle': 'plastic',
+                'battery': 'electronics',
+                'newspaper': 'paper',
+                'glass bottle': 'glass',
+                'aluminum can': 'metal'
+            };
+            
+            const autoType = itemToTypeMap[selectedItem];
+            if (autoType) {
+                setTimeout(() => {
+                    document.querySelector(`[onclick="selectWasteType('${autoType}')"]`).click();
+                }, 500);
+            }
+            
+            // Clear session storage
+            sessionStorage.removeItem('selectedItem');
+        }
+        
+        // Weight input change listener
+        document.getElementById('estimated_weight').addEventListener('input', updateCostEstimate);
+        
+        // Modal close functionality
+        document.getElementById('success-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+        
+        // Enhanced form animations
+        const inputs = document.querySelectorAll('.form-input-enhanced');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+    });
+
+    // Add required CSS for modal and animations
+    const style = document.createElement('style');
+    style.textContent = `
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .request-id-card {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1));
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 1rem 0;
+            border: 2px solid var(--primary-color);
+        }
+        
+        .pricing {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+{% endblock %}

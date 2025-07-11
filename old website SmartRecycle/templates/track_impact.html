@@ -1,0 +1,1151 @@
+{% extends "base-ultra.html" %}
+
+{% block title %}Track Impact - SmartRecycle{% endblock %}
+
+{% block content %}
+<!-- Animated Back Arrow -->
+<div class="back-arrow" onclick="goHome()">
+    <i class="fas fa-arrow-left"></i>
+    <span>Return to Home</span>
+</div>
+
+<!-- Hero Section -->
+<section class="hero-ultra">
+    <div class="hero-content-ultra">
+        <div class="hero-animation">
+            <div class="floating-leaves">
+                <div class="leaf leaf-1">🍃</div>
+                <div class="leaf leaf-2">🌿</div>
+                <div class="leaf leaf-3">🍃</div>
+                <div class="leaf leaf-4">🌿</div>
+            </div>
+        </div>
+        <div class="hero-text-ultra" data-aos="fade-up">
+            <h1 class="gradient-text">📊 Track Your Impact</h1>
+            <p class="hero-subtitle">See how much difference you're making for the environment</p>
+            <div class="hero-stats">
+                <div class="stat-preview" data-aos="fade-up" data-aos-delay="200">
+                    <span class="stat-value" id="preview-total">1,247</span>
+                    <span class="stat-label">kg Recycled</span>
+                </div>
+                <div class="stat-preview" data-aos="fade-up" data-aos-delay="300">
+                    <span class="stat-value" id="preview-co2">842</span>
+                    <span class="stat-label">kg CO₂ Saved</span>
+                </div>
+                <div class="stat-preview" data-aos="fade-up" data-aos-delay="400">
+                    <span class="stat-value" id="preview-trees">23</span>
+                    <span class="stat-label">Trees Saved</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wave-animation">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
+            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
+            <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- Personal Dashboard -->
+<section class="section-ultra">
+    <div class="container-ultra">
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title">🏆 Your Environmental Dashboard</h2>
+            <p class="section-subtitle">Real-time metrics of your positive environmental impact</p>
+        </div>
+        
+        <div class="stats-grid-ultra" data-aos="fade-up" data-aos-delay="200">
+            <div class="stat-card-ultra waste-card" onclick="showDetailModal('waste')">
+                <div class="stat-icon">
+                    <i class="fas fa-recycle"></i>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-number" id="total-waste">1,247</span>
+                    <span class="stat-unit">kg</span>
+                </div>
+                <span class="stat-label">Waste Recycled</span>
+                <div class="stat-growth">
+                    <i class="fas fa-trending-up"></i>
+                    <span>+12% this month</span>
+                </div>
+            </div>
+            
+            <div class="stat-card-ultra points-card" onclick="showDetailModal('points')">
+                <div class="stat-icon">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-number" id="points-earned">3,850</span>
+                    <span class="stat-unit">pts</span>
+                </div>
+                <span class="stat-label">Green Points</span>
+                <div class="stat-growth">
+                    <i class="fas fa-trending-up"></i>
+                    <span>+8% this month</span>
+                </div>
+            </div>
+            
+            <div class="stat-card-ultra trees-card" onclick="showDetailModal('trees')">
+                <div class="stat-icon">
+                    <i class="fas fa-tree"></i>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-number" id="trees-saved">23</span>
+                    <span class="stat-unit">trees</span>
+                </div>
+                <span class="stat-label">Trees Saved</span>
+                <div class="stat-growth">
+                    <i class="fas fa-trending-up"></i>
+                    <span>+15% this month</span>
+                </div>
+            </div>
+            
+            <div class="stat-card-ultra water-card" onclick="showDetailModal('water')">
+                <div class="stat-icon">
+                    <i class="fas fa-tint"></i>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-number" id="water-saved">18,420</span>
+                    <span class="stat-unit">L</span>
+                </div>
+                <span class="stat-label">Water Saved</span>
+                <div class="stat-growth">
+                    <i class="fas fa-trending-up"></i>
+                    <span>+10% this month</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Environmental Impact Breakdown -->
+<section class="section-ultra section-alt">
+    <div class="container-ultra">
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title">🌱 Environmental Impact Breakdown</h2>
+            <p class="section-subtitle">Detailed analysis of your contribution to environmental protection</p>
+        </div>
+        
+        <div class="impact-grid" data-aos="fade-up" data-aos-delay="200">
+            <div class="impact-card-ultra carbon-card">
+                <div class="impact-header">
+                    <div class="impact-icon">
+                        <i class="fas fa-smog"></i>
+                    </div>
+                    <div class="impact-trend">
+                        <span class="trend-value">+18%</span>
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                </div>
+                <h3>Carbon Footprint Reduced</h3>
+                <div class="impact-metric">
+                    <span class="impact-number" id="co2-reduced">842</span>
+                    <span class="impact-unit">kg CO₂</span>
+                </div>
+                <div class="impact-comparison">
+                    <i class="fas fa-car"></i>
+                    <span>Equivalent to driving <strong id="driving-equivalent">3,680</strong> km less</span>
+                </div>
+                <div class="impact-visual">
+                    <div class="progress-ring">
+                        <svg class="progress-ring-svg" width="60" height="60">
+                            <circle class="progress-ring-circle" cx="30" cy="30" r="25" fill="transparent" stroke="#e0e0e0" stroke-width="4"/>
+                            <circle class="progress-ring-progress" cx="30" cy="30" r="25" fill="transparent" stroke="#4CAF50" stroke-width="4" stroke-dasharray="157" stroke-dashoffset="47"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="impact-card-ultra water-card">
+                <div class="impact-header">
+                    <div class="impact-icon">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <div class="impact-trend">
+                        <span class="trend-value">+10%</span>
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                </div>
+                <h3>Water Conservation</h3>
+                <div class="impact-metric">
+                    <span class="impact-number" id="water-conserved">18,420</span>
+                    <span class="impact-unit">Liters</span>
+                </div>
+                <div class="impact-comparison">
+                    <i class="fas fa-shower"></i>
+                    <span>Enough for <strong id="shower-equivalent">245</strong> average showers</span>
+                </div>
+                <div class="impact-visual">
+                    <div class="progress-ring">
+                        <svg class="progress-ring-svg" width="60" height="60">
+                            <circle class="progress-ring-circle" cx="30" cy="30" r="25" fill="transparent" stroke="#e0e0e0" stroke-width="4"/>
+                            <circle class="progress-ring-progress" cx="30" cy="30" r="25" fill="transparent" stroke="#2196F3" stroke-width="4" stroke-dasharray="157" stroke-dashoffset="31"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="impact-card-ultra forest-card">
+                <div class="impact-header">
+                    <div class="impact-icon">
+                        <i class="fas fa-tree"></i>
+                    </div>
+                    <div class="impact-trend">
+                        <span class="trend-value">+15%</span>
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                </div>
+                <h3>Forest Protection</h3>
+                <div class="impact-metric">
+                    <span class="impact-number" id="trees-protected">23</span>
+                    <span class="impact-unit">Trees</span>
+                </div>
+                <div class="impact-comparison">
+                    <i class="fas fa-seedling"></i>
+                    <span>Protected <strong id="forest-area">2,300</strong> m² of forest</span>
+                </div>
+                <div class="impact-visual">
+                    <div class="progress-ring">
+                        <svg class="progress-ring-svg" width="60" height="60">
+                            <circle class="progress-ring-circle" cx="30" cy="30" r="25" fill="transparent" stroke="#e0e0e0" stroke-width="4"/>
+                            <circle class="progress-ring-progress" cx="30" cy="30" r="25" fill="transparent" stroke="#8BC34A" stroke-width="4" stroke-dasharray="157" stroke-dashoffset="78"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="impact-card-ultra energy-card">
+                <div class="impact-header">
+                    <div class="impact-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="impact-trend">
+                        <span class="trend-value">+22%</span>
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                </div>
+                <h3>Energy Saved</h3>
+                <div class="impact-metric">
+                    <span class="impact-number" id="energy-saved">1,245</span>
+                    <span class="impact-unit">kWh</span>
+                </div>
+                <div class="impact-comparison">
+                    <i class="fas fa-home"></i>
+                    <span>Powers a home for <strong id="power-equivalent">45</strong> days</span>
+                </div>
+                <div class="impact-visual">
+                    <div class="progress-ring">
+                        <svg class="progress-ring-svg" width="60" height="60">
+                            <circle class="progress-ring-circle" cx="30" cy="30" r="25" fill="transparent" stroke="#e0e0e0" stroke-width="4"/>
+                            <circle class="progress-ring-progress" cx="30" cy="30" r="25" fill="transparent" stroke="#FF9800" stroke-width="4" stroke-dasharray="157" stroke-dashoffset="62"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recent Activities -->
+<section class="section-ultra">
+    <div class="container-ultra">
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title">📅 Recent Activities</h2>
+            <p class="section-subtitle">Your latest contributions to environmental protection</p>
+        </div>
+        
+        <div class="timeline-ultra" data-aos="fade-up" data-aos-delay="200">
+            <div class="timeline-item-ultra" data-aos="fade-right" data-aos-delay="300">
+                <div class="timeline-icon recycling-icon">
+                    <i class="fas fa-recycle"></i>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h4>Plastic Bottles Recycled</h4>
+                        <span class="timeline-date">2 days ago</span>
+                    </div>
+                    <p>15 plastic bottles collected and processed</p>
+                    <div class="timeline-rewards">
+                        <span class="reward-badge points">+30 points</span>
+                        <span class="reward-badge impact">+5kg CO₂ saved</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item-ultra" data-aos="fade-left" data-aos-delay="400">
+                <div class="timeline-icon paper-icon">
+                    <i class="fas fa-newspaper"></i>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h4>Paper & Cardboard Collection</h4>
+                        <span class="timeline-date">5 days ago</span>
+                    </div>
+                    <p>25kg mixed paper and cardboard recycled</p>
+                    <div class="timeline-rewards">
+                        <span class="reward-badge points">+50 points</span>
+                        <span class="reward-badge impact">2 trees saved</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item-ultra" data-aos="fade-right" data-aos-delay="500">
+                <div class="timeline-icon ewaste-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h4>E-Waste Collection</h4>
+                        <span class="timeline-date">1 week ago</span>
+                    </div>
+                    <p>Old mobile phones and cables properly disposed</p>
+                    <div class="timeline-rewards">
+                        <span class="reward-badge points">+75 points</span>
+                        <span class="reward-badge impact">Hazards prevented</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item-ultra achievement" data-aos="fade-left" data-aos-delay="600">
+                <div class="timeline-icon trophy-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-header">
+                        <h4>Achievement Unlocked!</h4>
+                        <span class="timeline-date">1 week ago</span>
+                    </div>
+                    <p>Eco Warrior Badge earned for consistent recycling</p>
+                    <div class="timeline-rewards">
+                        <span class="reward-badge achievement">🏆 Badge earned</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Achievements and Badges -->
+<section class="section-ultra section-alt">
+    <div class="container-ultra">
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title">🏅 Achievements & Badges</h2>
+            <p class="section-subtitle">Unlock rewards for your environmental contributions</p>
+        </div>
+        
+        <div class="badges-grid-ultra" data-aos="fade-up" data-aos-delay="200">
+            <div class="badge-card-ultra earned" data-aos="zoom-in" data-aos-delay="300">
+                <div class="badge-glow"></div>
+                <div class="badge-icon-ultra earned">🌱</div>
+                <h4>Green Starter</h4>
+                <p>Complete your first recycling action</p>
+                <div class="badge-progress completed">
+                    <div class="progress-fill" style="width: 100%;"></div>
+                </div>
+                <span class="badge-status earned">✓ Earned</span>
+            </div>
+            
+            <div class="badge-card-ultra earned" data-aos="zoom-in" data-aos-delay="400">
+                <div class="badge-glow"></div>
+                <div class="badge-icon-ultra earned">♻️</div>
+                <h4>Recycling Pro</h4>
+                <p>Recycle 25kg of waste materials</p>
+                <div class="badge-progress completed">
+                    <div class="progress-fill" style="width: 100%;"></div>
+                </div>
+                <span class="badge-status earned">✓ Earned</span>
+            </div>
+            
+            <div class="badge-card-ultra earned" data-aos="zoom-in" data-aos-delay="500">
+                <div class="badge-glow"></div>
+                <div class="badge-icon-ultra earned">🏆</div>
+                <h4>Eco Warrior</h4>
+                <p>Accumulate 100 green points</p>
+                <div class="badge-progress completed">
+                    <div class="progress-fill" style="width: 100%;"></div>
+                </div>
+                <span class="badge-status earned">✓ Earned</span>
+            </div>
+            
+            <div class="badge-card-ultra in-progress" data-aos="zoom-in" data-aos-delay="600">
+                <div class="badge-icon-ultra progress">🌟</div>
+                <h4>Sustainability Champion</h4>
+                <p>Recycle 50kg of waste materials</p>
+                <div class="badge-progress">
+                    <div class="progress-fill" style="width: 70%;"></div>
+                </div>
+                <span class="badge-status progress">35kg / 50kg</span>
+            </div>
+            
+            <div class="badge-card-ultra locked" data-aos="zoom-in" data-aos-delay="700">
+                <div class="badge-icon-ultra locked">🌍</div>
+                <h4>Planet Protector</h4>
+                <p>Save 100 trees equivalent</p>
+                <div class="badge-progress">
+                    <div class="progress-fill" style="width: 23%;"></div>
+                </div>
+                <span class="badge-status locked">23 / 100 trees</span>
+            </div>
+            
+            <div class="badge-card-ultra locked" data-aos="zoom-in" data-aos-delay="800">
+                <div class="badge-icon-ultra locked">💎</div>
+                <h4>Diamond Recycler</h4>
+                <p>Earn 500 green points total</p>
+                <div class="badge-progress">
+                    <div class="progress-fill" style="width: 77%;"></div>
+                </div>
+                <span class="badge-status locked">385 / 500 points</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Community Impact & Leaderboard -->
+<section class="section-ultra">
+    <div class="container-ultra">
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title">📈 Community Impact</h2>
+            <p class="section-subtitle">See how you compare with other eco-warriors</p>
+        </div>
+        
+        <div class="community-stats-ultra" data-aos="fade-up" data-aos-delay="200">
+            <div class="community-card personal-rank">
+                <div class="rank-badge">#8</div>
+                <h3>Your Ranking</h3>
+                <p>Top 15% of recyclers this month</p>
+                <div class="improvement-tip">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Recycle 5kg more to reach top 10%</span>
+                </div>
+            </div>
+            
+            <div class="community-card global-stats">
+                <h3>Global Community</h3>
+                <div class="global-metrics">
+                    <div class="metric">
+                        <span class="metric-value">12,547</span>
+                        <span class="metric-label">Active Users</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">258.9</span>
+                        <span class="metric-label">Tons Recycled</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">2,580</span>
+                        <span class="metric-label">Trees Saved</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="leaderboard-ultra" data-aos="fade-up" data-aos-delay="300">
+            <h3>🏆 Monthly Leaderboard</h3>
+            <div class="leaderboard-list">
+                <div class="leaderboard-item-ultra rank-1" data-aos="slide-right" data-aos-delay="400">
+                    <div class="rank-icon">🥇</div>
+                    <div class="user-avatar">
+                        <div class="avatar-icon">EC</div>
+                    </div>
+                    <div class="user-details">
+                        <h4>EcoChampion2025</h4>
+                        <span>156 points this month</span>
+                    </div>
+                    <div class="user-points">
+                        <span class="points-value">4,245</span>
+                        <span class="points-label">points</span>
+                    </div>
+                </div>
+                
+                <div class="leaderboard-item-ultra rank-2" data-aos="slide-right" data-aos-delay="500">
+                    <div class="rank-icon">🥈</div>
+                    <div class="user-avatar">
+                        <div class="avatar-icon">GH</div>
+                    </div>
+                    <div class="user-details">
+                        <h4>GreenHero</h4>
+                        <span>142 points this month</span>
+                    </div>
+                    <div class="user-points">
+                        <span class="points-value">4,180</span>
+                        <span class="points-label">points</span>
+                    </div>
+                </div>
+                
+                <div class="leaderboard-item-ultra rank-3" data-aos="slide-right" data-aos-delay="600">
+                    <div class="rank-icon">🥉</div>
+                    <div class="user-avatar">
+                        <div class="avatar-icon">RR</div>
+                    </div>
+                    <div class="user-details">
+                        <h4>RecycleRanger</h4>
+                        <span>128 points this month</span>
+                    </div>
+                    <div class="user-points">
+                        <span class="points-value">4,095</span>
+                        <span class="points-label">points</span>
+                    </div>
+                </div>
+                
+                <div class="leaderboard-item-ultra current-user" data-aos="slide-left" data-aos-delay="700">
+                    <div class="rank-icon">#8</div>
+                    <div class="user-avatar">
+                        <div class="avatar-icon current">EW</div>
+                    </div>
+                    <div class="user-details">
+                        <h4>You (EcoWarrior)</h4>
+                        <span>85 points this month</span>
+                    </div>
+                    <div class="user-points">
+                        <span class="points-value">3,850</span>
+                        <span class="points-label">points</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section-ultra">
+    <div class="container-ultra">
+        <div class="cta-content-ultra" data-aos="zoom-in">
+            <div class="cta-animation">
+                <div class="floating-elements">
+                    <div class="element element-1">🌱</div>
+                    <div class="element element-2">♻️</div>
+                    <div class="element element-3">🌍</div>
+                    <div class="element element-4">🏆</div>
+                </div>
+            </div>
+            <h2>🚀 Keep Making an Impact!</h2>
+            <p>Your efforts are creating real change in our world. Let's continue this journey together and make an even bigger difference!</p>
+            <div class="cta-buttons-ultra">
+                <a href="{{ url_for('request_pickup') }}" class="btn-ultra btn-primary-ultra" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fas fa-truck"></i>
+                    <span>Schedule Pickup</span>
+                </a>
+                <a href="{{ url_for('rewards') }}" class="btn-ultra btn-secondary-ultra" data-aos="fade-up" data-aos-delay="300">
+                    <i class="fas fa-gift"></i>
+                    <span>Redeem Rewards</span>
+                </a>
+                <button onclick="downloadImpactReport()" class="btn-ultra btn-accent-ultra" data-aos="fade-up" data-aos-delay="400">
+                    <i class="fas fa-download"></i>
+                    <span>Download Report</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Detail Modals -->
+<div id="detailModal" class="modal-ultra" onclick="closeDetailModal()">
+    <div class="modal-content-ultra" onclick="event.stopPropagation()">
+        <div class="modal-header-ultra">
+            <h3 id="modalTitle">Impact Details</h3>
+            <button class="modal-close-ultra" onclick="closeDetailModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body-ultra" id="modalBody">
+            <!-- Content will be populated dynamically -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Enhanced Track Impact Page Functions
+
+// Back to home navigation with smooth animation
+function goHome() {
+    // Add exit animation
+    document.body.style.animation = 'fadeOut 0.3s ease';
+    setTimeout(() => {
+        window.location.href = "{{ url_for('home') }}";
+    }, 300);
+}
+
+// Animate numbers with easing
+function animateNumber(element, start, end, duration = 2000) {
+    if (!element) return;
+    
+    const startTime = performance.now();
+    const change = end - start;
+    
+    function updateNumber(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function for smooth animation
+        const easedProgress = progress < 0.5 
+            ? 2 * progress * progress 
+            : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+        
+        const current = Math.floor(start + (change * easedProgress));
+        element.textContent = current;
+        
+        if (progress < 1) {
+            requestAnimationFrame(updateNumber);
+        }
+    }
+    
+    requestAnimationFrame(updateNumber);
+}
+
+// Update all stats with realistic data
+function updateAllStats() {
+    // Get all stat elements
+    const stats = {
+        totalWaste: document.getElementById('total-waste'),
+        pointsEarned: document.getElementById('points-earned'),
+        treesSaved: document.getElementById('trees-saved'),
+        waterSaved: document.getElementById('water-saved'),
+        co2Reduced: document.getElementById('co2-reduced'),
+        waterConserved: document.getElementById('water-conserved'),
+        treesProtected: document.getElementById('trees-protected'),
+        energySaved: document.getElementById('energy-saved')
+    };
+    
+    // Realistic values based on user activity
+    const data = {
+        waste: 1247,
+        points: 3850,
+        trees: 23,
+        water: 18420,
+        co2: 842,
+        energy: 1245
+    };
+    
+    // Animate main dashboard stats
+    setTimeout(() => {
+        if (stats.totalWaste) animateNumber(stats.totalWaste, 0, data.waste, 2500);
+        if (stats.pointsEarned) animateNumber(stats.pointsEarned, 0, data.points, 2500);
+        if (stats.treesSaved) animateNumber(stats.treesSaved, 0, data.trees, 2500);
+        if (stats.waterSaved) animateNumber(stats.waterSaved, 0, data.water, 2500);
+    }, 500);
+    
+    // Animate impact breakdown
+    setTimeout(() => {
+        if (stats.co2Reduced) animateNumber(stats.co2Reduced, 0, data.co2, 2000);
+        if (stats.waterConserved) animateNumber(stats.waterConserved, 0, data.water, 2000);
+        if (stats.treesProtected) animateNumber(stats.treesProtected, 0, data.trees, 2000);
+        if (stats.energySaved) animateNumber(stats.energySaved, 0, data.energy, 2000);
+        
+        // Update equivalents
+        setTimeout(() => {
+            updateEquivalents(data);
+        }, 1000);
+    }, 1500);
+}
+
+// Update equivalent values
+function updateEquivalents(data) {
+    const equivalents = {
+        driving: document.getElementById('driving-equivalent'),
+        shower: document.getElementById('shower-equivalent'),
+        forest: document.getElementById('forest-area'),
+        power: document.getElementById('power-equivalent')
+    };
+    
+    if (equivalents.driving) equivalents.driving.textContent = Math.floor(data.co2 * 4.2);
+    if (equivalents.shower) equivalents.shower.textContent = Math.floor(data.water / 75);
+    if (equivalents.forest) equivalents.forest.textContent = Math.floor(data.trees * 100);
+    if (equivalents.power) equivalents.power.textContent = Math.floor(data.energy * 0.036);
+}
+
+// Show detail modal for stats
+function showDetailModal(type) {
+    const modal = document.getElementById('detailModal');
+    const title = document.getElementById('modalTitle');
+    const body = document.getElementById('modalBody');
+    
+    const modalData = {
+        waste: {
+            title: '♻️ Waste Recycled Details',
+            content: `
+                <div class="modal-stats">
+                    <div class="modal-stat">
+                        <h4>Total Recycled</h4>
+                        <p>1,247 kg of various materials</p>
+                    </div>
+                    <div class="modal-breakdown">
+                        <div class="breakdown-item">
+                            <span>Plastic Bottles</span>
+                            <span>456 kg (37%)</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Paper & Cardboard</span>
+                            <span>398 kg (32%)</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Glass</span>
+                            <span>234 kg (19%)</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Metal</span>
+                            <span>89 kg (7%)</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>E-Waste</span>
+                            <span>70 kg (5%)</span>
+                        </div>
+                    </div>
+                </div>
+            `
+        },
+        points: {
+            title: '🪙 Green Points Details',
+            content: `
+                <div class="modal-stats">
+                    <div class="modal-stat">
+                        <h4>Total Points Earned</h4>
+                        <p>3,850 points from recycling activities</p>
+                    </div>
+                    <div class="points-breakdown">
+                        <div class="breakdown-item">
+                            <span>Recycling Bonus</span>
+                            <span>+2,450 pts</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Consistency Bonus</span>
+                            <span>+680 pts</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Achievement Bonus</span>
+                            <span>+420 pts</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Referral Bonus</span>
+                            <span>+300 pts</span>
+                        </div>
+                    </div>
+                    <div class="points-value">
+                        <p><strong>Current Value:</strong> ₹1,925 in rewards</p>
+                    </div>
+                </div>
+            `
+        },
+        trees: {
+            title: '🌳 Trees Saved Details',
+            content: `
+                <div class="modal-stats">
+                    <div class="modal-stat">
+                        <h4>Equivalent Trees Saved</h4>
+                        <p>23 trees worth of resources preserved</p>
+                    </div>
+                    <div class="tree-impact">
+                        <div class="impact-item">
+                            <i class="fas fa-leaf"></i>
+                            <span>2,300 m² of forest area protected</span>
+                        </div>
+                        <div class="impact-item">
+                            <i class="fas fa-wind"></i>
+                            <span>842 kg CO₂ absorbed annually</span>
+                        </div>
+                        <div class="impact-item">
+                            <i class="fas fa-tint"></i>
+                            <span>18,420 L water conserved</span>
+                        </div>
+                        <div class="impact-item">
+                            <i class="fas fa-home"></i>
+                            <span>Habitat for 150+ animals protected</span>
+                        </div>
+                    </div>
+                </div>
+            `
+        },
+        water: {
+            title: '💧 Water Saved Details',
+            content: `
+                <div class="modal-stats">
+                    <div class="modal-stat">
+                        <h4>Total Water Conserved</h4>
+                        <p>18,420 liters saved through recycling</p>
+                    </div>
+                    <div class="water-equivalents">
+                        <div class="equiv-item">
+                            <i class="fas fa-shower"></i>
+                            <span>245 average showers</span>
+                        </div>
+                        <div class="equiv-item">
+                            <i class="fas fa-glass-water"></i>
+                            <span>24,560 glasses of drinking water</span>
+                        </div>
+                        <div class="equiv-item">
+                            <i class="fas fa-swimming-pool"></i>
+                            <span>0.3 swimming pools</span>
+                        </div>
+                        <div class="equiv-item">
+                            <i class="fas fa-home"></i>
+                            <span>2.1 days of household water usage</span>
+                        </div>
+                    </div>
+                </div>
+            `
+        }
+    };
+    
+    if (modalData[type]) {
+        title.textContent = modalData[type].title;
+        body.innerHTML = modalData[type].content;
+        modal.style.display = 'flex';
+        
+        // Add animation
+        setTimeout(() => {
+            modal.querySelector('.modal-content-ultra').style.transform = 'scale(1)';
+            modal.querySelector('.modal-content-ultra').style.opacity = '1';
+        }, 10);
+    }
+}
+
+// Close detail modal
+function closeDetailModal() {
+    const modal = document.getElementById('detailModal');
+    const content = modal.querySelector('.modal-content-ultra');
+    
+    content.style.transform = 'scale(0.9)';
+    content.style.opacity = '0';
+    
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 300);
+}
+
+// Download impact report
+function downloadImpactReport() {
+    showCelebration('📊 Generating your personalized impact report...');
+    
+    // Simulate report generation
+    setTimeout(() => {
+        showMessage('📄 Impact report downloaded successfully!', 'success');
+        
+        // In a real app, this would generate and download a PDF
+        const reportData = {
+            period: 'January 2025',
+            wasteRecycled: '1,247 kg',
+            pointsEarned: '3,850 points',
+            co2Saved: '842 kg',
+            treesEquivalent: '23 trees',
+            waterSaved: '18,420 L',
+            achievements: ['Green Starter', 'Recycling Pro', 'Eco Warrior'],
+            ranking: '#8 out of 12,547 users'
+        };
+        
+        console.log('Impact Report Generated:', reportData);
+    }, 2000);
+}
+
+// Celebration effects for achievements
+function showCelebration(message) {
+    const celebration = document.createElement('div');
+    celebration.className = 'celebration-overlay';
+    celebration.innerHTML = `
+        <div class="celebration-content">
+            <div class="celebration-icon">🎉</div>
+            <h3>${message}</h3>
+            <div class="celebration-particles">
+                ${'<div class="particle"></div>'.repeat(20)}
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(celebration);
+    
+    setTimeout(() => {
+        celebration.remove();
+    }, 3000);
+}
+
+// Animate progress rings
+function animateProgressRings() {
+    const rings = document.querySelectorAll('.progress-ring-progress');
+    rings.forEach((ring, index) => {
+        const circumference = 2 * Math.PI * 25; // radius = 25
+        const offset = circumference - (circumference * (0.3 + index * 0.2)); // Different progress for each
+        
+        ring.style.strokeDasharray = circumference;
+        ring.style.strokeDashoffset = circumference;
+        
+        setTimeout(() => {
+            ring.style.transition = 'stroke-dashoffset 2s ease-in-out';
+            ring.style.strokeDashoffset = offset;
+        }, 2000 + index * 200);
+    });
+}
+
+// Initialize page animations and interactions
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize AOS
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+    }
+    
+    // Start stat animations
+    updateAllStats();
+    
+    // Animate progress rings
+    setTimeout(() => {
+        animateProgressRings();
+    }, 3000);
+    
+    // Animate badge progress bars
+    setTimeout(() => {
+        const progressBars = document.querySelectorAll('.badge-progress .progress-fill');
+        progressBars.forEach((bar, index) => {
+            const width = bar.style.width;
+            bar.style.width = '0%';
+            setTimeout(() => {
+                bar.style.transition = 'width 1.5s ease-out';
+                bar.style.width = width;
+            }, index * 200);
+        });
+    }, 4000);
+    
+    // Add hover effects to stat cards
+    const statCards = document.querySelectorAll('.stat-card-ultra');
+    statCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+    
+    // Add click effects to impact cards
+    const impactCards = document.querySelectorAll('.impact-card-ultra');
+    impactCards.forEach(card => {
+        card.addEventListener('click', function() {
+            this.style.animation = 'pulse 0.6s ease';
+            setTimeout(() => {
+                this.style.animation = '';
+            }, 600);
+        });
+    });
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeDetailModal();
+        }
+        if (e.key === 'h' && e.ctrlKey) {
+            e.preventDefault();
+            goHome();
+        }
+    });
+});
+
+// Add custom styles for modals and celebrations
+const customStyles = document.createElement('style');
+customStyles.textContent = `
+    .modal-ultra {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(5px);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .modal-content-ultra {
+        background: white;
+        border-radius: 20px;
+        max-width: 600px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+        transform: scale(0.9);
+        opacity: 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    
+    .modal-header-ultra {
+        padding: 2rem 2rem 1rem;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .modal-header-ultra h3 {
+        margin: 0;
+        color: #2E7D32;
+        font-size: 1.5rem;
+    }
+    
+    .modal-close-ultra {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: #666;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+    
+    .modal-close-ultra:hover {
+        background: #f5f5f5;
+        color: #333;
+    }
+    
+    .modal-body-ultra {
+        padding: 2rem;
+    }
+    
+    .modal-stats .modal-stat {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .modal-stat h4 {
+        color: #2E7D32;
+        margin-bottom: 0.5rem;
+    }
+    
+    .modal-breakdown, .points-breakdown {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 1.5rem;
+    }
+    
+    .breakdown-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .breakdown-item:last-child {
+        border-bottom: none;
+    }
+    
+    .breakdown-item span:first-child {
+        color: #666;
+    }
+    
+    .breakdown-item span:last-child {
+        font-weight: bold;
+        color: #2E7D32;
+    }
+    
+    .celebration-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(46, 125, 50, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        animation: celebrationFadeIn 0.5s ease;
+    }
+    
+    .celebration-content {
+        text-align: center;
+        color: white;
+        position: relative;
+    }
+    
+    .celebration-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        animation: celebrationBounce 1s infinite;
+    }
+    
+    .celebration-content h3 {
+        color: white;
+        margin: 0;
+        font-size: 1.5rem;
+    }
+    
+    .celebration-particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+    
+    .particle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: #FFD700;
+        border-radius: 50%;
+        animation: particleFloat 3s ease-out forwards;
+    }
+    
+    .particle:nth-child(even) {
+        background: #FFF;
+    }
+    
+    @keyframes celebrationFadeIn {
+        from { opacity: 0; transform: scale(0.8); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    
+    @keyframes celebrationBounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-20px); }
+        60% { transform: translateY(-10px); }
+    }
+    
+    @keyframes particleFloat {
+        0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-200px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+    
+    .impact-item, .equiv-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 0;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .impact-item:last-child, .equiv-item:last-child {
+        border-bottom: none;
+    }
+    
+    .impact-item i, .equiv-item i {
+        color: #4CAF50;
+        font-size: 1.2rem;
+    }
+    
+    .points-value {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: linear-gradient(135deg, #4CAF50, #2E7D32);
+        color: white;
+        border-radius: 10px;
+        text-align: center;
+    }
+`;
+
+document.head.appendChild(customStyles);
+</script>
+{% endblock %}
