@@ -9,7 +9,6 @@ import sqlite3
 from datetime import datetime
 import os
 import hashlib
-import re
 
 app = Flask(__name__)
 app.secret_key = 'smartrecycle_secret_key_2025'
@@ -52,8 +51,8 @@ def get_user_by_email(email):
     finally:
         connection.close()
 
+# Database setup
 def init_db():
-    """Initialize database tables"""
     connection = get_db_connection()
     if not connection:
         print("Failed to connect to SQLite database!")
@@ -211,7 +210,6 @@ WASTE_CATEGORIES = {
     }
 }
 
-# Route definitions
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -335,6 +333,7 @@ def about():
 def contact():
     return render_template('contact.html')
 
+# Enhanced contact form with better data capture
 @app.route('/submit-contact', methods=['POST'])
 def submit_contact():
     data = request.json
@@ -352,6 +351,7 @@ def submit_contact():
         return jsonify({'success': False, 'message': 'Please fill in all required fields'})
     
     # Email validation
+    import re
     email_pattern = r'^[^\s@]+@[^\s@]+\.[^\s@]+$'
     if not re.match(email_pattern, email):
         return jsonify({'success': False, 'message': 'Please enter a valid email address'})
@@ -468,6 +468,7 @@ def auth_register():
         return jsonify({'success': False, 'message': 'Password must be at least 6 characters'})
     
     # Email validation
+    import re
     email_pattern = r'^[^\s@]+@[^\s@]+\.[^\s@]+$'
     if not re.match(email_pattern, email):
         return jsonify({'success': False, 'message': 'Please enter a valid email address'})
