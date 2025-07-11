@@ -407,18 +407,18 @@ def get_user_stats():
         cursor = connection.cursor()
         
         # Get user info
-        cursor.execute('SELECT name, points, total_waste_submitted FROM users WHERE id = ?', (user_id,))
+        cursor.execute('SELECT name, points, total_waste_submitted FROM users WHERE id = %s', (user_id,))
         user = cursor.fetchone()
         
         # Get pickup requests count
-        cursor.execute('SELECT COUNT(*) FROM pickup_requests WHERE user_id = ?', (user_id,))
+        cursor.execute('SELECT COUNT(*) FROM pickup_requests WHERE user_id = %s', (user_id,))
         pickup_count = cursor.fetchone()[0]
         
         # Get recent pickups
         cursor.execute('''
             SELECT waste_type, quantity, created_at, status 
             FROM pickup_requests 
-            WHERE user_id = ? 
+            WHERE user_id = %s 
             ORDER BY created_at DESC 
             LIMIT 5
         ''', (user_id,))
@@ -581,9 +581,9 @@ def login_required(f):
 
 if __name__ == '__main__':
     # Initialize database on first run
-    print("Initializing SmartRecycle with SQLite database...")
+    print("Initializing SmartRecycle with MySQL database...")
     init_db()
     
     # Run the Flask application
     print("Starting SmartRecycle server...")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5001)

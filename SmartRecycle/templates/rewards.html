@@ -1,53 +1,408 @@
-{% extends "base.html" %}
+{% extends "base-ultra.html" %}
 
-{% block title %}Rewards - SmartRecycle{% endblock %}
+{% block title %}Rewards - SmartRecycle | Green Points Marketplace{% endblock %}
+
+{% block extra_css %}
+<style>
+    .rewards-hero {
+        background: linear-gradient(135deg, rgba(255, 193, 7, 0.9), rgba(255, 152, 0, 0.8)), url('https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+        background-size: cover;
+        background-position: center;
+        padding: 6rem 0;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .rewards-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(255, 193, 7, 0.3), rgba(255, 152, 0, 0.3));
+        animation: shimmer 3s ease-in-out infinite;
+    }
+    
+    @keyframes shimmer {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.6; }
+    }
+    
+    .points-display {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(15px);
+        border-radius: 25px;
+        padding: 2rem;
+        margin: 2rem auto;
+        max-width: 400px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    
+    .points-number {
+        font-size: 3rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #fff, #ffecb3);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin: 0.5rem 0;
+    }
+    
+    .rewards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2rem;
+        margin: 3rem 0;
+    }
+    
+    .reward-card {
+        background: white;
+        border-radius: 25px;
+        padding: 2.5rem;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s ease;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .reward-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    }
+    
+    .reward-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        border-color: var(--primary-color);
+    }
+    
+    .reward-icon {
+        font-size: 4rem;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        display: block;
+    }
+    
+    .reward-price {
+        color: var(--primary-color);
+        font-size: 1.8rem;
+        font-weight: 800;
+        margin: 1rem 0;
+        text-align: center;
+    }
+    
+    .reward-points {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 0.8rem 1.5rem;
+        border-radius: 20px;
+        text-align: center;
+        font-weight: 600;
+        margin: 1.5rem 0;
+        font-size: 1.1rem;
+    }
+    
+    .reward-button {
+        width: 100%;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border: none;
+        padding: 1rem 1.5rem;
+        border-radius: 20px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .reward-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(76, 175, 80, 0.3);
+    }
+    
+    .reward-button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .rewards-categories {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin: 3rem 0;
+        flex-wrap: wrap;
+    }
+    
+    .category-tab {
+        background: white;
+        border: 2px solid var(--primary-color);
+        color: var(--primary-color);
+        padding: 1rem 2rem;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+    }
+    
+    .category-tab.active,
+    .category-tab:hover {
+        background: var(--primary-color);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+    }
+    
+    .achievement-badge {
+        background: linear-gradient(135deg, #ffecb3, #fff9c4);
+        border: 2px solid #ffc107;
+        border-radius: 20px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        text-align: center;
+        color: #f57f17;
+        font-weight: 600;
+    }
+    
+    .level-progress {
+        background: #f0f0f0;
+        border-radius: 20px;
+        height: 20px;
+        margin: 1rem 0;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .level-progress-bar {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        height: 100%;
+        border-radius: 20px;
+        transition: width 1s ease;
+        position: relative;
+    }
+    
+    .level-progress-bar::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        animation: shine 2s infinite;
+    }
+    
+    @keyframes shine {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+    
+    .premium-rewards {
+        background: linear-gradient(135deg, rgba(156, 39, 176, 0.1), rgba(233, 30, 99, 0.1));
+        padding: 3rem 0;
+        margin: 4rem 0;
+        border-radius: 30px;
+        border: 2px solid #9c27b0;
+    }
+    
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+    }
+    
+    .modal-content {
+        background: white;
+        padding: 3rem;
+        border-radius: 25px;
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        text-align: center;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero">
-    <div class="hero-content">
-        <h1>🎁 Rewards & Recognition</h1>
-        <p>Redeem your green points for amazing rewards and certificates</p>
-        <div style="background: rgba(255,255,255,0.9); padding: 1rem; border-radius: 10px; margin-top: 1rem; display: inline-block;">
-            <span style="color: #4CAF50; font-size: 1.5rem; font-weight: bold;">
-                <i class="fas fa-coins"></i> Your Points: <span id="user-points">150</span>
-            </span>
+<!-- Ultra-Premium Hero Section -->
+<section class="rewards-hero">
+    <div class="container">
+        <div class="hero-content text-center">
+            <div class="hero-badge">
+                <span>💎 Green Points Marketplace</span>
+            </div>
+            <h1 class="hero-title">
+                <span class="gradient-text">Rewards & Recognition</span>
+                <br>
+                <span class="subtitle">Turn Green Actions into Real Rewards</span>
+            </h1>
+            <p class="hero-description">
+                Redeem your eco-points for amazing rewards, discounts, and exclusive offers. 
+                Every sustainable action gets rewarded!
+            </p>
+            
+            <div class="points-display">
+                <div>
+                    <i class="fas fa-coins" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                </div>
+                <div class="points-number" id="user-points">2,450</div>
+                <p style="margin: 0; font-size: 1.2rem; font-weight: 500;">Available Green Points</p>
+                <div class="level-progress">
+                    <div class="level-progress-bar" style="width: 75%"></div>
+                </div>
+                <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">Level 7 Eco Warrior • 550 points to next level</p>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- Available Rewards -->
+<!-- Rewards Categories -->
 <section class="container">
-    <div class="section">
-        <h2>🏆 Available Rewards</h2>
-        <div class="rewards-grid">
-            <!-- Discount Rewards -->
-            <div class="reward-card">
-                <div class="reward-icon">🛒</div>
-                <h3>Amazon Voucher</h3>
-                <p>₹100 Amazon gift voucher for your sustainable shopping</p>
-                <div class="reward-points">100 Points</div>
-                <button onclick="redeemReward('amazon_voucher', 100)" class="reward-button">
-                    <i class="fas fa-gift"></i> Redeem Now
-                </button>
-            </div>
-            
-            <div class="reward-card">
-                <div class="reward-icon">🍕</div>
-                <h3>Food Delivery Discount</h3>
-                <p>20% off on your next Zomato or Swiggy order</p>
-                <div class="reward-points">75 Points</div>
-                <button onclick="redeemReward('food_discount', 75)" class="reward-button">
-                    <i class="fas fa-gift"></i> Redeem Now
-                </button>
-            </div>
-            
-            <div class="reward-card">
-                <div class="reward-icon">📱</div>
-                <h3>Mobile Recharge</h3>
-                <p>₹50 mobile recharge voucher for any network</p>
-                <div class="reward-points">50 Points</div>
-                <button onclick="redeemReward('mobile_recharge', 50)" class="reward-button">
+    <div class="rewards-categories">
+        <div class="category-tab active" onclick="filterRewards('all')">
+            🏆 All Rewards
+        </div>
+        <div class="category-tab" onclick="filterRewards('vouchers')">
+            🛒 Shopping Vouchers
+        </div>
+        <div class="category-tab" onclick="filterRewards('food')">
+            🍕 Food & Dining
+        </div>
+        <div class="category-tab" onclick="filterRewards('digital')">
+            📱 Digital Services
+        </div>
+        <div class="category-tab" onclick="filterRewards('premium')">
+            💎 Premium Rewards
+        </div>
+    </div>
+</section>
+
+<!-- Rewards Grid -->
+<section class="container">
+    <div class="rewards-grid" id="rewards-container">
+        <!-- Shopping Vouchers -->
+        <div class="reward-card" data-category="vouchers">
+            <span class="reward-icon">🛒</span>
+            <h3>Amazon Voucher</h3>
+            <p>Shop for eco-friendly products with this Amazon gift voucher</p>
+            <div class="reward-price">₹500</div>
+            <div class="reward-points">400 Green Points</div>
+            <button onclick="redeemReward('amazon_500', 400)" class="reward-button">
+                <i class="fas fa-gift"></i> Redeem Now
+            </button>
+        </div>
+        
+        <div class="reward-card" data-category="vouchers">
+            <span class="reward-icon">🛍️</span>
+            <h3>Flipkart Voucher</h3>
+            <p>Get the latest gadgets and products with this Flipkart voucher</p>
+            <div class="reward-price">₹1,000</div>
+            <div class="reward-points">800 Green Points</div>
+            <button onclick="redeemReward('flipkart_1000', 800)" class="reward-button">
+                <i class="fas fa-gift"></i> Redeem Now
+            </button>
+        </div>
+        
+        <div class="reward-card" data-category="vouchers">
+            <span class="reward-icon">👕</span>
+            <h3>Myntra Fashion Voucher</h3>
+            <p>Upgrade your wardrobe with sustainable fashion choices</p>
+            <div class="reward-price">₹750</div>
+            <div class="reward-points">600 Green Points</div>
+            <button onclick="redeemReward('myntra_750', 600)" class="reward-button">
+                <i class="fas fa-gift"></i> Redeem Now
+            </button>
+        </div>
+
+        <!-- Food & Dining -->
+        <div class="reward-card" data-category="food">
+            <span class="reward-icon">🍕</span>
+            <h3>Zomato Voucher</h3>
+            <p>Enjoy delicious meals from your favorite restaurants</p>
+            <div class="reward-price">₹300</div>
+            <div class="reward-points">250 Green Points</div>
+            <button onclick="redeemReward('zomato_300', 250)" class="reward-button">
+                <i class="fas fa-gift"></i> Redeem Now
+            </button>
+        </div>
+        
+        <div class="reward-card" data-category="food">
+            <span class="reward-icon">☕</span>
+            <h3>Cafe Coffee Day Voucher</h3>
+            <p>Relax with premium coffee and snacks at CCD</p>
+            <div class="reward-price">₹200</div>
+            <div class="reward-points">150 Green Points</div>
+            <button onclick="redeemReward('ccd_200', 150)" class="reward-button">
+                <i class="fas fa-gift"></i> Redeem Now
+            </button>
+        </div>
+        
+        <div class="reward-card" data-category="food">
+            <span class="reward-icon">🍔</span>
+            <h3>Swiggy Voucher</h3>
+            <p>Order your favorite food with free delivery</p>
+            <div class="reward-price">₹400</div>
+            <div class="reward-points">320 Green Points</div>
+            <button onclick="redeemReward('swiggy_400', 320)" class="reward-button">
+                <i class="fas fa-gift"></i> Redeem Now
+            </button>
+        </div>
+
+        <!-- Digital Services -->
+        <div class="reward-card" data-category="digital">
+            <span class="reward-icon">📱</span>
+            <h3>Mobile Recharge</h3>
+            <p>Instant mobile recharge for any network operator in India</p>
+            <div class="reward-price">₹100</div>
+            <div class="reward-points">80 Green Points</div>
+            <button onclick="redeemReward('mobile_100', 80)" class="reward-button">
+                <i class="fas fa-gift"></i> Redeem Now
+            </button>
+        </div>
+        
+        <div class="reward-card" data-category="digital">
+            <span class="reward-icon">🎬</span>
+            <h3>Netflix Premium</h3>
+            <p>Enjoy 1 month of Netflix premium subscription</p>
+            <div class="reward-price">₹649</div>
+            <div class="reward-points">500 Green Points</div>
+            <button onclick="redeemReward('netflix_649', 500)" class="reward-button">
+                <i class="fas fa-gift"></i> Redeem Now
+            </button>
+        </div>
+        
+        <div class="reward-card" data-category="digital">
+            <span class="reward-icon">🎵</span>
+            <h3>Spotify Premium</h3>
+            <p>3 months of ad-free music streaming with Spotify Premium</p>
+            <div class="reward-price">₹399</div>
+            <div class="reward-points">300 Green Points</div>
+            <button onclick="redeemReward('spotify_399', 300)" class="reward-button">
+                <i class="fas fa-gift"></i> Redeem Now
+            </button>
+        </div>
+    </div>
+</section>
                     <i class="fas fa-gift"></i> Redeem Now
                 </button>
             </div>
@@ -138,172 +493,145 @@
     </div>
 </section>
 
-<!-- Points Earning Guide -->
-<section class="container">
-    <div class="section" style="background: linear-gradient(135deg, #E8F5E8, #F1F8E9); padding: 3rem; border-radius: 20px;">
-        <h2>💡 How to Earn More Points</h2>
-        <div class="earning-guide">
-            <div class="earning-item">
-                <div class="earning-icon">♻️</div>
-                <div class="earning-content">
-                    <h4>Submit Recyclables</h4>
-                    <p>Earn 2 points per kg of waste submitted for recycling</p>
-                    <span class="earning-rate">2 pts/kg</span>
-                </div>
+<!-- Premium Rewards Section -->
+<section class="premium-rewards">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2 class="section-title">💎 Premium Eco Rewards</h2>
+            <p class="section-subtitle">Exclusive rewards for our top eco-warriors</p>
+        </div>
+        
+        <div class="rewards-grid">
+            <div class="reward-card" data-category="premium">
+                <span class="reward-icon">🌱</span>
+                <h3>Eco-Friendly Product Kit</h3>
+                <p>Complete sustainable living kit with bamboo products, reusable items, and organic essentials</p>
+                <div class="reward-price">₹2,500</div>
+                <div class="reward-points">2,000 Green Points</div>
+                <button onclick="redeemReward('eco_kit_2500', 2000)" class="reward-button">
+                    <i class="fas fa-gift"></i> Redeem Now
+                </button>
             </div>
             
-            <div class="earning-item">
-                <div class="earning-icon">🚛</div>
-                <div class="earning-content">
-                    <h4>Request Pickup</h4>
-                    <p>Get bonus points for every successful pickup request</p>
-                    <span class="earning-rate">10 pts/pickup</span>
-                </div>
+            <div class="reward-card" data-category="premium">
+                <span class="reward-icon">🚗</span>
+                <h3>Uber Green Ride Credits</h3>
+                <p>₹1,000 worth of credits for eco-friendly Uber rides in your city</p>
+                <div class="reward-price">₹1,000</div>
+                <div class="reward-points">1,200 Green Points</div>
+                <button onclick="redeemReward('uber_green_1000', 1200)" class="reward-button">
+                    <i class="fas fa-gift"></i> Redeem Now
+                </button>
             </div>
             
-            <div class="earning-item">
-                <div class="earning-icon">🔋</div>
-                <div class="earning-content">
-                    <h4>E-Waste Collection</h4>
-                    <p>Extra points for proper disposal of electronic waste</p>
-                    <span class="earning-rate">15 pts/item</span>
-                </div>
-            </div>
-            
-            <div class="earning-item">
-                <div class="earning-icon">📱</div>
-                <div class="earning-content">
-                    <h4>App Engagement</h4>
-                    <p>Daily login and using waste guide features</p>
-                    <span class="earning-rate">5 pts/day</span>
-                </div>
-            </div>
-            
-            <div class="earning-item">
-                <div class="earning-icon">👥</div>
-                <div class="earning-content">
-                    <h4>Refer Friends</h4>
-                    <p>Invite friends to join SmartRecycle platform</p>
-                    <span class="earning-rate">25 pts/referral</span>
-                </div>
-            </div>
-            
-            <div class="earning-item">
-                <div class="earning-icon">🏆</div>
-                <div class="earning-content">
-                    <h4>Achievements</h4>
-                    <p>Unlock badges and complete sustainability challenges</p>
-                    <span class="earning-rate">50+ pts/badge</span>
-                </div>
+            <div class="reward-card" data-category="premium">
+                <span class="reward-icon">🏆</span>
+                <h3>Eco Warrior Certificate</h3>
+                <p>Official digital certificate recognizing your contribution to environmental sustainability</p>
+                <div class="reward-price">FREE</div>
+                <div class="reward-points">1,000 Green Points</div>
+                <button onclick="redeemReward('eco_certificate', 1000)" class="reward-button">
+                    <i class="fas fa-gift"></i> Redeem Now
+                </button>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Redemption History -->
+<!-- Achievement Badges -->
 <section class="container">
     <div class="section">
-        <h2>📋 Recent Redemptions</h2>
-        <div class="redemption-history">
-            <div class="history-item">
-                <div class="history-icon">🌳</div>
-                <div class="history-content">
-                    <h4>Tree Plantation</h4>
-                    <p>Funded planting of 1 tree in Rajasthan</p>
-                    <span class="history-date">5 days ago</span>
-                </div>
-                <div class="history-points">-80 pts</div>
+        <div class="section-header text-center">
+            <h2 class="section-title">🏅 Your Achievements</h2>
+            <p class="section-subtitle">Unlock badges as you progress in your eco journey</p>
+        </div>
+        
+        <div class="achievement-badges">
+            <div class="achievement-badge">
+                <h4>🌱 Eco Beginner</h4>
+                <p>Completed your first recycling action • <strong>Unlocked</strong></p>
             </div>
             
-            <div class="history-item">
-                <div class="history-icon">🏅</div>
-                <div class="history-content">
-                    <h4>Eco Warrior Certificate</h4>
-                    <p>Downloaded environmental contribution certificate</p>
-                    <span class="history-date">2 weeks ago</span>
-                </div>
-                <div class="history-points">-30 pts</div>
+            <div class="achievement-badge">
+                <h4>♻️ Recycling Hero</h4>
+                <p>Recycled 10 different types of waste • <strong>Unlocked</strong></p>
             </div>
             
-            <div class="history-item">
-                <div class="history-icon">📱</div>
-                <div class="history-content">
-                    <h4>Mobile Recharge</h4>
-                    <p>₹50 recharge voucher redeemed</p>
-                    <span class="history-date">3 weeks ago</span>
-                </div>
-                <div class="history-points">-50 pts</div>
+            <div class="achievement-badge">
+                <h4>🚛 Pickup Master</h4>
+                <p>Scheduled 5 successful pickups • <strong>Unlocked</strong></p>
+            </div>
+            
+            <div class="achievement-badge" style="opacity: 0.5;">
+                <h4>🌍 Planet Protector</h4>
+                <p>Save 100kg of CO₂ • <strong>In Progress (75/100)</strong></p>
+            </div>
+            
+            <div class="achievement-badge" style="opacity: 0.5;">
+                <h4>🏆 Eco Champion</h4>
+                <p>Reach 5,000 green points • <strong>Locked (2,450/5,000)</strong></p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Tier System -->
+<!-- Referral Program -->
 <section class="container">
-    <div class="section">
-        <h2>⭐ Membership Tiers</h2>
-        <div class="tier-system">
-            <div class="tier-card bronze active">
-                <div class="tier-icon">🥉</div>
-                <h3>Bronze Member</h3>
-                <p class="tier-range">0 - 500 points</p>
-                <ul class="tier-benefits">
-                    <li>Standard reward redemption</li>
-                    <li>Basic certificates</li>
-                    <li>Community access</li>
-                </ul>
-                <div class="tier-status">Current Tier</div>
+    <div class="section bg-gradient" style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1)); padding: 3rem; border-radius: 30px;">
+        <div class="text-center">
+            <h2>👥 Refer & Earn</h2>
+            <p>Invite friends to join SmartRecycle and earn bonus points!</p>
+            
+            <div class="referral-stats">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <h3>12</h3>
+                            <p>Friends Referred</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <h3>600</h3>
+                            <p>Bonus Points Earned</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <h3>8</h3>
+                            <p>Active Referrals</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             
-            <div class="tier-card silver">
-                <div class="tier-icon">🥈</div>
-                <h3>Silver Member</h3>
-                <p class="tier-range">500 - 1500 points</p>
-                <ul class="tier-benefits">
-                    <li>10% bonus on redemptions</li>
-                    <li>Premium certificates</li>
-                    <li>Priority pickup scheduling</li>
-                    <li>Monthly bonus points</li>
-                </ul>
-                <div class="tier-progress">350 points to unlock</div>
-            </div>
-            
-            <div class="tier-card gold">
-                <div class="tier-icon">🥇</div>
-                <h3>Gold Member</h3>
-                <p class="tier-range">1500+ points</p>
-                <ul class="tier-benefits">
-                    <li>20% bonus on redemptions</li>
-                    <li>Exclusive premium rewards</li>
-                    <li>VIP support access</li>
-                    <li>Special recognition badges</li>
-                    <li>Partner store discounts</li>
-                </ul>
-                <div class="tier-progress">1350 points to unlock</div>
+            <div class="referral-code">
+                <h4>Your Referral Code: <code style="background: var(--primary-color); color: white; padding: 0.5rem 1rem; border-radius: 10px; font-weight: bold;">ECO2024ARSH</code></h4>
+                <p>Share this code and earn 50 points for each friend who joins!</p>
+                <button class="btn btn-primary" onclick="shareReferralCode()">
+                    <i class="fas fa-share-alt"></i> Share Code
+                </button>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Call to Action -->
-<section class="container">
-    <div class="section text-center">
-        <div style="background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white; padding: 3rem; border-radius: 20px;">
-            <h2 style="color: white;">🚀 Start Earning Points Today!</h2>
-            <p style="font-size: 1.2rem; margin-bottom: 2rem; color: rgba(255,255,255,0.9);">
-                Every eco-action brings you closer to amazing rewards and environmental impact!
-            </p>
-            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                <a href="{{ url_for('waste_guide') }}" class="cta-button" style="background: white; color: #2E7D32;">
-                    <i class="fas fa-recycle"></i> Check Waste Items
-                </a>
-                <a href="{{ url_for('request_pickup') }}" class="cta-button" style="background: rgba(255,255,255,0.2); border: 2px solid white;">
-                    <i class="fas fa-truck"></i> Schedule Pickup
-                </a>
-            </div>
+<!-- Success Modal -->
+<div id="redemption-modal" class="modal">
+    <div class="modal-content">
+        <div id="modal-content-inner">
+            <!-- Content will be populated by JavaScript -->
         </div>
     </div>
-</section>
+</div>
+
+<!-- Back to Home Button -->
+<div class="text-center" style="margin: 3rem 0;">
+    <a href="{{ url_for('home') }}" class="btn btn-secondary btn-lg">
+        <i class="fas fa-arrow-left"></i>
+        Return to Home
+    </a>
+</div>
 {% endblock %}
 
 {% block scripts %}

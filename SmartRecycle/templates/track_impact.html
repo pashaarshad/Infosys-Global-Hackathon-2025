@@ -1,49 +1,120 @@
-{% extends "base.html" %}
+{% extends "base-ultra.html" %}
 
 {% block title %}Track Impact - SmartRecycle{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero">
-    <div class="hero-content">
-        <div id="welcome-message">
-            <h1>📊 Track Your Impact</h1>
-            <p>See how much difference you're making for the environment</p>
-        </div>
-        <p class="text-center" style="color: #666; font-style: italic;">Your eco-actions are creating real change!</p>
-    </div>
-</section>
+<!-- Animated Back Arrow -->
+<div class="back-arrow" onclick="goHome()">
+    <i class="fas fa-arrow-left"></i>
+    <span>Return to Home</span>
+</div>
 
-<!-- Login Prompt for Non-Authenticated Users -->
-<section class="container" id="loginPrompt" style="display: none;">
-    <div class="alert alert-info">
-        <h3>🔐 Sign in to track your personal impact!</h3>
-        <p>Create an account to save your recycling data and see personalized environmental impact metrics.</p>
-        <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
-        <a href="{{ url_for('register') }}" class="btn btn-secondary">Register</a>
+<!-- Hero Section -->
+<section class="hero-ultra">
+    <div class="hero-content-ultra">
+        <div class="hero-animation">
+            <div class="floating-leaves">
+                <div class="leaf leaf-1">🍃</div>
+                <div class="leaf leaf-2">🌿</div>
+                <div class="leaf leaf-3">🍃</div>
+                <div class="leaf leaf-4">🌿</div>
+            </div>
+        </div>
+        <div class="hero-text-ultra" data-aos="fade-up">
+            <h1 class="gradient-text">📊 Track Your Impact</h1>
+            <p class="hero-subtitle">See how much difference you're making for the environment</p>
+            <div class="hero-stats">
+                <div class="stat-preview" data-aos="fade-up" data-aos-delay="200">
+                    <span class="stat-value" id="preview-total">1,247</span>
+                    <span class="stat-label">kg Recycled</span>
+                </div>
+                <div class="stat-preview" data-aos="fade-up" data-aos-delay="300">
+                    <span class="stat-value" id="preview-co2">842</span>
+                    <span class="stat-label">kg CO₂ Saved</span>
+                </div>
+                <div class="stat-preview" data-aos="fade-up" data-aos-delay="400">
+                    <span class="stat-value" id="preview-trees">23</span>
+                    <span class="stat-label">Trees Saved</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wave-animation">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
+            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
+            <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path>
+        </svg>
     </div>
 </section>
 
 <!-- Personal Dashboard -->
-<section class="container">
-    <div class="section">
-        <h2>🏆 Your Environmental Dashboard</h2>
-        <div class="stats-grid">
-            <div class="stat-card" style="background: linear-gradient(135deg, #4CAF50, #388E3C);">
-                <span class="stat-number" id="total-waste">0</span>
-                <span class="stat-label">kg Waste Recycled</span>
+<section class="section-ultra">
+    <div class="container-ultra">
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title">🏆 Your Environmental Dashboard</h2>
+            <p class="section-subtitle">Real-time metrics of your positive environmental impact</p>
+        </div>
+        
+        <div class="stats-grid-ultra" data-aos="fade-up" data-aos-delay="200">
+            <div class="stat-card-ultra waste-card" onclick="showDetailModal('waste')">
+                <div class="stat-icon">
+                    <i class="fas fa-recycle"></i>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-number" id="total-waste">1,247</span>
+                    <span class="stat-unit">kg</span>
+                </div>
+                <span class="stat-label">Waste Recycled</span>
+                <div class="stat-growth">
+                    <i class="fas fa-trending-up"></i>
+                    <span>+12% this month</span>
+                </div>
             </div>
-            <div class="stat-card" style="background: linear-gradient(135deg, #2196F3, #1976D2);">
-                <span class="stat-number" id="points-earned">0</span>
-                <span class="stat-label">Green Points Earned</span>
+            
+            <div class="stat-card-ultra points-card" onclick="showDetailModal('points')">
+                <div class="stat-icon">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-number" id="points-earned">3,850</span>
+                    <span class="stat-unit">pts</span>
+                </div>
+                <span class="stat-label">Green Points</span>
+                <div class="stat-growth">
+                    <i class="fas fa-trending-up"></i>
+                    <span>+8% this month</span>
+                </div>
             </div>
-            <div class="stat-card" style="background: linear-gradient(135deg, #FF9800, #F57C00);">
-                <span class="stat-number" id="trees-saved">0</span>
-                <span class="stat-label">Trees Equivalent Saved</span>
+            
+            <div class="stat-card-ultra trees-card" onclick="showDetailModal('trees')">
+                <div class="stat-icon">
+                    <i class="fas fa-tree"></i>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-number" id="trees-saved">23</span>
+                    <span class="stat-unit">trees</span>
+                </div>
+                <span class="stat-label">Trees Saved</span>
+                <div class="stat-growth">
+                    <i class="fas fa-trending-up"></i>
+                    <span>+15% this month</span>
+                </div>
             </div>
-            <div class="stat-card" style="background: linear-gradient(135deg, #9C27B0, #7B1FA2);">
-                <span class="stat-number" id="water-saved">0</span>
-                <span class="stat-label">Liters Water Saved</span>
+            
+            <div class="stat-card-ultra water-card" onclick="showDetailModal('water')">
+                <div class="stat-icon">
+                    <i class="fas fa-tint"></i>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-number" id="water-saved">18,420</span>
+                    <span class="stat-unit">L</span>
+                </div>
+                <span class="stat-label">Water Saved</span>
+                <div class="stat-growth">
+                    <i class="fas fa-trending-up"></i>
+                    <span>+10% this month</span>
+                </div>
             </div>
         </div>
     </div>

@@ -1,268 +1,477 @@
-{% extends "base.html" %}
+{% extends "base-ultra.html" %}
 
-{% block title %}Request Pickup - SmartRecycle{% endblock %}
+{% block title %}Request Pickup - SmartRecycle | Smart Waste Collection{% endblock %}
+
+{% block extra_css %}
+<style>
+    .pickup-hero {
+        background: linear-gradient(135deg, rgba(255, 152, 0, 0.9), rgba(255, 193, 7, 0.8)), url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+        background-size: cover;
+        background-position: center;
+        padding: 6rem 0;
+        color: white;
+        position: relative;
+    }
+    
+    .pickup-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(255, 152, 0, 0.3), rgba(255, 193, 7, 0.3));
+        animation: pulse 4s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.6; }
+    }
+    
+    .pickup-form-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 30px;
+        padding: 3rem;
+        margin: -80px auto 3rem;
+        max-width: 800px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        position: relative;
+        z-index: 10;
+    }
+    
+    .form-step {
+        display: none;
+        animation: slideIn 0.5s ease-in-out;
+    }
+    
+    .form-step.active {
+        display: block;
+    }
+    
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateX(20px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    
+    .step-indicator {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 3rem;
+    }
+    
+    .step {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #e0e0e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 1rem;
+        color: #666;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    .step.active {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        transform: scale(1.1);
+    }
+    
+    .step.completed {
+        background: var(--primary-color);
+        color: white;
+    }
+    
+    .step::after {
+        content: '';
+        position: absolute;
+        right: -2rem;
+        width: 2rem;
+        height: 2px;
+        background: #e0e0e0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    
+    .step:last-child::after {
+        display: none;
+    }
+    
+    .form-group-enhanced {
+        position: relative;
+        margin-bottom: 2rem;
+    }
+    
+    .form-input-enhanced {
+        width: 100%;
+        padding: 1.2rem 1.5rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 15px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: white;
+    }
+    
+    .form-input-enhanced:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 20px rgba(76, 175, 80, 0.2);
+        transform: translateY(-2px);
+    }
+    
+    .form-label-enhanced {
+        position: absolute;
+        top: 1.2rem;
+        left: 1.5rem;
+        color: #666;
+        transition: all 0.3s ease;
+        pointer-events: none;
+        background: white;
+        padding: 0 0.5rem;
+    }
+    
+    .form-input-enhanced:focus + .form-label-enhanced,
+    .form-input-enhanced:valid + .form-label-enhanced {
+        top: -10px;
+        font-size: 0.9rem;
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+    
+    .waste-type-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+    
+    .waste-type-card {
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 15px;
+        padding: 1.5rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .waste-type-card:hover {
+        border-color: var(--primary-color);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .waste-type-card.selected {
+        border-color: var(--primary-color);
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1));
+    }
+    
+    .waste-type-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        display: block;
+    }
+    
+    .pickup-summary {
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1));
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 2rem 0;
+        border: 2px solid var(--primary-color);
+    }
+    
+    .btn-step {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 25px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin: 0 0.5rem;
+    }
+    
+    .btn-step:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(76, 175, 80, 0.3);
+    }
+    
+    .btn-step:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    .btn-secondary-step {
+        background: #6c757d;
+    }
+    
+    .estimated-cost {
+        background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1));
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border: 2px solid #ffc107;
+        text-align: center;
+    }
+    
+    .tracking-info {
+        background: linear-gradient(135deg, rgba(33, 150, 243, 0.1), rgba(3, 169, 244, 0.1));
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border: 2px solid #2196f3;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero">
-    <div class="hero-content">
-        <h1>🚛 Request Pickup</h1>
-        <p>Schedule convenient pickup for your recyclable items</p>
-        <p class="text-center" style="color: #666; font-style: italic;">Fill out the form below and we'll arrange collection from your location</p>
+<!-- Ultra-Premium Hero Section -->
+<section class="pickup-hero">
+    <div class="container">
+        <div class="hero-content text-center">
+            <div class="hero-badge">
+                <span>🚛 Smart Collection</span>
+            </div>
+            <h1 class="hero-title">
+                <span class="gradient-text">Request Pickup</span>
+                <br>
+                <span class="subtitle">Convenient Waste Collection</span>
+            </h1>
+            <p class="hero-description">
+                Schedule smart waste collection with real-time tracking, 
+                route optimization, and instant cost estimation.
+            </p>
+        </div>
     </div>
 </section>
 
-<!-- Pickup Request Form -->
+<!-- Multi-Step Pickup Form -->
 <section class="container">
-    <div class="form-container">
-        <h2 class="text-center mb-2">📋 Pickup Request Form</h2>
+    <div class="pickup-form-container">
+        <div class="text-center mb-4">
+            <h2 class="section-title">📋 Smart Pickup Request</h2>
+            <p class="section-subtitle">Let's schedule your waste collection in 3 easy steps</p>
+        </div>
+        
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+            <div class="step active" id="step-1">1</div>
+            <div class="step" id="step-2">2</div>
+            <div class="step" id="step-3">3</div>
+        </div>
+        
         <form id="pickup-form" onsubmit="event.preventDefault(); submitPickupRequest();">
-            <div class="form-group">
-                <label for="name">
-                    <i class="fas fa-user"></i> Full Name *
-                </label>
-                <input type="text" id="name" name="name" class="form-input" 
-                       placeholder="Enter your full name" required>
+            <!-- Step 1: Personal Information -->
+            <div class="form-step active" id="form-step-1">
+                <h3 class="text-center mb-4">👤 Personal Information</h3>
+                
+                <div class="form-group-enhanced">
+                    <input type="text" id="name" name="name" class="form-input-enhanced" required>
+                    <label for="name" class="form-label-enhanced">
+                        <i class="fas fa-user"></i> Full Name
+                    </label>
+                </div>
+
+                <div class="form-group-enhanced">
+                    <textarea id="address" name="address" class="form-input-enhanced" rows="3" required></textarea>
+                    <label for="address" class="form-label-enhanced">
+                        <i class="fas fa-map-marker-alt"></i> Complete Address
+                    </label>
+                </div>
+
+                <div class="form-group-enhanced">
+                    <input type="tel" id="contact" name="contact" class="form-input-enhanced" required>
+                    <label for="contact" class="form-label-enhanced">
+                        <i class="fas fa-phone"></i> Contact Number
+                    </label>
+                </div>
+
+                <div class="form-group-enhanced">
+                    <input type="email" id="email" name="email" class="form-input-enhanced">
+                    <label for="email" class="form-label-enhanced">
+                        <i class="fas fa-envelope"></i> Email (Optional)
+                    </label>
+                </div>
+                
+                <div class="text-center">
+                    <button type="button" class="btn-step" onclick="nextStep()">
+                        Next Step <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="address">
-                    <i class="fas fa-map-marker-alt"></i> Pickup Address *
-                </label>
-                <textarea id="address" name="address" class="form-input" 
-                          placeholder="Enter complete address with landmark" rows="3" required></textarea>
+            <!-- Step 2: Waste Type Selection -->
+            <div class="form-step" id="form-step-2">
+                <h3 class="text-center mb-4">♻️ Select Waste Types</h3>
+                
+                <div class="waste-type-grid">
+                    <div class="waste-type-card" onclick="selectWasteType('plastic')">
+                        <span class="waste-type-icon">🍼</span>
+                        <h4>Plastic Items</h4>
+                        <p>Bottles, containers, packaging</p>
+                        <div class="pricing">₹5-10 per kg</div>
+                    </div>
+                    
+                    <div class="waste-type-card" onclick="selectWasteType('paper')">
+                        <span class="waste-type-icon">📰</span>
+                        <h4>Paper & Cardboard</h4>
+                        <p>Newspapers, magazines, boxes</p>
+                        <div class="pricing">₹8-12 per kg</div>
+                    </div>
+                    
+                    <div class="waste-type-card" onclick="selectWasteType('glass')">
+                        <span class="waste-type-icon">🍷</span>
+                        <h4>Glass Items</h4>
+                        <p>Bottles, jars, containers</p>
+                        <div class="pricing">₹3-6 per kg</div>
+                    </div>
+                    
+                    <div class="waste-type-card" onclick="selectWasteType('metal')">
+                        <span class="waste-type-icon">🥤</span>
+                        <h4>Metal Items</h4>
+                        <p>Cans, utensils, appliances</p>
+                        <div class="pricing">₹15-25 per kg</div>
+                    </div>
+                    
+                    <div class="waste-type-card" onclick="selectWasteType('electronics')">
+                        <span class="waste-type-icon">📱</span>
+                        <h4>Electronics</h4>
+                        <p>Phones, computers, gadgets</p>
+                        <div class="pricing">₹20-50 per kg</div>
+                    </div>
+                    
+                    <div class="waste-type-card" onclick="selectWasteType('mixed')">
+                        <span class="waste-type-icon">🗂️</span>
+                        <h4>Mixed Waste</h4>
+                        <p>Combination of items</p>
+                        <div class="pricing">₹8-15 per kg</div>
+                    </div>
+                </div>
+                
+                <div class="form-group-enhanced">
+                    <input type="number" id="estimated_weight" name="estimated_weight" class="form-input-enhanced" min="1" max="1000" required>
+                    <label for="estimated_weight" class="form-label-enhanced">
+                        <i class="fas fa-weight-hanging"></i> Estimated Weight (kg)
+                    </label>
+                </div>
+                
+                <div class="estimated-cost" id="cost-display" style="display: none;">
+                    <h4>💰 Estimated Collection Cost</h4>
+                    <div class="cost-amount" id="cost-amount">₹0</div>
+                    <p>Final cost will be calculated after weighing</p>
+                </div>
+                
+                <div class="text-center">
+                    <button type="button" class="btn-step btn-secondary-step" onclick="prevStep()">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button type="button" class="btn-step" onclick="nextStep()">
+                        Next Step <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="contact">
-                    <i class="fas fa-phone"></i> Contact Number *
-                </label>
-                <input type="tel" id="contact" name="contact" class="form-input" 
-                       placeholder="+91 9876543210" required>
+            <!-- Step 3: Schedule & Confirmation -->
+            <div class="form-step" id="form-step-3">
+                <h3 class="text-center mb-4">📅 Schedule & Confirmation</h3>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group-enhanced">
+                            <input type="date" id="pickup_date" name="pickup_date" class="form-input-enhanced" required>
+                            <label for="pickup_date" class="form-label-enhanced">
+                                <i class="fas fa-calendar-alt"></i> Pickup Date
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group-enhanced">
+                            <select id="time_slot" name="time_slot" class="form-input-enhanced" required>
+                                <option value="">Select Time Slot</option>
+                                <option value="morning">🌅 Morning (8 AM - 12 PM)</option>
+                                <option value="afternoon">☀️ Afternoon (12 PM - 4 PM)</option>
+                                <option value="evening">🌇 Evening (4 PM - 8 PM)</option>
+                            </select>
+                            <label for="time_slot" class="form-label-enhanced">
+                                <i class="fas fa-clock"></i> Time Slot
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group-enhanced">
+                    <textarea id="special_instructions" name="special_instructions" class="form-input-enhanced" rows="3"></textarea>
+                    <label for="special_instructions" class="form-label-enhanced">
+                        <i class="fas fa-sticky-note"></i> Special Instructions (Optional)
+                    </label>
+                </div>
+                
+                <!-- Pickup Summary -->
+                <div class="pickup-summary">
+                    <h4 class="text-center mb-3">📋 Pickup Summary</h4>
+                    <div id="summary-content">
+                        <!-- Summary will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Tracking Information -->
+                <div class="tracking-info">
+                    <h4><i class="fas fa-map-marker-alt"></i> Real-Time Tracking</h4>
+                    <p>After confirmation, you'll receive:</p>
+                    <ul>
+                        <li>📱 SMS updates with pickup status</li>
+                        <li>🚛 Live tracking of collection vehicle</li>
+                        <li>⏰ Estimated arrival time</li>
+                        <li>💰 Final payment after weighing</li>
+                    </ul>
+                </div>
+                
+                <div class="text-center">
+                    <button type="button" class="btn-step btn-secondary-step" onclick="prevStep()">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button type="submit" class="btn-step" id="submit-btn">
+                        <i class="fas fa-check-circle"></i> Confirm Pickup Request
+                    </button>
+                </div>
             </div>
-
-            <div class="form-group">
-                <label for="waste_type">
-                    <i class="fas fa-recycle"></i> Type of Waste *
-                </label>
-                <select id="waste_type" name="waste_type" class="form-input" required>
-                    <option value="">Select waste type</option>
-                    <option value="plastic">♻️ Plastic Items (bottles, containers, packaging)</option>
-                    <option value="paper">📰 Paper & Cardboard (newspapers, boxes, documents)</option>
-                    <option value="glass">🍾 Glass Items (bottles, jars, containers)</option>
-                    <option value="metal">🥫 Metal Items (cans, foil, small appliances)</option>
-                    <option value="ewaste">🔋 E-Waste (electronics, batteries, gadgets)</option>
-                    <option value="organic">🍌 Organic Waste (food scraps, garden waste)</option>
-                    <option value="mixed">📦 Mixed Recyclables</option>
-                    <option value="other">❓ Other (specify in notes)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="quantity">
-                    <i class="fas fa-weight"></i> Approximate Quantity *
-                </label>
-                <select id="quantity" name="quantity" class="form-input" required>
-                    <option value="">Select quantity</option>
-                    <option value="small">🛍️ Small (1-5 kg / 1-2 bags)</option>
-                    <option value="medium">📦 Medium (5-15 kg / 3-5 bags)</option>
-                    <option value="large">🚛 Large (15-30 kg / 6-10 bags)</option>
-                    <option value="bulk">🏢 Bulk (30+ kg / 10+ bags)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="pickup_time">
-                    <i class="fas fa-clock"></i> Preferred Pickup Time *
-                </label>
-                <select id="pickup_time" name="pickup_time" class="form-input" required>
-                    <option value="">Select preferred time</option>
-                    <option value="morning">🌅 Morning (8:00 AM - 12:00 PM)</option>
-                    <option value="afternoon">☀️ Afternoon (12:00 PM - 4:00 PM)</option>
-                    <option value="evening">🌇 Evening (4:00 PM - 8:00 PM)</option>
-                    <option value="weekend">📅 Weekend (Saturday/Sunday)</option>
-                    <option value="flexible">⏰ Flexible (Any time)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="notes">
-                    <i class="fas fa-sticky-note"></i> Additional Notes (Optional)
-                </label>
-                <textarea id="notes" name="notes" class="form-input" 
-                          placeholder="Any special instructions, access details, or additional information..." rows="3"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label class="checkbox-container">
-                    <input type="checkbox" id="terms" required>
-                    <span class="checkmark"></span>
-                    I agree to the <a href="#" style="color: #4CAF50;">pickup terms and conditions</a> and confirm that the waste items are properly sorted
-                </label>
-            </div>
-
-            <button type="submit" class="form-button">
-                <i class="fas fa-paper-plane"></i> Submit Pickup Request
-            </button>
         </form>
     </div>
 </section>
 
-<!-- Pickup Information -->
-<section class="container">
-    <div class="section">
-        <h2>📋 Pickup Information</h2>
-        <div class="cards-grid">
-            <div class="card">
-                <i class="fas fa-clock" style="color: #4CAF50;"></i>
-                <h3>Response Time</h3>
-                <p>We'll confirm your pickup within <strong>24 hours</strong> and schedule collection within <strong>2-3 business days</strong>.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-truck" style="color: #2196F3;"></i>
-                <h3>Pickup Process</h3>
-                <p>Our certified collectors will arrive at your specified time. Please keep items ready and accessible.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-gift" style="color: #FF9800;"></i>
-                <h3>Earn Points</h3>
-                <p>Every successful pickup earns you <strong>green points</strong> that can be redeemed for rewards!</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-certificate" style="color: #9C27B0;"></i>
-                <h3>Get Certificate</h3>
-                <p>Receive a digital certificate acknowledging your contribution to environmental sustainability.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Accepted Items Guide -->
-<section class="container">
-    <div class="section" style="background: linear-gradient(135deg, #E8F5E8, #F1F8E9); padding: 3rem; border-radius: 20px;">
-        <h2>✅ What We Accept</h2>
-        <div class="cards-grid">
-            <div class="card" style="border-left: 5px solid #4CAF50;">
-                <i class="fas fa-recycle" style="color: #4CAF50;"></i>
-                <h3>Plastic Items</h3>
-                <ul style="text-align: left; margin-top: 1rem;">
-                    <li>Bottles and containers</li>
-                    <li>Food packaging</li>
-                    <li>Shopping bags</li>
-                    <li>Packaging materials</li>
-                </ul>
-            </div>
-            <div class="card" style="border-left: 5px solid #2196F3;">
-                <i class="fas fa-newspaper" style="color: #2196F3;"></i>
-                <h3>Paper & Cardboard</h3>
-                <ul style="text-align: left; margin-top: 1rem;">
-                    <li>Newspapers & magazines</li>
-                    <li>Office paper</li>
-                    <li>Cardboard boxes</li>
-                    <li>Books & notebooks</li>
-                </ul>
-            </div>
-            <div class="card" style="border-left: 5px solid #FF9800;">
-                <i class="fas fa-mobile-alt" style="color: #FF9800;"></i>
-                <h3>Electronics</h3>
-                <ul style="text-align: left; margin-top: 1rem;">
-                    <li>Mobile phones & tablets</li>
-                    <li>Batteries</li>
-                    <li>Cables & chargers</li>
-                    <li>Small appliances</li>
-                </ul>
-            </div>
-            <div class="card" style="border-left: 5px solid #9E9E9E;">
-                <i class="fas fa-cog" style="color: #9E9E9E;"></i>
-                <h3>Metal Items</h3>
-                <ul style="text-align: left; margin-top: 1rem;">
-                    <li>Aluminum cans</li>
-                    <li>Metal containers</li>
-                    <li>Kitchen utensils</li>
-                    <li>Foil & wrapping</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Not Accepted Items -->
-<section class="container">
-    <div class="section">
-        <h2>❌ Items We Cannot Accept</h2>
-        <div class="cards-grid">
-            <div class="card" style="background: rgba(244, 67, 54, 0.1); border-left: 5px solid #F44336;">
-                <i class="fas fa-exclamation-triangle" style="color: #F44336;"></i>
-                <h3>Hazardous Materials</h3>
-                <ul style="text-align: left; color: #666;">
-                    <li>Chemicals & paints</li>
-                    <li>Medical waste</li>
-                    <li>Broken glass</li>
-                    <li>Contaminated items</li>
-                </ul>
-            </div>
-            <div class="card" style="background: rgba(255, 152, 0, 0.1); border-left: 5px solid #FF9800;">
-                <i class="fas fa-times-circle" style="color: #FF9800;"></i>
-                <h3>Non-Recyclable</h3>
-                <ul style="text-align: left; color: #666;">
-                    <li>Dirty/contaminated items</li>
-                    <li>Mixed material products</li>
-                    <li>Styrofoam packaging</li>
-                    <li>Broken electronics</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Preparation Tips -->
-<section class="container">
-    <div class="section">
-        <h2>📝 Preparation Tips</h2>
-        <div class="cards-grid">
-            <div class="card">
-                <i class="fas fa-broom" style="color: #4CAF50;"></i>
-                <h3>Clean Items</h3>
-                <p>Rinse containers and remove food residue. Clean items are more likely to be accepted and processed.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-sort" style="color: #2196F3;"></i>
-                <h3>Sort by Type</h3>
-                <p>Separate different materials (plastic, paper, metal) into different bags or containers.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-shield-alt" style="color: #FF9800;"></i>
-                <h3>Safe Packaging</h3>
-                <p>Pack sharp or breakable items safely. Use cardboard or protective wrapping when necessary.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-tags" style="color: #9C27B0;"></i>
-                <h3>Label Clearly</h3>
-                <p>If possible, label bags with the type of waste to help our collection team process efficiently.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Contact for Questions -->
-<section class="container">
-    <div class="section text-center">
-        <div style="background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white; padding: 3rem; border-radius: 20px;">
-            <h2 style="color: white;">❓ Have Questions?</h2>
-            <p style="font-size: 1.2rem; margin-bottom: 2rem; color: rgba(255,255,255,0.9);">
-                Need help with your pickup request or have special requirements?
-            </p>
-            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                <a href="{{ url_for('contact') }}" class="cta-button" style="background: white; color: #2E7D32;">
-                    <i class="fas fa-phone"></i> Contact Support
-                </a>
-                <a href="{{ url_for('waste_guide') }}" class="cta-button" style="background: rgba(255,255,255,0.2); border: 2px solid white;">
-                    <i class="fas fa-question-circle"></i> Waste Guide
+<!-- Success Modal -->
+<div id="success-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="text-center">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+            <h2 style="color: var(--primary-color);">Pickup Request Confirmed!</h2>
+            <p>Your pickup has been scheduled successfully.</p>
+            <div class="request-id" id="request-id-display"></div>
+            <div class="tracking-link">
+                <a href="{{ url_for('track_impact') }}" class="btn btn-primary">
+                    <i class="fas fa-chart-line"></i> Track Your Impact
                 </a>
             </div>
         </div>
     </div>
-</section>
+</div>
+
+<!-- Back to Home Button -->
+<div class="text-center" style="margin: 3rem 0;">
+    <a href="{{ url_for('home') }}" class="btn btn-secondary btn-lg">
+        <i class="fas fa-arrow-left"></i>
+        Return to Home
+    </a>
+</div>
 {% endblock %}
 
 {% block scripts %}
@@ -472,5 +681,342 @@
         }
     `;
     document.head.appendChild(checkboxStyle);
+</script>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    let currentStep = 1;
+    let selectedWasteTypes = [];
+    let estimatedCost = 0;
+    
+    // Waste type pricing (per kg in INR)
+    const wastePricing = {
+        'plastic': { min: 5, max: 10, icon: '🍼' },
+        'paper': { min: 8, max: 12, icon: '📰' },
+        'glass': { min: 3, max: 6, icon: '🍷' },
+        'metal': { min: 15, max: 25, icon: '🥤' },
+        'electronics': { min: 20, max: 50, icon: '📱' },
+        'mixed': { min: 8, max: 15, icon: '🗂️' }
+    };
+
+    function nextStep() {
+        if (validateStep(currentStep)) {
+            // Hide current step
+            document.getElementById(`form-step-${currentStep}`).classList.remove('active');
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            document.getElementById(`step-${currentStep}`).classList.add('completed');
+            
+            currentStep++;
+            
+            // Show next step
+            document.getElementById(`form-step-${currentStep}`).classList.add('active');
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            
+            // Update summary for step 3
+            if (currentStep === 3) {
+                updateSummary();
+                setMinDate();
+            }
+        }
+    }
+
+    function prevStep() {
+        if (currentStep > 1) {
+            // Hide current step
+            document.getElementById(`form-step-${currentStep}`).classList.remove('active');
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            
+            currentStep--;
+            
+            // Show previous step
+            document.getElementById(`form-step-${currentStep}`).classList.add('active');
+            document.getElementById(`step-${currentStep}`).classList.remove('completed');
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+        }
+    }
+
+    function validateStep(step) {
+        let isValid = true;
+        
+        if (step === 1) {
+            const requiredFields = ['name', 'address', 'contact'];
+            requiredFields.forEach(field => {
+                const input = document.getElementById(field);
+                if (!input.value.trim()) {
+                    input.style.borderColor = '#f44336';
+                    isValid = false;
+                } else {
+                    input.style.borderColor = '#e0e0e0';
+                }
+            });
+            
+            // Validate phone number
+            const contact = document.getElementById('contact').value;
+            const phoneRegex = /^[\+]?[0-9]{10,15}$/;
+            if (!phoneRegex.test(contact.replace(/\s/g, ''))) {
+                document.getElementById('contact').style.borderColor = '#f44336';
+                alert('Please enter a valid phone number');
+                isValid = false;
+            }
+        }
+        
+        if (step === 2) {
+            if (selectedWasteTypes.length === 0) {
+                alert('Please select at least one waste type');
+                isValid = false;
+            }
+            
+            const weight = document.getElementById('estimated_weight').value;
+            if (!weight || weight < 1 || weight > 1000) {
+                document.getElementById('estimated_weight').style.borderColor = '#f44336';
+                alert('Please enter a valid weight (1-1000 kg)');
+                isValid = false;
+            }
+        }
+        
+        return isValid;
+    }
+
+    function selectWasteType(type) {
+        const card = event.currentTarget;
+        
+        if (selectedWasteTypes.includes(type)) {
+            // Deselect
+            selectedWasteTypes = selectedWasteTypes.filter(t => t !== type);
+            card.classList.remove('selected');
+        } else {
+            // Select
+            selectedWasteTypes.push(type);
+            card.classList.add('selected');
+        }
+        
+        updateCostEstimate();
+    }
+
+    function updateCostEstimate() {
+        const weight = parseFloat(document.getElementById('estimated_weight').value) || 0;
+        
+        if (selectedWasteTypes.length > 0 && weight > 0) {
+            let totalCost = 0;
+            
+            selectedWasteTypes.forEach(type => {
+                const pricing = wastePricing[type];
+                const avgPrice = (pricing.min + pricing.max) / 2;
+                totalCost += avgPrice * weight / selectedWasteTypes.length;
+            });
+            
+            estimatedCost = Math.round(totalCost);
+            
+            document.getElementById('cost-display').style.display = 'block';
+            document.getElementById('cost-amount').textContent = `₹${estimatedCost}`;
+        } else {
+            document.getElementById('cost-display').style.display = 'none';
+        }
+    }
+
+    function updateSummary() {
+        const name = document.getElementById('name').value;
+        const address = document.getElementById('address').value;
+        const contact = document.getElementById('contact').value;
+        const weight = document.getElementById('estimated_weight').value;
+        
+        const wasteTypesText = selectedWasteTypes.map(type => 
+            `${wastePricing[type].icon} ${type.charAt(0).toUpperCase() + type.slice(1)}`
+        ).join(', ');
+        
+        const summaryHTML = `
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>👤 Contact Details</h5>
+                    <p><strong>Name:</strong> ${name}</p>
+                    <p><strong>Contact:</strong> ${contact}</p>
+                    <p><strong>Address:</strong> ${address}</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>♻️ Waste Details</h5>
+                    <p><strong>Types:</strong> ${wasteTypesText}</p>
+                    <p><strong>Weight:</strong> ${weight} kg</p>
+                    <p><strong>Estimated Cost:</strong> ₹${estimatedCost}</p>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('summary-content').innerHTML = summaryHTML;
+    }
+
+    function setMinDate() {
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        
+        const dateInput = document.getElementById('pickup_date');
+        dateInput.min = tomorrow.toISOString().split('T')[0];
+        
+        // Set default to tomorrow
+        dateInput.value = tomorrow.toISOString().split('T')[0];
+    }
+
+    function submitPickupRequest() {
+        if (!validateStep(3)) return;
+        
+        const formData = new FormData(document.getElementById('pickup-form'));
+        formData.append('waste_types', JSON.stringify(selectedWasteTypes));
+        formData.append('estimated_cost', estimatedCost);
+        
+        // Show loading
+        const submitBtn = document.getElementById('submit-btn');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        submitBtn.disabled = true;
+        
+        // Simulate API call
+        setTimeout(() => {
+            // Generate request ID
+            const requestId = 'SR' + Date.now().toString().slice(-6);
+            
+            // Show success modal
+            document.getElementById('request-id-display').innerHTML = `
+                <div class="request-id-card">
+                    <h4>Your Request ID</h4>
+                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary-color);">${requestId}</div>
+                    <p>Save this ID for tracking</p>
+                </div>
+            `;
+            
+            document.getElementById('success-modal').style.display = 'flex';
+            
+            // Create celebration effect
+            createCelebrationEffect();
+            
+            // Reset form
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+            
+        }, 2000);
+    }
+
+    function createCelebrationEffect() {
+        const emojis = ['🎉', '🚛', '♻️', '✨', '🌱', '💚'];
+        
+        for (let i = 0; i < 20; i++) {
+            setTimeout(() => {
+                const emoji = document.createElement('div');
+                emoji.style.position = 'fixed';
+                emoji.style.fontSize = '2rem';
+                emoji.style.pointerEvents = 'none';
+                emoji.style.zIndex = '9999';
+                emoji.style.left = Math.random() * window.innerWidth + 'px';
+                emoji.style.top = '-50px';
+                emoji.style.animation = 'fall 4s linear forwards';
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                
+                document.body.appendChild(emoji);
+                
+                setTimeout(() => {
+                    emoji.remove();
+                }, 4000);
+            }, i * 100);
+        }
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+        // Auto-populate from session storage if coming from waste guide
+        const selectedItem = sessionStorage.getItem('selectedItem');
+        if (selectedItem) {
+            // Auto-select appropriate waste type based on item
+            const itemToTypeMap = {
+                'plastic bottle': 'plastic',
+                'battery': 'electronics',
+                'newspaper': 'paper',
+                'glass bottle': 'glass',
+                'aluminum can': 'metal'
+            };
+            
+            const autoType = itemToTypeMap[selectedItem];
+            if (autoType) {
+                setTimeout(() => {
+                    document.querySelector(`[onclick="selectWasteType('${autoType}')"]`).click();
+                }, 500);
+            }
+            
+            // Clear session storage
+            sessionStorage.removeItem('selectedItem');
+        }
+        
+        // Weight input change listener
+        document.getElementById('estimated_weight').addEventListener('input', updateCostEstimate);
+        
+        // Modal close functionality
+        document.getElementById('success-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+        
+        // Enhanced form animations
+        const inputs = document.querySelectorAll('.form-input-enhanced');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+    });
+
+    // Add required CSS for modal and animations
+    const style = document.createElement('style');
+    style.textContent = `
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .request-id-card {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1));
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 1rem 0;
+            border: 2px solid var(--primary-color);
+        }
+        
+        .pricing {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
 </script>
 {% endblock %}

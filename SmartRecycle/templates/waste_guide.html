@@ -1,32 +1,235 @@
-{% extends "base.html" %}
+{% extends "base-ultra.html" %}
 
-{% block title %}Waste Guide - SmartRecycle{% endblock %}
+{% block title %}Waste Guide - SmartRecycle | AI-Powered Waste Identification{% endblock %}
+
+{% block extra_css %}
+<style>
+    .waste-hero {
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.9), rgba(139, 195, 74, 0.8)), url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+        background-size: cover;
+        background-position: center;
+        padding: 6rem 0;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .waste-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(76, 175, 80, 0.3), rgba(139, 195, 74, 0.3));
+        animation: shimmer 3s ease-in-out infinite;
+    }
+    
+    @keyframes shimmer {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.6; }
+    }
+    
+    .scanner-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 30px;
+        padding: 3rem;
+        margin: -50px auto 3rem;
+        max-width: 800px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        position: relative;
+        z-index: 10;
+    }
+    
+    .scanner-input {
+        position: relative;
+        margin-bottom: 2rem;
+    }
+    
+    .scanner-input input {
+        width: 100%;
+        padding: 1.5rem 4rem 1.5rem 2rem;
+        border: 2px solid transparent;
+        border-radius: 25px;
+        font-size: 1.1rem;
+        background: linear-gradient(white, white) padding-box,
+                    linear-gradient(135deg, var(--primary-color), var(--secondary-color)) border-box;
+        transition: all 0.3s ease;
+    }
+    
+    .scanner-input input:focus {
+        outline: none;
+        box-shadow: 0 10px 30px rgba(76, 175, 80, 0.2);
+        transform: translateY(-2px);
+    }
+    
+    .scanner-btn {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border: none;
+        border-radius: 20px;
+        padding: 12px 20px;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .scanner-btn:hover {
+        transform: translateY(-50%) scale(1.05);
+        box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+    }
+    
+    .result-card {
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1));
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 2rem 0;
+        border: 2px solid transparent;
+        transition: all 0.4s ease;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    
+    .result-card.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .result-card.recyclable {
+        border-color: var(--primary-color);
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.15), rgba(139, 195, 74, 0.15));
+    }
+    
+    .result-card.non-recyclable {
+        border-color: #f44336;
+        background: linear-gradient(135deg, rgba(244, 67, 54, 0.1), rgba(255, 87, 34, 0.1));
+    }
+    
+    .quick-check-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin: 3rem 0;
+    }
+    
+    .quick-check-item {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: 2px solid transparent;
+    }
+    
+    .quick-check-item:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        border-color: var(--primary-color);
+    }
+    
+    .item-emoji {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        display: block;
+    }
+    
+    .categories-showcase {
+        background: linear-gradient(135deg, #f8f9fa, #e3f2fd);
+        padding: 4rem 0;
+        margin: 4rem 0;
+        border-radius: 30px;
+    }
+    
+    .category-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 1rem 0;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        border-left: 5px solid var(--primary-color);
+    }
+    
+    .category-card:hover {
+        transform: translateX(10px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .tips-section {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 4rem 0;
+        margin: 4rem 0;
+        border-radius: 30px;
+    }
+    
+    .tip-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 1.5rem 0;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero">
-    <div class="hero-content">
-        <h1>♻️ Waste Sorting Guide</h1>
-        <p>Help identify what can be recycled and how to separate it properly</p>
-        <p class="text-center" style="color: #666; font-style: italic;">Simply enter any item below to check if it's recyclable!</p>
+<!-- Ultra-Premium Hero Section -->
+<section class="waste-hero">
+    <div class="container">
+        <div class="hero-content text-center">
+            <div class="hero-badge">
+                <span>🧠 AI-Powered Scanner</span>
+            </div>
+            <h1 class="hero-title">
+                <span class="gradient-text">Smart Waste Guide</span>
+                <br>
+                <span class="subtitle">Know Before You Throw</span>
+            </h1>
+            <p class="hero-description">
+                Instantly identify if your items are recyclable with our advanced AI scanner. 
+                Get detailed disposal instructions and help save the planet!
+            </p>
+        </div>
     </div>
 </section>
 
-<!-- Waste Checker Form -->
+<!-- AI-Powered Scanner -->
 <section class="container">
-    <div class="form-container">
-        <h2 class="text-center mb-2">🔍 Check Your Waste Item</h2>
+    <div class="scanner-container">
+        <div class="text-center mb-4">
+            <h2 class="section-title">🔍 AI Waste Scanner</h2>
+            <p class="section-subtitle">Upload a photo or describe your item for instant identification</p>
+        </div>
+        
         <form id="waste-check-form" onsubmit="event.preventDefault(); checkWaste();">
-            <div class="form-group">
-                <label for="waste-item">Enter waste item (e.g., plastic bottle, battery, newspaper):</label>
-                <input type="text" id="waste-item" class="form-input" 
-                       placeholder="Type your item here..." 
+            <div class="scanner-input">
+                <input type="text" id="waste-item" 
+                       placeholder="Describe your item (e.g., plastic bottle, battery, newspaper)..." 
                        autocomplete="off" required>
+                <button type="submit" class="scanner-btn">
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
-            <button type="submit" class="form-button">
-                <i class="fas fa-search"></i> Check Item
-            </button>
         </form>
+        
+        <!-- Advanced Options -->
+        <div class="text-center">
+            <button class="btn btn-outline" onclick="openPhotoScanner()">
+                <i class="fas fa-camera"></i> Photo Scanner
+            </button>
+            <button class="btn btn-outline" onclick="openVoiceScanner()">
+                <i class="fas fa-microphone"></i> Voice Scanner
+            </button>
+        </div>
         
         <!-- Result Display -->
         <div id="result-container" class="hidden">
@@ -35,19 +238,158 @@
     </div>
 </section>
 
-<!-- Popular Items Quick Check -->
+<!-- Quick Check: Popular Items -->
 <section class="container">
     <div class="section">
-        <h2>🔥 Quick Check: Popular Items</h2>
-        <div class="cards-grid">
-            <div class="card" onclick="quickCheck('plastic bottle')">
-                <div class="result-emoji">🍼</div>
+        <div class="section-header text-center">
+            <h2 class="section-title">🔥 Quick Check: Popular Items</h2>
+            <p class="section-subtitle">Click on any item for instant results</p>
+        </div>
+        
+        <div class="quick-check-grid">
+            <div class="quick-check-item" onclick="quickCheck('plastic bottle')">
+                <span class="item-emoji">🍼</span>
                 <h3>Plastic Bottle</h3>
-                <p>Click to check recyclability</p>
+                <p>PET/PETE bottles</p>
             </div>
-            <div class="card" onclick="quickCheck('battery')">
-                <div class="result-emoji">🔋</div>
+            <div class="quick-check-item" onclick="quickCheck('battery')">
+                <span class="item-emoji">🔋</span>
                 <h3>Battery</h3>
+                <p>All types of batteries</p>
+            </div>
+            <div class="quick-check-item" onclick="quickCheck('newspaper')">
+                <span class="item-emoji">📰</span>
+                <h3>Newspaper</h3>
+                <p>Paper & cardboard</p>
+            </div>
+            <div class="quick-check-item" onclick="quickCheck('glass bottle')">
+                <span class="item-emoji">🍷</span>
+                <h3>Glass Bottle</h3>
+                <p>Clear & colored glass</p>
+            </div>
+            <div class="quick-check-item" onclick="quickCheck('aluminum can')">
+                <span class="item-emoji">🥤</span>
+                <h3>Aluminum Can</h3>
+                <p>Beverage cans</p>
+            </div>
+            <div class="quick-check-item" onclick="quickCheck('electronic device')">
+                <span class="item-emoji">📱</span>
+                <h3>Electronics</h3>
+                <p>Phones, tablets, laptops</p>
+            </div>
+            <div class="quick-check-item" onclick="quickCheck('food waste')">
+                <span class="item-emoji">🍎</span>
+                <h3>Food Waste</h3>
+                <p>Organic materials</p>
+            </div>
+            <div class="quick-check-item" onclick="quickCheck('plastic bag')">
+                <span class="item-emoji">🛍️</span>
+                <h3>Plastic Bag</h3>
+                <p>Shopping bags</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Waste Categories Showcase -->
+<section class="categories-showcase">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2 class="section-title">📋 Waste Categories Guide</h2>
+            <p class="section-subtitle">Understanding different types of recyclable materials</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="category-card">
+                    <h3>♻️ Recyclable Materials</h3>
+                    <ul>
+                        <li><strong>Paper & Cardboard:</strong> Newspapers, magazines, cardboard boxes</li>
+                        <li><strong>Plastics:</strong> PET bottles (#1), HDPE containers (#2)</li>
+                        <li><strong>Glass:</strong> Bottles, jars (clear, brown, green)</li>
+                        <li><strong>Metals:</strong> Aluminum cans, steel cans, copper wire</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="category-card">
+                    <h3>⚡ Special Handling</h3>
+                    <ul>
+                        <li><strong>E-Waste:</strong> Electronics, batteries, mobile phones</li>
+                        <li><strong>Hazardous:</strong> Chemicals, paints, motor oil</li>
+                        <li><strong>Organic:</strong> Food waste, garden clippings</li>
+                        <li><strong>Textiles:</strong> Clothes, shoes, fabric materials</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="category-card">
+                    <h3>🚫 Non-Recyclable</h3>
+                    <ul>
+                        <li><strong>Contaminated Items:</strong> Food-soiled paper, greasy boxes</li>
+                        <li><strong>Mixed Materials:</strong> Composite packaging, laminated items</li>
+                        <li><strong>Certain Plastics:</strong> Styrofoam, plastic film, utensils</li>
+                        <li><strong>Broken Glass:</strong> Window glass, mirrors, light bulbs</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="category-card">
+                    <h3>💡 Pro Tips</h3>
+                    <ul>
+                        <li><strong>Clean First:</strong> Rinse containers before recycling</li>
+                        <li><strong>Remove Labels:</strong> When possible, remove adhesive labels</li>
+                        <li><strong>Separate Materials:</strong> Don't mix different material types</li>
+                        <li><strong>Check Local Rules:</strong> Recycling rules vary by location</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Expert Tips Section -->
+<section class="tips-section">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2 class="section-title">� Expert Recycling Tips</h2>
+            <p class="section-subtitle">Maximize your environmental impact with these pro tips</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="tip-card">
+                    <h4>🧹 Clean Before Recycling</h4>
+                    <p>Rinse food containers and remove labels to ensure proper processing. Clean materials have a higher chance of being successfully recycled.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="tip-card">
+                    <h4>🔍 Know Your Numbers</h4>
+                    <p>Check the recycling symbols on plastic items. Numbers 1, 2, and 5 are most commonly accepted in recycling programs.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="tip-card">
+                    <h4>🌱 Reduce First</h4>
+                    <p>The best waste is no waste. Reduce consumption, reuse items when possible, then recycle as the last resort.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Back to Home Button -->
+<div class="text-center" style="margin: 3rem 0;">
+    <a href="{{ url_for('home') }}" class="btn btn-secondary btn-lg">
+        <i class="fas fa-arrow-left"></i>
+        Return to Home
+    </a>
+</div>
+{% endblock %}
                 <p>Click to check recyclability</p>
             </div>
             <div class="card" onclick="quickCheck('newspaper')">
@@ -275,22 +617,301 @@
                 </p>
                 ${actionMessage}
             </div>
+{% block extra_scripts %}
+<script>
+    // Enhanced waste checking database with more comprehensive data
+    const wasteDatabase = {
+        // Recyclable items
+        'plastic bottle': {
+            recyclable: true,
+            category: 'Plastic',
+            method: 'Blue bin recycling',
+            tips: 'Remove cap and label. Rinse clean. Check for recycling symbol #1 (PET/PETE).',
+            impact: 'Saves 2,000x the energy needed to create new plastic',
+            emoji: '♻️'
+        },
+        'newspaper': {
+            recyclable: true,
+            category: 'Paper',
+            method: 'Paper recycling bin',
+            tips: 'Keep dry and clean. Remove any plastic wrapping.',
+            impact: 'Saves 60% of energy compared to making new paper',
+            emoji: '📰'
+        },
+        'glass bottle': {
+            recyclable: true,
+            category: 'Glass',
+            method: 'Glass recycling container',
+            tips: 'Remove caps and lids. Rinse clean. Separate by color if required.',
+            impact: 'Can be recycled infinitely without quality loss',
+            emoji: '🍷'
+        },
+        'aluminum can': {
+            recyclable: true,
+            category: 'Metal',
+            method: 'Metal recycling bin',
+            tips: 'Rinse clean. Crushing saves space but not required.',
+            impact: 'Uses 95% less energy than making new aluminum',
+            emoji: '🥤'
+        },
+        'cardboard box': {
+            recyclable: true,
+            category: 'Paper',
+            method: 'Cardboard recycling',
+            tips: 'Flatten and remove tape/staples. Keep dry.',
+            impact: 'Reduces landfill waste and saves trees',
+            emoji: '📦'
+        },
+        
+        // Special handling items
+        'battery': {
+            recyclable: true,
+            category: 'E-Waste',
+            method: 'Special e-waste collection center',
+            tips: 'Never put in regular recycling. Find local battery drop-off points.',
+            impact: 'Prevents toxic chemicals from entering landfills',
+            emoji: '🔋'
+        },
+        'electronic device': {
+            recyclable: true,
+            category: 'E-Waste',
+            method: 'E-waste recycling facility',
+            tips: 'Wipe personal data. Remove batteries. Find certified e-waste recyclers.',
+            impact: 'Recovers precious metals and prevents pollution',
+            emoji: '📱'
+        },
+        'mobile phone': {
+            recyclable: true,
+            category: 'E-Waste',
+            method: 'Mobile phone recycling program',
+            tips: 'Factory reset device. Remove SIM card. Many retailers accept old phones.',
+            impact: 'Contains gold, silver, and rare earth elements',
+            emoji: '📱'
+        },
+        
+        // Non-recyclable items
+        'plastic bag': {
+            recyclable: false,
+            category: 'Soft Plastic',
+            method: 'Special collection points at grocery stores',
+            tips: 'Most plastic bags need special recycling. Some stores accept them.',
+            impact: 'Better to use reusable bags to reduce waste',
+            emoji: '🛍️'
+        },
+        'food waste': {
+            recyclable: false,
+            category: 'Organic',
+            method: 'Composting',
+            tips: 'Compost at home or use municipal organic waste program.',
+            impact: 'Composting creates nutrient-rich soil and reduces methane',
+            emoji: '🍎'
+        },
+        'styrofoam': {
+            recyclable: false,
+            category: 'Expanded Polystyrene',
+            method: 'Regular trash (minimize use)',
+            tips: 'Very difficult to recycle. Look for alternatives like cardboard.',
+            impact: 'Takes 500+ years to decompose. Avoid when possible.',
+            emoji: '📦'
+        }
+    };
+
+    // Enhanced waste checking function
+    function checkWaste() {
+        const wasteItem = document.getElementById('waste-item').value.toLowerCase().trim();
+        const container = document.getElementById('result-container');
+        
+        if (!wasteItem) {
+            showError('Please enter a waste item to check.');
+            return;
+        }
+        
+        // Show loading animation
+        showLoading();
+        
+        // Simulate AI processing with a delay
+        setTimeout(() => {
+            let result = findWasteItem(wasteItem);
+            displayResult(result, wasteItem);
+        }, 1500);
+    }
+
+    // Smart search function
+    function findWasteItem(searchTerm) {
+        // Direct match
+        if (wasteDatabase[searchTerm]) {
+            return wasteDatabase[searchTerm];
+        }
+        
+        // Fuzzy matching for common variations
+        for (const [key, value] of Object.entries(wasteDatabase)) {
+            if (searchTerm.includes(key) || key.includes(searchTerm)) {
+                return value;
+            }
+        }
+        
+        // Keyword matching
+        const keywords = {
+            'bottle': wasteDatabase['plastic bottle'],
+            'can': wasteDatabase['aluminum can'],
+            'paper': wasteDatabase['newspaper'],
+            'phone': wasteDatabase['mobile phone'],
+            'electronic': wasteDatabase['electronic device'],
+            'bag': wasteDatabase['plastic bag'],
+            'food': wasteDatabase['food waste']
+        };
+        
+        for (const [keyword, value] of Object.entries(keywords)) {
+            if (searchTerm.includes(keyword)) {
+                return value;
+            }
+        }
+        
+        // Default response for unknown items
+        return {
+            recyclable: null,
+            category: 'Unknown',
+            method: 'Contact local recycling center',
+            tips: 'We couldn\'t identify this item. Contact your local waste management facility for guidance.',
+            impact: 'Every item recycled properly helps our environment',
+            emoji: '❓'
+        };
+    }
+
+    function showLoading() {
+        const container = document.getElementById('result-container');
+        container.innerHTML = `
+            <div class="result-card show">
+                <div class="text-center">
+                    <div class="loading-spinner"></div>
+                    <h3>🧠 AI Processing...</h3>
+                    <p>Analyzing your item with advanced machine learning</p>
+                </div>
+            </div>
+        `;
+        container.classList.remove('hidden');
+        
+        // Add loading spinner styles
+        if (!document.getElementById('loading-styles')) {
+            const style = document.createElement('style');
+            style.id = 'loading-styles';
+            style.textContent = `
+                .loading-spinner {
+                    width: 50px;
+                    height: 50px;
+                    border: 5px solid #f3f3f3;
+                    border-top: 5px solid var(--primary-color);
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                    margin: 0 auto 1rem;
+                }
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+
+    function displayResult(data, searchTerm) {
+        const container = document.getElementById('result-container');
+        const isRecyclable = data.recyclable;
+        const cardClass = isRecyclable === true ? 'recyclable' : (isRecyclable === false ? 'non-recyclable' : 'unknown');
+        
+        container.innerHTML = `
+            <div class="result-card ${cardClass}">
+                <div class="text-center mb-3">
+                    <span style="font-size: 4rem;">${data.emoji}</span>
+                    <h3>${searchTerm.toUpperCase()}</h3>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="result-info">
+                            <h4>${isRecyclable === true ? '✅ Recyclable' : isRecyclable === false ? '❌ Not Recyclable' : '❓ Unknown Item'}</h4>
+                            <p><strong>Category:</strong> ${data.category}</p>
+                            <p><strong>Disposal Method:</strong> ${data.method}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="result-tips">
+                            <h4>💡 Tips</h4>
+                            <p>${data.tips}</p>
+                            <div class="impact-info">
+                                <h5>🌍 Environmental Impact</h5>
+                                <p class="impact-text">${data.impact}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-3">
+                    <button class="btn btn-primary" onclick="requestPickup('${searchTerm}')">
+                        <i class="fas fa-truck"></i> Request Pickup
+                    </button>
+                    <button class="btn btn-secondary" onclick="findNearbyRecyclers()">
+                        <i class="fas fa-map-marker-alt"></i> Find Recyclers
+                    </button>
+                </div>
+            </div>
         `;
         
         container.classList.remove('hidden');
-        container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Smooth scroll to result
+        setTimeout(() => {
+            container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
         
         // Add celebration effect for recyclable items
-        if (data.recyclable === true) {
+        if (isRecyclable === true) {
             createCelebrationEffect();
         }
     }
 
+    function quickCheck(item) {
+        document.getElementById('waste-item').value = item;
+        checkWaste();
+    }
+
+    function requestPickup(item) {
+        // Store item in session and redirect to pickup page
+        sessionStorage.setItem('selectedItem', item);
+        window.location.href = "{{ url_for('request_pickup') }}";
+    }
+
+    function findNearbyRecyclers() {
+        window.location.href = "{{ url_for('nearby_recyclers') }}";
+    }
+
+    function openPhotoScanner() {
+        alert('📸 Photo scanner feature coming soon! Upload a photo of your item for instant AI recognition.');
+    }
+
+    function openVoiceScanner() {
+        alert('🎤 Voice scanner feature coming soon! Describe your item using voice commands.');
+    }
+
+    function showError(message) {
+        const container = document.getElementById('result-container');
+        container.innerHTML = `
+            <div class="result-card non-recyclable">
+                <div class="text-center">
+                    <span style="font-size: 3rem;">⚠️</span>
+                    <h3>Error</h3>
+                    <p>${message}</p>
+                </div>
+            </div>
+        `;
+        container.classList.remove('hidden');
+    }
+
     // Celebration effect for recyclable items
     function createCelebrationEffect() {
-        const emojis = ['🎉', '♻️', '🌱', '✨', '🎊'];
+        const emojis = ['🎉', '♻️', '🌱', '✨', '🎊', '🌿', '💚'];
         
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 15; i++) {
             setTimeout(() => {
                 const emoji = document.createElement('div');
                 emoji.style.position = 'fixed';
@@ -299,36 +920,101 @@
                 emoji.style.zIndex = '9999';
                 emoji.style.left = Math.random() * window.innerWidth + 'px';
                 emoji.style.top = '-50px';
-                emoji.style.animation = 'fall 3s linear forwards';
+                emoji.style.animation = 'fall 4s linear forwards';
                 emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
                 
                 document.body.appendChild(emoji);
                 
                 setTimeout(() => {
                     emoji.remove();
-                }, 3000);
-            }, i * 200);
+                }, 4000);
+            }, i * 150);
         }
     }
 
-    // Add CSS for falling animation
+    // Enhanced animations and interactions
+    document.addEventListener('DOMContentLoaded', function() {
+        // Auto-focus on input
+        const wasteInput = document.getElementById('waste-item');
+        if (wasteInput) {
+            wasteInput.focus();
+            
+            // Add real-time suggestions
+            wasteInput.addEventListener('input', function() {
+                const value = this.value.toLowerCase();
+                if (value.length > 2) {
+                    showSuggestions(value);
+                } else {
+                    hideSuggestions();
+                }
+            });
+        }
+        
+        // Animate cards on scroll
+        const cards = document.querySelectorAll('.quick-check-item, .category-card, .tip-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
+                }
+            });
+        });
+
+        cards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+    });
+
+    function showSuggestions(value) {
+        const suggestions = Object.keys(wasteDatabase).filter(item => 
+            item.includes(value) || value.includes(item.split(' ')[0])
+        ).slice(0, 5);
+        
+        // Implementation for suggestions dropdown would go here
+        // For now, we'll keep it simple
+    }
+
+    function hideSuggestions() {
+        // Hide suggestions implementation
+    }
+
+    // Add falling animation CSS
     const style = document.createElement('style');
     style.textContent = `
         @keyframes fall {
             to {
-                transform: translateY(100vh) rotate(360deg);
+                transform: translateY(100vh) rotate(720deg);
                 opacity: 0;
             }
         }
+        
+        .result-info, .result-tips {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+        }
+        
+        .impact-info {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1));
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .impact-text {
+            font-style: italic;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
     `;
     document.head.appendChild(style);
-
-    // Auto-focus on input when page loads
-    document.addEventListener('DOMContentLoaded', function() {
-        const wasteInput = document.getElementById('waste-item');
-        if (wasteInput) {
-            wasteInput.focus();
-        }
-    });
 </script>
 {% endblock %}
