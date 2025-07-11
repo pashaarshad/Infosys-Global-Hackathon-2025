@@ -1,0 +1,476 @@
+{% extends "base.html" %}
+
+{% block title %}Request Pickup - SmartRecycle{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>🚛 Request Pickup</h1>
+        <p>Schedule convenient pickup for your recyclable items</p>
+        <p class="text-center" style="color: #666; font-style: italic;">Fill out the form below and we'll arrange collection from your location</p>
+    </div>
+</section>
+
+<!-- Pickup Request Form -->
+<section class="container">
+    <div class="form-container">
+        <h2 class="text-center mb-2">📋 Pickup Request Form</h2>
+        <form id="pickup-form" onsubmit="event.preventDefault(); submitPickupRequest();">
+            <div class="form-group">
+                <label for="name">
+                    <i class="fas fa-user"></i> Full Name *
+                </label>
+                <input type="text" id="name" name="name" class="form-input" 
+                       placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">
+                    <i class="fas fa-map-marker-alt"></i> Pickup Address *
+                </label>
+                <textarea id="address" name="address" class="form-input" 
+                          placeholder="Enter complete address with landmark" rows="3" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="contact">
+                    <i class="fas fa-phone"></i> Contact Number *
+                </label>
+                <input type="tel" id="contact" name="contact" class="form-input" 
+                       placeholder="+91 9876543210" required>
+            </div>
+
+            <div class="form-group">
+                <label for="waste_type">
+                    <i class="fas fa-recycle"></i> Type of Waste *
+                </label>
+                <select id="waste_type" name="waste_type" class="form-input" required>
+                    <option value="">Select waste type</option>
+                    <option value="plastic">♻️ Plastic Items (bottles, containers, packaging)</option>
+                    <option value="paper">📰 Paper & Cardboard (newspapers, boxes, documents)</option>
+                    <option value="glass">🍾 Glass Items (bottles, jars, containers)</option>
+                    <option value="metal">🥫 Metal Items (cans, foil, small appliances)</option>
+                    <option value="ewaste">🔋 E-Waste (electronics, batteries, gadgets)</option>
+                    <option value="organic">🍌 Organic Waste (food scraps, garden waste)</option>
+                    <option value="mixed">📦 Mixed Recyclables</option>
+                    <option value="other">❓ Other (specify in notes)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="quantity">
+                    <i class="fas fa-weight"></i> Approximate Quantity *
+                </label>
+                <select id="quantity" name="quantity" class="form-input" required>
+                    <option value="">Select quantity</option>
+                    <option value="small">🛍️ Small (1-5 kg / 1-2 bags)</option>
+                    <option value="medium">📦 Medium (5-15 kg / 3-5 bags)</option>
+                    <option value="large">🚛 Large (15-30 kg / 6-10 bags)</option>
+                    <option value="bulk">🏢 Bulk (30+ kg / 10+ bags)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="pickup_time">
+                    <i class="fas fa-clock"></i> Preferred Pickup Time *
+                </label>
+                <select id="pickup_time" name="pickup_time" class="form-input" required>
+                    <option value="">Select preferred time</option>
+                    <option value="morning">🌅 Morning (8:00 AM - 12:00 PM)</option>
+                    <option value="afternoon">☀️ Afternoon (12:00 PM - 4:00 PM)</option>
+                    <option value="evening">🌇 Evening (4:00 PM - 8:00 PM)</option>
+                    <option value="weekend">📅 Weekend (Saturday/Sunday)</option>
+                    <option value="flexible">⏰ Flexible (Any time)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="notes">
+                    <i class="fas fa-sticky-note"></i> Additional Notes (Optional)
+                </label>
+                <textarea id="notes" name="notes" class="form-input" 
+                          placeholder="Any special instructions, access details, or additional information..." rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="terms" required>
+                    <span class="checkmark"></span>
+                    I agree to the <a href="#" style="color: #4CAF50;">pickup terms and conditions</a> and confirm that the waste items are properly sorted
+                </label>
+            </div>
+
+            <button type="submit" class="form-button">
+                <i class="fas fa-paper-plane"></i> Submit Pickup Request
+            </button>
+        </form>
+    </div>
+</section>
+
+<!-- Pickup Information -->
+<section class="container">
+    <div class="section">
+        <h2>📋 Pickup Information</h2>
+        <div class="cards-grid">
+            <div class="card">
+                <i class="fas fa-clock" style="color: #4CAF50;"></i>
+                <h3>Response Time</h3>
+                <p>We'll confirm your pickup within <strong>24 hours</strong> and schedule collection within <strong>2-3 business days</strong>.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-truck" style="color: #2196F3;"></i>
+                <h3>Pickup Process</h3>
+                <p>Our certified collectors will arrive at your specified time. Please keep items ready and accessible.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-gift" style="color: #FF9800;"></i>
+                <h3>Earn Points</h3>
+                <p>Every successful pickup earns you <strong>green points</strong> that can be redeemed for rewards!</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-certificate" style="color: #9C27B0;"></i>
+                <h3>Get Certificate</h3>
+                <p>Receive a digital certificate acknowledging your contribution to environmental sustainability.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Accepted Items Guide -->
+<section class="container">
+    <div class="section" style="background: linear-gradient(135deg, #E8F5E8, #F1F8E9); padding: 3rem; border-radius: 20px;">
+        <h2>✅ What We Accept</h2>
+        <div class="cards-grid">
+            <div class="card" style="border-left: 5px solid #4CAF50;">
+                <i class="fas fa-recycle" style="color: #4CAF50;"></i>
+                <h3>Plastic Items</h3>
+                <ul style="text-align: left; margin-top: 1rem;">
+                    <li>Bottles and containers</li>
+                    <li>Food packaging</li>
+                    <li>Shopping bags</li>
+                    <li>Packaging materials</li>
+                </ul>
+            </div>
+            <div class="card" style="border-left: 5px solid #2196F3;">
+                <i class="fas fa-newspaper" style="color: #2196F3;"></i>
+                <h3>Paper & Cardboard</h3>
+                <ul style="text-align: left; margin-top: 1rem;">
+                    <li>Newspapers & magazines</li>
+                    <li>Office paper</li>
+                    <li>Cardboard boxes</li>
+                    <li>Books & notebooks</li>
+                </ul>
+            </div>
+            <div class="card" style="border-left: 5px solid #FF9800;">
+                <i class="fas fa-mobile-alt" style="color: #FF9800;"></i>
+                <h3>Electronics</h3>
+                <ul style="text-align: left; margin-top: 1rem;">
+                    <li>Mobile phones & tablets</li>
+                    <li>Batteries</li>
+                    <li>Cables & chargers</li>
+                    <li>Small appliances</li>
+                </ul>
+            </div>
+            <div class="card" style="border-left: 5px solid #9E9E9E;">
+                <i class="fas fa-cog" style="color: #9E9E9E;"></i>
+                <h3>Metal Items</h3>
+                <ul style="text-align: left; margin-top: 1rem;">
+                    <li>Aluminum cans</li>
+                    <li>Metal containers</li>
+                    <li>Kitchen utensils</li>
+                    <li>Foil & wrapping</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Not Accepted Items -->
+<section class="container">
+    <div class="section">
+        <h2>❌ Items We Cannot Accept</h2>
+        <div class="cards-grid">
+            <div class="card" style="background: rgba(244, 67, 54, 0.1); border-left: 5px solid #F44336;">
+                <i class="fas fa-exclamation-triangle" style="color: #F44336;"></i>
+                <h3>Hazardous Materials</h3>
+                <ul style="text-align: left; color: #666;">
+                    <li>Chemicals & paints</li>
+                    <li>Medical waste</li>
+                    <li>Broken glass</li>
+                    <li>Contaminated items</li>
+                </ul>
+            </div>
+            <div class="card" style="background: rgba(255, 152, 0, 0.1); border-left: 5px solid #FF9800;">
+                <i class="fas fa-times-circle" style="color: #FF9800;"></i>
+                <h3>Non-Recyclable</h3>
+                <ul style="text-align: left; color: #666;">
+                    <li>Dirty/contaminated items</li>
+                    <li>Mixed material products</li>
+                    <li>Styrofoam packaging</li>
+                    <li>Broken electronics</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Preparation Tips -->
+<section class="container">
+    <div class="section">
+        <h2>📝 Preparation Tips</h2>
+        <div class="cards-grid">
+            <div class="card">
+                <i class="fas fa-broom" style="color: #4CAF50;"></i>
+                <h3>Clean Items</h3>
+                <p>Rinse containers and remove food residue. Clean items are more likely to be accepted and processed.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-sort" style="color: #2196F3;"></i>
+                <h3>Sort by Type</h3>
+                <p>Separate different materials (plastic, paper, metal) into different bags or containers.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-shield-alt" style="color: #FF9800;"></i>
+                <h3>Safe Packaging</h3>
+                <p>Pack sharp or breakable items safely. Use cardboard or protective wrapping when necessary.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-tags" style="color: #9C27B0;"></i>
+                <h3>Label Clearly</h3>
+                <p>If possible, label bags with the type of waste to help our collection team process efficiently.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact for Questions -->
+<section class="container">
+    <div class="section text-center">
+        <div style="background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white; padding: 3rem; border-radius: 20px;">
+            <h2 style="color: white;">❓ Have Questions?</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; color: rgba(255,255,255,0.9);">
+                Need help with your pickup request or have special requirements?
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="{{ url_for('contact') }}" class="cta-button" style="background: white; color: #2E7D32;">
+                    <i class="fas fa-phone"></i> Contact Support
+                </a>
+                <a href="{{ url_for('waste_guide') }}" class="cta-button" style="background: rgba(255,255,255,0.2); border: 2px solid white;">
+                    <i class="fas fa-question-circle"></i> Waste Guide
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Enhanced form submission with validation
+    function submitPickupRequest() {
+        const form = document.getElementById('pickup-form');
+        const submitBtn = document.querySelector('.form-button');
+        const formData = new FormData(form);
+        
+        const data = {
+            name: formData.get('name'),
+            address: formData.get('address'),
+            contact: formData.get('contact'),
+            waste_type: formData.get('waste_type'),
+            quantity: formData.get('quantity'),
+            pickup_time: formData.get('pickup_time'),
+            notes: formData.get('notes') || ''
+        };
+
+        // Validate required fields
+        const requiredFields = ['name', 'address', 'contact', 'waste_type', 'quantity', 'pickup_time'];
+        const missingFields = requiredFields.filter(field => !data[field] || data[field].trim() === '');
+        
+        if (missingFields.length > 0) {
+            showMessage('Please fill in all required fields', 'warning');
+            return;
+        }
+
+        // Validate contact number
+        const contactRegex = /^[\+]?[0-9\s\-\(\)]{10,15}$/;
+        if (!contactRegex.test(data.contact)) {
+            showMessage('Please enter a valid contact number', 'warning');
+            return;
+        }
+
+        // Check terms acceptance
+        const termsCheckbox = document.getElementById('terms');
+        if (!termsCheckbox.checked) {
+            showMessage('Please accept the terms and conditions', 'warning');
+            return;
+        }
+
+        // Show loading state
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting Request...';
+        submitBtn.disabled = true;
+
+        fetch('/submit-pickup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                showSuccessMessage(result.message);
+                form.reset();
+                
+                // Show points earned notification
+                setTimeout(() => {
+                    showMessage('🎉 You earned 10 green points for this request!', 'success');
+                }, 2000);
+                
+                // Show next steps
+                setTimeout(() => {
+                    showNextSteps();
+                }, 4000);
+            } else {
+                showMessage('Error submitting request. Please try again.', 'error');
+            }
+            
+            // Reset button
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Pickup Request';
+            submitBtn.disabled = false;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showMessage('Error submitting request. Please try again.', 'error');
+            
+            // Reset button
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Pickup Request';
+            submitBtn.disabled = false;
+        });
+    }
+
+    function showSuccessMessage(message) {
+        const successDiv = document.createElement('div');
+        successDiv.className = 'success-message fade-in';
+        successDiv.innerHTML = `
+            <div style="background: linear-gradient(135deg, #4CAF50, #388E3C); color: white; padding: 2rem; border-radius: 15px; text-align: center; margin: 2rem 0;">
+                <i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <h3>Request Submitted Successfully! ✅</h3>
+                <p style="margin: 1rem 0; font-size: 1.1rem;">${message}</p>
+                <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 10px; margin-top: 1rem;">
+                    <p><strong>What happens next?</strong></p>
+                    <ul style="list-style: none; margin: 0.5rem 0;">
+                        <li>📧 Email confirmation sent</li>
+                        <li>📞 Confirmation call within 24 hours</li>
+                        <li>🚛 Pickup scheduled within 2-3 days</li>
+                        <li>🎁 Points credited after collection</li>
+                    </ul>
+                </div>
+            </div>
+        `;
+        
+        const formContainer = document.querySelector('.form-container');
+        formContainer.appendChild(successDiv);
+        successDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showNextSteps() {
+        const nextStepsDiv = document.createElement('div');
+        nextStepsDiv.className = 'next-steps fade-in';
+        nextStepsDiv.innerHTML = `
+            <div style="background: linear-gradient(135deg, #2196F3, #1976D2); color: white; padding: 2rem; border-radius: 15px; text-align: center; margin: 2rem 0;">
+                <h3>🚀 What's Next?</h3>
+                <p>While you wait for pickup, explore more ways to help the environment:</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+                    <a href="/track-impact" class="cta-button" style="background: white; color: #1976D2;">
+                        📊 Track Impact
+                    </a>
+                    <a href="/rewards" class="cta-button" style="background: rgba(255,255,255,0.2); border: 2px solid white;">
+                        🎁 View Rewards
+                    </a>
+                </div>
+            </div>
+        `;
+        
+        const formContainer = document.querySelector('.form-container');
+        formContainer.appendChild(nextStepsDiv);
+    }
+
+    // Auto-format phone number
+    document.getElementById('contact').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 0 && !value.startsWith('91')) {
+            if (value.length === 10) {
+                value = '91' + value;
+            }
+        }
+        if (value.length > 0) {
+            e.target.value = '+' + value;
+        }
+    });
+
+    // Dynamic form validation
+    document.querySelectorAll('.form-input').forEach(input => {
+        input.addEventListener('blur', function() {
+            validateField(this);
+        });
+    });
+
+    function validateField(field) {
+        let isValid = true;
+        const value = field.value.trim();
+        
+        // Remove previous validation styling
+        field.style.borderColor = '';
+        
+        if (field.hasAttribute('required') && !value) {
+            isValid = false;
+        }
+        
+        // Specific validations
+        if (field.type === 'tel' && value) {
+            const contactRegex = /^[\+]?[0-9\s\-\(\)]{10,15}$/;
+            if (!contactRegex.test(value)) {
+                isValid = false;
+            }
+        }
+        
+        // Apply styling
+        if (!isValid && value) {
+            field.style.borderColor = '#F44336';
+        } else if (value) {
+            field.style.borderColor = '#4CAF50';
+        }
+        
+        return isValid;
+    }
+
+    // Add CSS for custom checkbox
+    const checkboxStyle = document.createElement('style');
+    checkboxStyle.textContent = `
+        .checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            cursor: pointer;
+            line-height: 1.4;
+        }
+        
+        .checkbox-container input[type="checkbox"] {
+            margin: 0;
+            width: auto;
+        }
+        
+        .success-message, .next-steps {
+            animation: slideInFromBottom 0.5s ease;
+        }
+        
+        @keyframes slideInFromBottom {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    `;
+    document.head.appendChild(checkboxStyle);
+</script>
+{% endblock %}

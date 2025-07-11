@@ -1,0 +1,462 @@
+{% extends "base.html" %}
+
+{% block title %}Login - SmartRecycle{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>🔑 Welcome Back</h1>
+            <p>Sign in to your SmartRecycle account</p>
+        </div>
+
+        <form id="loginForm" class="auth-form">
+            <div class="form-group">
+                <label for="email">📧 Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">🔒 Password</label>
+                <input type="password" id="password" name="password" required>
+                <div class="password-toggle" onclick="togglePassword('password')">
+                    <span id="toggleIcon">👁️</span>
+                </div>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="remember" name="remember">
+                <label for="remember">Remember me</label>
+            </div>
+
+            <button type="submit" class="btn-primary">
+                <span class="btn-text">Sign In</span>
+                <span class="btn-loading">🔄 Signing in...</span>
+            </button>
+        </form>
+
+        <div class="auth-links">
+            <a href="#" class="forgot-password">Forgot your password?</a>
+            <div class="divider">
+                <span>or</span>
+            </div>
+            <p>Don't have an account? <a href="{{ url_for('register') }}" class="link-primary">Sign up here</a></p>
+        </div>
+
+        <div class="social-login">
+            <p>Or continue with:</p>
+            <div class="social-buttons">
+                <button class="btn-social google">
+                    <span>🔴</span> Google
+                </button>
+                <button class="btn-social facebook">
+                    <span>🔵</span> Facebook
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-benefits">
+        <h3>🌟 Why join SmartRecycle?</h3>
+        <ul class="benefits-list">
+            <li>
+                <span class="benefit-icon">🎯</span>
+                <div>
+                    <strong>Track Your Impact</strong>
+                    <p>Monitor your environmental contribution and waste reduction</p>
+                </div>
+            </li>
+            <li>
+                <span class="benefit-icon">🏆</span>
+                <div>
+                    <strong>Earn Rewards</strong>
+                    <p>Get points for recycling and redeem them for eco-friendly products</p>
+                </div>
+            </li>
+            <li>
+                <span class="benefit-icon">🚚</span>
+                <div>
+                    <strong>Easy Pickup</strong>
+                    <p>Schedule convenient waste pickup from your location</p>
+                </div>
+            </li>
+            <li>
+                <span class="benefit-icon">📍</span>
+                <div>
+                    <strong>Find Recyclers</strong>
+                    <p>Locate nearby recycling centers and drop-off points</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div id="authMessage" class="message-popup"></div>
+
+<style>
+.auth-container {
+    min-height: calc(100vh - 140px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.auth-card {
+    background: white;
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 450px;
+    animation: slideUp 0.6s ease-out;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.auth-header h1 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+}
+
+.auth-header p {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+}
+
+.auth-form {
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #ecf0f1;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+.form-group input:focus {
+    border-color: #3498db;
+    background: white;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.password-toggle {
+    position: absolute;
+    right: 1rem;
+    top: 2.3rem;
+    cursor: pointer;
+    font-size: 1.2rem;
+    user-select: none;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.checkbox-group input {
+    width: auto;
+    margin: 0;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+}
+
+.btn-primary.loading .btn-text {
+    display: none;
+}
+
+.btn-primary .btn-loading {
+    display: none;
+}
+
+.btn-primary.loading .btn-loading {
+    display: inline;
+}
+
+.auth-links {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.forgot-password {
+    color: #3498db;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.divider {
+    margin: 1.5rem 0;
+    position: relative;
+    text-align: center;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #ecf0f1;
+}
+
+.divider span {
+    background: white;
+    padding: 0 1rem;
+    color: #95a5a6;
+    font-size: 0.9rem;
+}
+
+.link-primary {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.link-primary:hover {
+    text-decoration: underline;
+}
+
+.social-login {
+    text-align: center;
+}
+
+.social-login p {
+    color: #7f8c8d;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.social-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-social {
+    flex: 1;
+    padding: 0.8rem;
+    border: 2px solid #ecf0f1;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.btn-social:hover {
+    border-color: #bdc3c7;
+    transform: translateY(-1px);
+}
+
+.auth-benefits {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2.5rem;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 400px;
+    backdrop-filter: blur(10px);
+}
+
+.auth-benefits h3 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.benefits-list {
+    list-style: none;
+    padding: 0;
+}
+
+.benefits-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.benefit-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.benefits-list strong {
+    color: #2c3e50;
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.benefits-list p {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.message-popup {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    color: white;
+    font-weight: 600;
+    z-index: 1000;
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+}
+
+.message-popup.show {
+    transform: translateX(0);
+}
+
+.message-popup.success {
+    background: #27ae60;
+}
+
+.message-popup.error {
+    background: #e74c3c;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .auth-container {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 1rem;
+    }
+    
+    .auth-card {
+        padding: 2rem;
+    }
+    
+    .auth-benefits {
+        padding: 2rem;
+    }
+    
+    .social-buttons {
+        flex-direction: column;
+    }
+}
+</style>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const button = e.target.querySelector('.btn-primary');
+    button.classList.add('loading');
+    
+    const formData = new FormData(e.target);
+    const data = {
+        email: formData.get('email'),
+        password: formData.get('password'),
+        remember: formData.get('remember') === 'on'
+    };
+    
+    try {
+        const response = await fetch('/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            showMessage('Welcome back! Redirecting...', 'success');
+            setTimeout(() => {
+                window.location.href = result.redirect || '/';
+            }, 1500);
+        } else {
+            showMessage(result.message || 'Login failed. Please try again.', 'error');
+        }
+    } catch (error) {
+        showMessage('Connection error. Please try again.', 'error');
+    } finally {
+        button.classList.remove('loading');
+    }
+});
+
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    const icon = document.getElementById('toggleIcon');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.textContent = '🙈';
+    } else {
+        input.type = 'password';
+        icon.textContent = '👁️';
+    }
+}
+
+function showMessage(message, type) {
+    const popup = document.getElementById('authMessage');
+    popup.textContent = message;
+    popup.className = `message-popup ${type} show`;
+    
+    setTimeout(() => {
+        popup.classList.remove('show');
+    }, 4000);
+}
+</script>
+{% endblock %}

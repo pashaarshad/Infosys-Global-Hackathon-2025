@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}SmartRecycle - Home | Circular Economy Waste Management{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>♻️ SmartRecycle</h1>
+        <p class="hero-tagline">Empowering communities to turn eco-actions into real-world impact</p>
+        <p>Transform waste management with our smart digital platform that encourages recycling, connects communities, and rewards sustainable actions.</p>
+        <a href="{{ url_for('waste_guide') }}" class="cta-button pulse">🔍 Check Your Waste Now</a>
+    </div>
+</section>
+
+<!-- Mission Overview -->
+<section class="container">
+    <div class="section">
+        <h2>🌍 Our Mission</h2>
+        <div class="cards-grid">
+            <div class="card">
+                <i class="fas fa-recycle"></i>
+                <h3>Smart Recycling</h3>
+                <p>Intelligent waste sorting guidance helps you identify recyclable items and proper disposal methods instantly.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-users"></i>
+                <h3>Community Connection</h3>
+                <p>Connect with local recyclers, waste collectors, and eco-conscious neighbors to create a sustainable network.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-gift"></i>
+                <h3>Reward System</h3>
+                <p>Earn green points for every eco-friendly action and redeem them for exciting rewards and certificates.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Key Features -->
+<section class="container">
+    <div class="section">
+        <h2>🚀 Platform Features</h2>
+        <div class="cards-grid">
+            <div class="card">
+                <i class="fas fa-search"></i>
+                <h3>Waste Sorting Guide</h3>
+                <p>Simply enter any item and instantly know if it's recyclable, what category it belongs to, and how to dispose of it properly.</p>
+                <a href="{{ url_for('waste_guide') }}" class="cta-button" style="margin-top: 1rem;">Try Now</a>
+            </div>
+            <div class="card">
+                <i class="fas fa-truck"></i>
+                <h3>Pickup Requests</h3>
+                <p>Schedule convenient pickups for your recyclable items including e-waste, plastics, paper, and more.</p>
+                <a href="{{ url_for('request_pickup') }}" class="cta-button" style="margin-top: 1rem;">Request Pickup</a>
+            </div>
+            <div class="card">
+                <i class="fas fa-chart-line"></i>
+                <h3>Impact Tracking</h3>
+                <p>Monitor your environmental impact with detailed statistics on waste saved, trees protected, and water conserved.</p>
+                <a href="{{ url_for('track_impact') }}" class="cta-button" style="margin-top: 1rem;">View Impact</a>
+            </div>
+            <div class="card">
+                <i class="fas fa-map-marker-alt"></i>
+                <h3>Nearby Recyclers</h3>
+                <p>Find certified recycling centers and drop-off points near you with integrated maps and directions.</p>
+                <a href="{{ url_for('nearby_recyclers') }}" class="cta-button" style="margin-top: 1rem;">Find Recyclers</a>
+            </div>
+            <div class="card">
+                <i class="fas fa-trophy"></i>
+                <h3>Rewards & Recognition</h3>
+                <p>Earn green points, unlock achievements, and get certificates for your environmental contributions.</p>
+                <a href="{{ url_for('rewards') }}" class="cta-button" style="margin-top: 1rem;">View Rewards</a>
+            </div>
+            <div class="card">
+                <i class="fas fa-leaf"></i>
+                <h3>Eco Education</h3>
+                <p>Learn about sustainable practices, recycling tips, and environmental impact through our educational resources.</p>
+                <a href="{{ url_for('about') }}" class="cta-button" style="margin-top: 1rem;">Learn More</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Problem Statement -->
+<section class="container">
+    <div class="section" style="background: linear-gradient(135deg, #F1F8E9, #E8F5E8); padding: 3rem; border-radius: 20px;">
+        <h2>🌎 The Challenge We're Solving</h2>
+        <div class="cards-grid">
+            <div class="card" style="background: rgba(244, 67, 54, 0.1);">
+                <i class="fas fa-exclamation-triangle" style="color: #F44336;"></i>
+                <h3>Massive Waste Production</h3>
+                <p>Cities worldwide produce millions of tons of waste daily, overwhelming landfills and harming ecosystems.</p>
+            </div>
+            <div class="card" style="background: rgba(255, 152, 0, 0.1);">
+                <i class="fas fa-smog" style="color: #FF9800;"></i>
+                <h3>Environmental Pollution</h3>
+                <p>Improper waste disposal leads to air, water, and soil pollution, affecting human health and wildlife.</p>
+            </div>
+            <div class="card" style="background: rgba(33, 150, 243, 0.1);">
+                <i class="fas fa-question-circle" style="color: #2196F3;"></i>
+                <h3>Lack of Awareness</h3>
+                <p>Many people don't know how to properly sort waste or where to find recycling facilities.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Impact Statistics -->
+<section class="container">
+    <div class="section">
+        <h2>📊 Global Impact Potential</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">2B+</span>
+                <span class="stat-label">Tons of Waste Generated Annually</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">75%</span>
+                <span class="stat-label">Could Be Recycled or Reused</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">30%</span>
+                <span class="stat-label">Current Global Recycling Rate</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">1000+</span>
+                <span class="stat-label">Years for Plastic to Decompose</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="container">
+    <div class="section text-center" style="background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white; padding: 3rem; border-radius: 20px;">
+        <h2 style="color: white;">🌱 Join the Green Revolution</h2>
+        <p style="font-size: 1.2rem; margin-bottom: 2rem; color: rgba(255,255,255,0.9);">
+            Every small action counts. Start your journey towards a sustainable future today!
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="{{ url_for('waste_guide') }}" class="cta-button" style="background: white; color: #2E7D32;">
+                <i class="fas fa-play"></i> Get Started
+            </a>
+            <a href="{{ url_for('register') }}" class="cta-button" style="background: rgba(255,255,255,0.2); border: 2px solid white;">
+                <i class="fas fa-user-plus"></i> Create Account
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Technology Stack -->
+<section class="container">
+    <div class="section">
+        <h2>🛠️ Built with Modern Technology</h2>
+        <div class="cards-grid">
+            <div class="card">
+                <i class="fab fa-html5" style="color: #E34F26;"></i>
+                <h3>Frontend</h3>
+                <p>HTML5, CSS3, JavaScript for a responsive and interactive user experience.</p>
+            </div>
+            <div class="card">
+                <i class="fab fa-python" style="color: #3776AB;"></i>
+                <h3>Backend</h3>
+                <p>Python Flask framework for robust server-side processing and API development.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-database" style="color: #336791;"></i>
+                <h3>Database</h3>
+                <p>SQLite database for efficient data storage and user management.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Add entrance animations
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
+                }
+            });
+        });
+
+        cards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+    });
+</script>
+{% endblock %}

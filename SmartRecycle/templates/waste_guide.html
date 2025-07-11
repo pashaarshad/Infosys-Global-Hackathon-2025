@@ -1,0 +1,334 @@
+{% extends "base.html" %}
+
+{% block title %}Waste Guide - SmartRecycle{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>♻️ Waste Sorting Guide</h1>
+        <p>Help identify what can be recycled and how to separate it properly</p>
+        <p class="text-center" style="color: #666; font-style: italic;">Simply enter any item below to check if it's recyclable!</p>
+    </div>
+</section>
+
+<!-- Waste Checker Form -->
+<section class="container">
+    <div class="form-container">
+        <h2 class="text-center mb-2">🔍 Check Your Waste Item</h2>
+        <form id="waste-check-form" onsubmit="event.preventDefault(); checkWaste();">
+            <div class="form-group">
+                <label for="waste-item">Enter waste item (e.g., plastic bottle, battery, newspaper):</label>
+                <input type="text" id="waste-item" class="form-input" 
+                       placeholder="Type your item here..." 
+                       autocomplete="off" required>
+            </div>
+            <button type="submit" class="form-button">
+                <i class="fas fa-search"></i> Check Item
+            </button>
+        </form>
+        
+        <!-- Result Display -->
+        <div id="result-container" class="hidden">
+            <!-- Results will be displayed here -->
+        </div>
+    </div>
+</section>
+
+<!-- Popular Items Quick Check -->
+<section class="container">
+    <div class="section">
+        <h2>🔥 Quick Check: Popular Items</h2>
+        <div class="cards-grid">
+            <div class="card" onclick="quickCheck('plastic bottle')">
+                <div class="result-emoji">🍼</div>
+                <h3>Plastic Bottle</h3>
+                <p>Click to check recyclability</p>
+            </div>
+            <div class="card" onclick="quickCheck('battery')">
+                <div class="result-emoji">🔋</div>
+                <h3>Battery</h3>
+                <p>Click to check recyclability</p>
+            </div>
+            <div class="card" onclick="quickCheck('newspaper')">
+                <div class="result-emoji">📰</div>
+                <h3>Newspaper</h3>
+                <p>Click to check recyclability</p>
+            </div>
+            <div class="card" onclick="quickCheck('banana peel')">
+                <div class="result-emoji">🍌</div>
+                <h3>Banana Peel</h3>
+                <p>Click to check recyclability</p>
+            </div>
+            <div class="card" onclick="quickCheck('glass bottle')">
+                <div class="result-emoji">🍾</div>
+                <h3>Glass Bottle</h3>
+                <p>Click to check recyclability</p>
+            </div>
+            <div class="card" onclick="quickCheck('cardboard')">
+                <div class="result-emoji">📦</div>
+                <h3>Cardboard</h3>
+                <p>Click to check recyclability</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Waste Categories Guide -->
+<section class="container">
+    <div class="section">
+        <h2>📋 Waste Categories Guide</h2>
+        <div class="cards-grid">
+            <div class="card" style="border-left: 5px solid #4CAF50;">
+                <i class="fas fa-recycle" style="color: #4CAF50;"></i>
+                <h3>♻️ Plastic</h3>
+                <p><strong>Examples:</strong> Bottles, containers, bags, packaging</p>
+                <p><strong>Tip:</strong> Remove caps, rinse clean, check recycling number</p>
+            </div>
+            <div class="card" style="border-left: 5px solid #2196F3;">
+                <i class="fas fa-newspaper" style="color: #2196F3;"></i>
+                <h3>📰 Paper</h3>
+                <p><strong>Examples:</strong> Newspapers, magazines, cardboard, office paper</p>
+                <p><strong>Tip:</strong> Keep dry, remove staples and tape</p>
+            </div>
+            <div class="card" style="border-left: 5px solid #00BCD4;">
+                <i class="fas fa-wine-glass" style="color: #00BCD4;"></i>
+                <h3>🍾 Glass</h3>
+                <p><strong>Examples:</strong> Bottles, jars, containers</p>
+                <p><strong>Tip:</strong> Remove lids, rinse clean, separate by color</p>
+            </div>
+            <div class="card" style="border-left: 5px solid #9E9E9E;">
+                <i class="fas fa-cog" style="color: #9E9E9E;"></i>
+                <h3>🥫 Metal</h3>
+                <p><strong>Examples:</strong> Cans, foil, small appliances</p>
+                <p><strong>Tip:</strong> Rinse containers, remove labels</p>
+            </div>
+            <div class="card" style="border-left: 5px solid #FF9800;">
+                <i class="fas fa-mobile-alt" style="color: #FF9800;"></i>
+                <h3>🔋 E-Waste</h3>
+                <p><strong>Examples:</strong> Electronics, batteries, phones, computers</p>
+                <p><strong>Tip:</strong> Take to certified e-waste centers</p>
+            </div>
+            <div class="card" style="border-left: 5px solid #8BC34A;">
+                <i class="fas fa-leaf" style="color: #8BC34A;"></i>
+                <h3>🍌 Organic</h3>
+                <p><strong>Examples:</strong> Food scraps, yard waste, biodegradable items</p>
+                <p><strong>Tip:</strong> Perfect for composting</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recycling Tips -->
+<section class="container">
+    <div class="section" style="background: linear-gradient(135deg, #E8F5E8, #F1F8E9); padding: 3rem; border-radius: 20px;">
+        <h2>💡 Smart Recycling Tips</h2>
+        <div class="cards-grid">
+            <div class="card">
+                <i class="fas fa-tint" style="color: #2196F3;"></i>
+                <h3>Clean Before Recycling</h3>
+                <p>Rinse containers to remove food residue. Clean items are more likely to be recycled successfully.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-compress-arrows-alt" style="color: #FF9800;"></i>
+                <h3>Separate Materials</h3>
+                <p>Remove caps, labels, and different materials. Sort by material type for better processing.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-question-circle" style="color: #9C27B0;"></i>
+                <h3>When in Doubt</h3>
+                <p>Check with local recycling centers or use our tool. It's better to ask than contaminate recycling.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-shopping-bag" style="color: #4CAF50;"></i>
+                <h3>Reduce First</h3>
+                <p>The best waste is no waste. Choose reusable items and avoid single-use products when possible.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Educational Infographics -->
+<section class="container">
+    <div class="section">
+        <h2>📊 Did You Know?</h2>
+        <div class="stats-grid">
+            <div class="stat-card" style="background: linear-gradient(135deg, #4CAF50, #388E3C);">
+                <span class="stat-number">20x</span>
+                <span class="stat-label">Less Energy to Recycle Aluminum</span>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #2196F3, #1976D2);">
+                <span class="stat-number">1 Ton</span>
+                <span class="stat-label">Recycled Paper Saves 17 Trees</span>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #FF9800, #F57C00);">
+                <span class="stat-number">1M</span>
+                <span class="stat-label">Times Glass Can Be Recycled</span>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #9C27B0, #7B1FA2);">
+                <span class="stat-number">500+</span>
+                <span class="stat-label">Years for Plastic to Decompose</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="container">
+    <div class="section text-center">
+        <div style="background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white; padding: 3rem; border-radius: 20px;">
+            <h2 style="color: white;">🌱 Ready to Make a Difference?</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; color: rgba(255,255,255,0.9);">
+                Now that you know how to sort your waste, take the next step!
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="{{ url_for('request_pickup') }}" class="cta-button" style="background: white; color: #2E7D32;">
+                    <i class="fas fa-truck"></i> Request Pickup
+                </a>
+                <a href="{{ url_for('track_impact') }}" class="cta-button" style="background: rgba(255,255,255,0.2); border: 2px solid white;">
+                    <i class="fas fa-chart-line"></i> Track Your Impact
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Quick check function for popular items
+    function quickCheck(item) {
+        document.getElementById('waste-item').value = item;
+        checkWaste();
+    }
+
+    // Enhanced checkWaste function with loading state
+    function checkWaste() {
+        const itemInput = document.getElementById('waste-item');
+        const resultContainer = document.getElementById('result-container');
+        const submitBtn = document.querySelector('.form-button');
+        
+        if (!itemInput || !itemInput.value.trim()) {
+            showMessage('Please enter a waste item to check', 'warning');
+            return;
+        }
+
+        // Show loading state
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
+        submitBtn.disabled = true;
+
+        const item = itemInput.value.trim();
+        
+        fetch('/check-waste', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ item: item })
+        })
+        .then(response => response.json())
+        .then(data => {
+            displayWasteResult(data, resultContainer);
+            
+            // Reset button
+            submitBtn.innerHTML = '<i class="fas fa-search"></i> Check Item';
+            submitBtn.disabled = false;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showMessage('Error checking waste item. Please try again.', 'error');
+            
+            // Reset button
+            submitBtn.innerHTML = '<i class="fas fa-search"></i> Check Item';
+            submitBtn.disabled = false;
+        });
+    }
+
+    // Enhanced result display with animations
+    function displayWasteResult(data, container) {
+        let resultClass = 'result-unknown';
+        let statusText = 'Unknown ❓';
+        let actionMessage = '';
+        
+        if (data.recyclable === true) {
+            resultClass = 'result-recyclable';
+            statusText = 'Recyclable ✅';
+            actionMessage = '<div style="margin-top: 1rem;"><a href="/request-pickup" class="cta-button">📞 Request Pickup</a></div>';
+        } else if (data.recyclable === false) {
+            resultClass = 'result-non-recyclable';
+            statusText = 'Not Recyclable ❌';
+            actionMessage = '<div style="margin-top: 1rem; color: #666;"><em>Consider reducing use of this item in the future</em></div>';
+        }
+
+        container.innerHTML = `
+            <div class="result-container ${resultClass} fade-in">
+                <div class="result-emoji">${data.emoji}</div>
+                <h3 class="result-title">${data.item}</h3>
+                <div class="result-status" style="font-size: 1.3rem; margin: 1rem 0;">
+                    <strong>${statusText}</strong>
+                </div>
+                <div class="result-category" style="background-color: ${data.color}; color: white; padding: 0.5rem 1rem; border-radius: 25px; display: inline-block; margin: 1rem 0;">
+                    <strong>${data.category}</strong>
+                </div>
+                <p class="result-tip" style="font-size: 1.1rem; margin: 1rem 0;">
+                    <i class="fas fa-lightbulb"></i> <strong>Tip:</strong> ${data.tip}
+                </p>
+                ${actionMessage}
+            </div>
+        `;
+        
+        container.classList.remove('hidden');
+        container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Add celebration effect for recyclable items
+        if (data.recyclable === true) {
+            createCelebrationEffect();
+        }
+    }
+
+    // Celebration effect for recyclable items
+    function createCelebrationEffect() {
+        const emojis = ['🎉', '♻️', '🌱', '✨', '🎊'];
+        
+        for (let i = 0; i < 10; i++) {
+            setTimeout(() => {
+                const emoji = document.createElement('div');
+                emoji.style.position = 'fixed';
+                emoji.style.fontSize = '2rem';
+                emoji.style.pointerEvents = 'none';
+                emoji.style.zIndex = '9999';
+                emoji.style.left = Math.random() * window.innerWidth + 'px';
+                emoji.style.top = '-50px';
+                emoji.style.animation = 'fall 3s linear forwards';
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                
+                document.body.appendChild(emoji);
+                
+                setTimeout(() => {
+                    emoji.remove();
+                }, 3000);
+            }, i * 200);
+        }
+    }
+
+    // Add CSS for falling animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Auto-focus on input when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        const wasteInput = document.getElementById('waste-item');
+        if (wasteInput) {
+            wasteInput.focus();
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,1072 @@
+{% extends "base.html" %}
+
+{% block title %}Nearby Recyclers - SmartRecycle{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>📍 Nearby Recyclers</h1>
+        <p>Find certified recycling centers and drop-off points near you</p>
+        <p class="text-center" style="color: #666; font-style: italic;">Locate the nearest recycling facilities with directions and contact information</p>
+    </div>
+</section>
+
+<!-- Map Container -->
+<section class="container">
+    <div class="section">
+        <h2>🗺️ Interactive Map</h2>
+        <div class="map-container">
+            <div id="map" style="height: 400px; width: 100%; border-radius: 15px; overflow: hidden;">
+                <!-- Map will be loaded here -->
+                <div class="map-placeholder">
+                    <i class="fas fa-map-marker-alt" style="font-size: 4rem; color: #4CAF50;"></i>
+                    <h3>Loading Interactive Map...</h3>
+                    <p>Certified recycling centers near your location</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Map Controls -->
+        <div class="map-controls">
+            <button onclick="getCurrentLocation()" class="control-btn">
+                <i class="fas fa-crosshairs"></i> Find My Location
+            </button>
+            <select id="waste-type-filter" class="control-select" onchange="filterRecyclers()">
+                <option value="all">All Recyclers</option>
+                <option value="plastic">Plastic Recyclers</option>
+                <option value="paper">Paper & Cardboard</option>
+                <option value="glass">Glass Recyclers</option>
+                <option value="metal">Metal Recyclers</option>
+                <option value="ewaste">E-Waste Centers</option>
+                <option value="organic">Organic Waste</option>
+            </select>
+            <button onclick="refreshMap()" class="control-btn">
+                <i class="fas fa-refresh"></i> Refresh
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Recycler Directory -->
+<section class="container">
+    <div class="section">
+        <h2>📋 Recycling Centers Directory</h2>
+        <div class="recycler-grid" id="recycler-list">
+            <!-- Recycler cards will be populated here -->
+        </div>
+    </div>
+</section>
+
+<!-- Search and Filter -->
+<section class="container">
+    <div class="section" style="background: linear-gradient(135deg, #E8F5E8, #F1F8E9); padding: 3rem; border-radius: 20px;">
+        <h2>🔍 Search Recyclers</h2>
+        <div class="search-container">
+            <div class="search-row">
+                <input type="text" id="location-search" class="search-input" placeholder="Enter your area, pincode, or address...">
+                <button onclick="searchByLocation()" class="search-btn">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
+            
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="distance-filter">Distance:</label>
+                    <select id="distance-filter" class="filter-select">
+                        <option value="5">Within 5 km</option>
+                        <option value="10" selected>Within 10 km</option>
+                        <option value="20">Within 20 km</option>
+                        <option value="50">Within 50 km</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="rating-filter">Minimum Rating:</label>
+                    <select id="rating-filter" class="filter-select">
+                        <option value="0">Any Rating</option>
+                        <option value="3">3+ Stars</option>
+                        <option value="4" selected>4+ Stars</option>
+                        <option value="4.5">4.5+ Stars</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="timing-filter">Timing:</label>
+                    <select id="timing-filter" class="filter-select">
+                        <option value="all">Any Time</option>
+                        <option value="24x7">24/7 Available</option>
+                        <option value="weekdays">Weekdays Only</option>
+                        <option value="weekends">Weekends Available</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recycler Information -->
+<section class="container">
+    <div class="section">
+        <h2>ℹ️ What to Expect</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <i class="fas fa-certificate" style="color: #4CAF50;"></i>
+                <h3>Certified Centers</h3>
+                <p>All listed recyclers are verified and certified by environmental authorities for proper waste processing.</p>
+            </div>
+            
+            <div class="info-card">
+                <i class="fas fa-clock" style="color: #2196F3;"></i>
+                <h3>Operating Hours</h3>
+                <p>Check individual timings before visiting. Many centers offer extended hours and weekend availability.</p>
+            </div>
+            
+            <div class="info-card">
+                <i class="fas fa-phone" style="color: #FF9800;"></i>
+                <h3>Contact First</h3>
+                <p>Call ahead to confirm they accept your specific type of waste and check current availability.</p>
+            </div>
+            
+            <div class="info-card">
+                <i class="fas fa-sort" style="color: #9C27B0;"></i>
+                <h3>Pre-Sorted Waste</h3>
+                <p>Bring clean, sorted materials for faster processing and better acceptance rates.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Emergency Contacts -->
+<section class="container">
+    <div class="section">
+        <h2>🚨 Emergency Waste Disposal</h2>
+        <div class="emergency-contacts">
+            <div class="emergency-card">
+                <div class="emergency-icon">🔋</div>
+                <h3>Hazardous E-Waste</h3>
+                <p>For batteries, electronics with toxic materials</p>
+                <div class="contact-info">
+                    <p><i class="fas fa-phone"></i> 1800-123-4567</p>
+                    <p><i class="fas fa-envelope"></i> ewaste@gov.in</p>
+                </div>
+            </div>
+            
+            <div class="emergency-card">
+                <div class="emergency-icon">⚗️</div>
+                <h3>Chemical Waste</h3>
+                <p>Paints, solvents, cleaning chemicals</p>
+                <div class="contact-info">
+                    <p><i class="fas fa-phone"></i> 1800-567-8901</p>
+                    <p><i class="fas fa-envelope"></i> hazwaste@pollution.gov.in</p>
+                </div>
+            </div>
+            
+            <div class="emergency-card">
+                <div class="emergency-icon">🏥</div>
+                <h3>Medical Waste</h3>
+                <p>Syringes, medicines, medical equipment</p>
+                <div class="contact-info">
+                    <p><i class="fas fa-phone"></i> 1800-234-5678</p>
+                    <p><i class="fas fa-envelope"></i> medwaste@health.gov.in</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tips for Drop-off -->
+<section class="container">
+    <div class="section" style="background: linear-gradient(135deg, #E3F2FD, #BBDEFB); padding: 3rem; border-radius: 20px;">
+        <h2>💡 Drop-off Tips</h2>
+        <div class="tips-grid">
+            <div class="tip-item">
+                <div class="tip-icon">📞</div>
+                <div class="tip-content">
+                    <h4>Call Ahead</h4>
+                    <p>Confirm operating hours and accepted materials before visiting</p>
+                </div>
+            </div>
+            
+            <div class="tip-item">
+                <div class="tip-icon">🧹</div>
+                <div class="tip-content">
+                    <h4>Clean Materials</h4>
+                    <p>Rinse containers and remove labels for better acceptance</p>
+                </div>
+            </div>
+            
+            <div class="tip-item">
+                <div class="tip-icon">📦</div>
+                <div class="tip-content">
+                    <h4>Separate Items</h4>
+                    <p>Sort by material type in different bags or containers</p>
+                </div>
+            </div>
+            
+            <div class="tip-item">
+                <div class="tip-icon">🆔</div>
+                <div class="tip-content">
+                    <h4>Bring ID</h4>
+                    <p>Some centers require identification for certain waste types</p>
+                </div>
+            </div>
+            
+            <div class="tip-item">
+                <div class="tip-icon">💰</div>
+                <div class="tip-content">
+                    <h4>Check Payments</h4>
+                    <p>Some valuable materials may offer payment or certificates</p>
+                </div>
+            </div>
+            
+            <div class="tip-item">
+                <div class="tip-icon">⏰</div>
+                <div class="tip-content">
+                    <h4>Avoid Peak Hours</h4>
+                    <p>Visit during off-peak times for faster service</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="container">
+    <div class="section text-center">
+        <div style="background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white; padding: 3rem; border-radius: 20px;">
+            <h2 style="color: white;">🌍 Make a Local Impact!</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; color: rgba(255,255,255,0.9);">
+                Every trip to a recycling center makes a difference in your community and the environment.
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="{{ url_for('waste_guide') }}" class="cta-button" style="background: white; color: #2E7D32;">
+                    <i class="fas fa-question-circle"></i> Check What to Recycle
+                </a>
+                <a href="{{ url_for('request_pickup') }}" class="cta-button" style="background: rgba(255,255,255,0.2); border: 2px solid white;">
+                    <i class="fas fa-truck"></i> Schedule Pickup Instead
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<!-- Google Maps API -->
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+
+<script>
+    // Sample recycler data (in real app, this would come from database/API)
+    const recyclers = [
+        {
+            id: 1,
+            name: "Green Earth Recycling",
+            lat: 28.6139,
+            lng: 77.2090,
+            address: "123 Green Street, Central Delhi",
+            phone: "+91 9876543210",
+            email: "info@greenearth.com",
+            types: ["plastic", "paper", "glass", "metal"],
+            rating: 4.5,
+            timing: "Mon-Sat: 9 AM - 6 PM",
+            description: "Comprehensive recycling facility accepting all major waste types",
+            certified: true,
+            distance: 2.5
+        },
+        {
+            id: 2,
+            name: "E-Waste Solutions Delhi",
+            lat: 28.6289,
+            lng: 77.2165,
+            address: "456 Tech Park, Connaught Place",
+            phone: "+91 9876543211",
+            email: "contact@ewastedelhi.com",
+            types: ["ewaste"],
+            rating: 4.8,
+            timing: "Mon-Fri: 10 AM - 7 PM, Sat: 10 AM - 4 PM",
+            description: "Specialized e-waste recycling with data destruction services",
+            certified: true,
+            distance: 3.2
+        },
+        {
+            id: 3,
+            name: "Paper Recovery Center",
+            lat: 28.5989,
+            lng: 77.1956,
+            address: "789 Industrial Area, South Delhi",
+            phone: "+91 9876543212",
+            email: "info@paperrecovery.com",
+            types: ["paper"],
+            rating: 4.2,
+            timing: "Mon-Sat: 8 AM - 5 PM",
+            description: "Large-scale paper and cardboard processing facility",
+            certified: true,
+            distance: 5.1
+        },
+        {
+            id: 4,
+            name: "Plastic Revival Co.",
+            lat: 28.6342,
+            lng: 77.2224,
+            address: "321 Eco Zone, North Delhi",
+            phone: "+91 9876543213",
+            email: "hello@plasticrevival.com",
+            types: ["plastic"],
+            rating: 4.6,
+            timing: "Mon-Sun: 24/7 Drop-off Available",
+            description: "Advanced plastic recycling with 24/7 drop-off facility",
+            certified: true,
+            distance: 4.3
+        },
+        {
+            id: 5,
+            name: "Metal Recovery Station",
+            lat: 28.5845,
+            lng: 77.2012,
+            address: "654 Metal Market, West Delhi",
+            phone: "+91 9876543214",
+            email: "sales@metalrecovery.com",
+            types: ["metal"],
+            rating: 4.0,
+            timing: "Mon-Fri: 9 AM - 6 PM",
+            description: "Metal recycling with competitive pricing for valuable metals",
+            certified: true,
+            distance: 6.7
+        },
+        {
+            id: 6,
+            name: "Glass Cycle Hub",
+            lat: 28.6156,
+            lng: 77.2345,
+            address: "987 Crystal Lane, East Delhi",
+            phone: "+91 9876543215",
+            email: "info@glasscycle.com",
+            types: ["glass"],
+            rating: 4.4,
+            timing: "Tue-Sun: 10 AM - 6 PM",
+            description: "Glass recycling facility with color separation and cleaning",
+            certified: true,
+            distance: 3.8
+        }
+    ];
+
+    let map;
+    let markers = [];
+    let userLocation = { lat: 28.6139, lng: 77.2090 }; // Default to Delhi
+
+    // Initialize Google Maps
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: userLocation,
+            styles: [
+                {
+                    featureType: 'poi',
+                    elementType: 'labels',
+                    stylers: [{ visibility: 'off' }]
+                }
+            ]
+        });
+
+        // Add user location marker
+        new google.maps.Marker({
+            position: userLocation,
+            map: map,
+            title: 'Your Location',
+            icon: {
+                url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                    <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="15" cy="15" r="12" fill="#4CAF50" stroke="white" stroke-width="3"/>
+                        <circle cx="15" cy="15" r="4" fill="white"/>
+                    </svg>
+                `),
+                scaledSize: new google.maps.Size(30, 30)
+            }
+        });
+
+        // Add recycler markers
+        addRecyclerMarkers();
+        
+        // Populate recycler list
+        populateRecyclerList();
+    }
+
+    function addRecyclerMarkers() {
+        // Clear existing markers
+        markers.forEach(marker => marker.setMap(null));
+        markers = [];
+
+        recyclers.forEach(recycler => {
+            const marker = new google.maps.Marker({
+                position: { lat: recycler.lat, lng: recycler.lng },
+                map: map,
+                title: recycler.name,
+                icon: getMarkerIcon(recycler.types[0])
+            });
+
+            const infoWindow = new google.maps.InfoWindow({
+                content: createInfoWindowContent(recycler)
+            });
+
+            marker.addListener('click', () => {
+                infoWindow.open(map, marker);
+            });
+
+            markers.push(marker);
+        });
+    }
+
+    function getMarkerIcon(type) {
+        const colors = {
+            plastic: '#4CAF50',
+            paper: '#2196F3',
+            glass: '#00BCD4',
+            metal: '#9E9E9E',
+            ewaste: '#FF9800',
+            organic: '#8BC34A'
+        };
+
+        const color = colors[type] || '#4CAF50';
+        
+        return {
+            url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+                <svg width="25" height="35" viewBox="0 0 25 35" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.5 0C5.6 0 0 5.6 0 12.5C0 21.9 12.5 35 12.5 35S25 21.9 25 12.5C25 5.6 19.4 0 12.5 0Z" fill="${color}"/>
+                    <circle cx="12.5" cy="12.5" r="7" fill="white"/>
+                    <text x="12.5" y="17" text-anchor="middle" font-family="Arial" font-size="10" fill="${color}">♻</text>
+                </svg>
+            `)}`,
+            scaledSize: new google.maps.Size(25, 35)
+        };
+    }
+
+    function createInfoWindowContent(recycler) {
+        const typeIcons = {
+            plastic: '♻️',
+            paper: '📰',
+            glass: '🍾',
+            metal: '🥫',
+            ewaste: '🔋',
+            organic: '🍌'
+        };
+
+        const typesDisplay = recycler.types.map(type => 
+            `<span class="type-tag">${typeIcons[type]} ${type}</span>`
+        ).join(' ');
+
+        return `
+            <div style="max-width: 300px; padding: 10px;">
+                <h3 style="margin: 0 0 10px 0; color: #2E7D32;">${recycler.name}</h3>
+                <div style="margin-bottom: 8px;">
+                    <strong>📍 Address:</strong><br>
+                    ${recycler.address}
+                </div>
+                <div style="margin-bottom: 8px;">
+                    <strong>📞 Phone:</strong> ${recycler.phone}
+                </div>
+                <div style="margin-bottom: 8px;">
+                    <strong>⏰ Timing:</strong><br>
+                    ${recycler.timing}
+                </div>
+                <div style="margin-bottom: 8px;">
+                    <strong>♻️ Accepts:</strong><br>
+                    ${typesDisplay}
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <strong>⭐ Rating:</strong> ${recycler.rating}/5
+                    ${recycler.certified ? '<span style="color: #4CAF50; margin-left: 5px;">✓ Certified</span>' : ''}
+                </div>
+                <div style="text-align: center;">
+                    <button onclick="getDirections(${recycler.lat}, ${recycler.lng})" 
+                            style="background: #4CAF50; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-right: 5px;">
+                        🧭 Directions
+                    </button>
+                    <button onclick="callRecycler('${recycler.phone}')" 
+                            style="background: #2196F3; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
+                        📞 Call
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    function populateRecyclerList() {
+        const container = document.getElementById('recycler-list');
+        container.innerHTML = '';
+
+        recyclers.forEach(recycler => {
+            const card = createRecyclerCard(recycler);
+            container.appendChild(card);
+        });
+    }
+
+    function createRecyclerCard(recycler) {
+        const card = document.createElement('div');
+        card.className = 'recycler-card';
+        
+        const typeIcons = {
+            plastic: '♻️',
+            paper: '📰',
+            glass: '🍾',
+            metal: '🥫',
+            ewaste: '🔋',
+            organic: '🍌'
+        };
+
+        const typesDisplay = recycler.types.map(type => 
+            `<span class="type-badge">${typeIcons[type]} ${type.charAt(0).toUpperCase() + type.slice(1)}</span>`
+        ).join('');
+
+        card.innerHTML = `
+            <div class="recycler-header">
+                <h3>${recycler.name}</h3>
+                <div class="rating">
+                    ⭐ ${recycler.rating}
+                    ${recycler.certified ? '<span class="certified">✓ Certified</span>' : ''}
+                </div>
+            </div>
+            
+            <div class="recycler-details">
+                <p><i class="fas fa-map-marker-alt"></i> ${recycler.address}</p>
+                <p><i class="fas fa-clock"></i> ${recycler.timing}</p>
+                <p><i class="fas fa-route"></i> ${recycler.distance} km away</p>
+            </div>
+            
+            <div class="waste-types">
+                <strong>Accepts:</strong> ${typesDisplay}
+            </div>
+            
+            <p class="description">${recycler.description}</p>
+            
+            <div class="recycler-actions">
+                <button onclick="getDirections(${recycler.lat}, ${recycler.lng})" class="action-btn primary">
+                    <i class="fas fa-directions"></i> Get Directions
+                </button>
+                <button onclick="callRecycler('${recycler.phone}')" class="action-btn secondary">
+                    <i class="fas fa-phone"></i> Call
+                </button>
+                <button onclick="focusOnMap(${recycler.lat}, ${recycler.lng})" class="action-btn tertiary">
+                    <i class="fas fa-map"></i> View on Map
+                </button>
+            </div>
+        `;
+
+        return card;
+    }
+
+    // Utility functions
+    function getDirections(lat, lng) {
+        const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+        window.open(url, '_blank');
+    }
+
+    function callRecycler(phone) {
+        window.open(`tel:${phone}`, '_self');
+    }
+
+    function focusOnMap(lat, lng) {
+        map.setCenter({ lat, lng });
+        map.setZoom(16);
+        document.getElementById('map').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function getCurrentLocation() {
+        if (navigator.geolocation) {
+            showMessage('🔍 Getting your location...', 'info');
+            
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    
+                    map.setCenter(userLocation);
+                    showMessage('📍 Location updated successfully!', 'success');
+                    
+                    // Update distances and re-populate list
+                    updateDistances();
+                    populateRecyclerList();
+                },
+                (error) => {
+                    showMessage('❌ Could not get your location. Using default location.', 'warning');
+                }
+            );
+        } else {
+            showMessage('❌ Geolocation is not supported by this browser.', 'error');
+        }
+    }
+
+    function updateDistances() {
+        recyclers.forEach(recycler => {
+            const distance = calculateDistance(
+                userLocation.lat, userLocation.lng,
+                recycler.lat, recycler.lng
+            );
+            recycler.distance = Math.round(distance * 10) / 10;
+        });
+        
+        // Sort by distance
+        recyclers.sort((a, b) => a.distance - b.distance);
+    }
+
+    function calculateDistance(lat1, lng1, lat2, lng2) {
+        const R = 6371; // Earth's radius in km
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLng = (lng2 - lng1) * Math.PI / 180;
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLng/2) * Math.sin(dLng/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
+    }
+
+    function filterRecyclers() {
+        const wasteType = document.getElementById('waste-type-filter').value;
+        const distance = parseInt(document.getElementById('distance-filter').value);
+        const rating = parseFloat(document.getElementById('rating-filter').value);
+        
+        // Filter recyclers based on criteria
+        const filtered = recyclers.filter(recycler => {
+            const typeMatch = wasteType === 'all' || recycler.types.includes(wasteType);
+            const distanceMatch = recycler.distance <= distance;
+            const ratingMatch = recycler.rating >= rating;
+            
+            return typeMatch && distanceMatch && ratingMatch;
+        });
+        
+        // Update map markers
+        markers.forEach(marker => marker.setMap(null));
+        markers = [];
+        
+        filtered.forEach(recycler => {
+            const marker = new google.maps.Marker({
+                position: { lat: recycler.lat, lng: recycler.lng },
+                map: map,
+                title: recycler.name,
+                icon: getMarkerIcon(recycler.types[0])
+            });
+            
+            const infoWindow = new google.maps.InfoWindow({
+                content: createInfoWindowContent(recycler)
+            });
+            
+            marker.addListener('click', () => {
+                infoWindow.open(map, marker);
+            });
+            
+            markers.push(marker);
+        });
+        
+        // Update list
+        const container = document.getElementById('recycler-list');
+        container.innerHTML = '';
+        
+        if (filtered.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 2rem; color: #666;">
+                    <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                    <h3>No recyclers found</h3>
+                    <p>Try adjusting your filters or expanding the search distance.</p>
+                </div>
+            `;
+        } else {
+            filtered.forEach(recycler => {
+                const card = createRecyclerCard(recycler);
+                container.appendChild(card);
+            });
+        }
+        
+        showMessage(`Found ${filtered.length} recycling centers matching your criteria.`, 'info');
+    }
+
+    function searchByLocation() {
+        const location = document.getElementById('location-search').value.trim();
+        if (!location) {
+            showMessage('Please enter a location to search.', 'warning');
+            return;
+        }
+        
+        // In a real app, this would use geocoding API
+        showMessage(`🔍 Searching for recyclers near "${location}"...`, 'info');
+        
+        setTimeout(() => {
+            showMessage('📍 Search completed! Showing nearby recyclers.', 'success');
+            filterRecyclers();
+        }, 1500);
+    }
+
+    function refreshMap() {
+        showMessage('🔄 Refreshing map data...', 'info');
+        
+        setTimeout(() => {
+            addRecyclerMarkers();
+            populateRecyclerList();
+            showMessage('✅ Map refreshed successfully!', 'success');
+        }, 1000);
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set up map placeholder
+        const mapElement = document.getElementById('map');
+        if (!mapElement.querySelector('.map-placeholder')) {
+            mapElement.innerHTML = `
+                <div class="map-placeholder">
+                    <i class="fas fa-map-marker-alt" style="font-size: 4rem; color: #4CAF50;"></i>
+                    <h3>Interactive Map Loading...</h3>
+                    <p>Certified recycling centers near your location</p>
+                </div>
+            `;
+        }
+        
+        // Initialize without Google Maps if not loaded
+        setTimeout(() => {
+            if (typeof google === 'undefined') {
+                populateRecyclerList();
+                mapElement.innerHTML = `
+                    <div class="map-placeholder">
+                        <i class="fas fa-map" style="font-size: 4rem; color: #666;"></i>
+                        <h3>Map Unavailable</h3>
+                        <p>Please check the recycler list below for locations and contact information.</p>
+                    </div>
+                `;
+            }
+        }, 5000);
+    });
+
+    // Add custom CSS
+    const mapStyles = document.createElement('style');
+    mapStyles.textContent = `
+        .map-container {
+            margin: 2rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .map-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 400px;
+            background: linear-gradient(135deg, #F1F8E9, #E8F5E8);
+            color: #666;
+        }
+        
+        .map-controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .control-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            background: #388E3C;
+            transform: translateY(-2px);
+        }
+        
+        .control-select {
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .recycler-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .recycler-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .recycler-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border-color: #4CAF50;
+        }
+        
+        .recycler-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .recycler-header h3 {
+            margin: 0;
+            color: #2E7D32;
+            flex: 1;
+        }
+        
+        .rating {
+            font-weight: bold;
+            color: #FF9800;
+            white-space: nowrap;
+        }
+        
+        .certified {
+            color: #4CAF50;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+        
+        .recycler-details p {
+            margin: 0.5rem 0;
+            color: #666;
+        }
+        
+        .recycler-details i {
+            width: 16px;
+            margin-right: 0.5rem;
+            color: #4CAF50;
+        }
+        
+        .waste-types {
+            margin: 1rem 0;
+        }
+        
+        .type-badge {
+            display: inline-block;
+            background: #E8F5E8;
+            color: #2E7D32;
+            padding: 0.3rem 0.7rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            margin: 0.2rem 0.3rem 0.2rem 0;
+            border: 1px solid #4CAF50;
+        }
+        
+        .description {
+            color: #666;
+            font-style: italic;
+            margin: 1rem 0;
+        }
+        
+        .recycler-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .action-btn.primary {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .action-btn.secondary {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .action-btn.tertiary {
+            background: #FF9800;
+            color: white;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        .search-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .search-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .search-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .filter-group label {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .filter-select {
+            padding: 0.5rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .info-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .info-card i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .emergency-contacts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .emergency-card {
+            background: linear-gradient(135deg, #FFEBEE, #FFCDD2);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #F44336;
+        }
+        
+        .emergency-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-info p {
+            margin: 0.5rem 0;
+            color: #333;
+        }
+        
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .tip-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .tip-icon {
+            font-size: 2rem;
+            width: 50px;
+            text-align: center;
+        }
+        
+        .tip-content h4 {
+            margin: 0 0 0.5rem 0;
+            color: #333;
+        }
+        
+        .tip-content p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .type-tag {
+            background: #E8F5E8;
+            color: #2E7D32;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            margin: 0 2px;
+        }
+        
+        @media (max-width: 768px) {
+            .recycler-actions {
+                flex-direction: column;
+            }
+            
+            .action-btn {
+                min-width: auto;
+            }
+            
+            .search-row {
+                flex-direction: column;
+            }
+            
+            .map-controls {
+                justify-content: center;
+            }
+            
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    `;
+    document.head.appendChild(mapStyles);
+</script>
+{% endblock %}

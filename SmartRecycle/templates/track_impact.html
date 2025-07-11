@@ -1,0 +1,725 @@
+{% extends "base.html" %}
+
+{% block title %}Track Impact - SmartRecycle{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <div id="welcome-message">
+            <h1>📊 Track Your Impact</h1>
+            <p>See how much difference you're making for the environment</p>
+        </div>
+        <p class="text-center" style="color: #666; font-style: italic;">Your eco-actions are creating real change!</p>
+    </div>
+</section>
+
+<!-- Login Prompt for Non-Authenticated Users -->
+<section class="container" id="loginPrompt" style="display: none;">
+    <div class="alert alert-info">
+        <h3>🔐 Sign in to track your personal impact!</h3>
+        <p>Create an account to save your recycling data and see personalized environmental impact metrics.</p>
+        <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+        <a href="{{ url_for('register') }}" class="btn btn-secondary">Register</a>
+    </div>
+</section>
+
+<!-- Personal Dashboard -->
+<section class="container">
+    <div class="section">
+        <h2>🏆 Your Environmental Dashboard</h2>
+        <div class="stats-grid">
+            <div class="stat-card" style="background: linear-gradient(135deg, #4CAF50, #388E3C);">
+                <span class="stat-number" id="total-waste">0</span>
+                <span class="stat-label">kg Waste Recycled</span>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #2196F3, #1976D2);">
+                <span class="stat-number" id="points-earned">0</span>
+                <span class="stat-label">Green Points Earned</span>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #FF9800, #F57C00);">
+                <span class="stat-number" id="trees-saved">0</span>
+                <span class="stat-label">Trees Equivalent Saved</span>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #9C27B0, #7B1FA2);">
+                <span class="stat-number" id="water-saved">0</span>
+                <span class="stat-label">Liters Water Saved</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Environmental Impact Breakdown -->
+<section class="container">
+    <div class="section">
+        <h2>🌱 Environmental Impact Breakdown</h2>
+        <div class="cards-grid">
+            <div class="card" style="border-left: 5px solid #4CAF50;">
+                <i class="fas fa-recycle" style="color: #4CAF50; font-size: 2.5rem;"></i>
+                <h3>Carbon Footprint Reduced</h3>
+                <div class="impact-metric">
+                    <span class="impact-number" id="co2-reduced">0</span>
+                    <span class="impact-unit">kg CO₂</span>
+                </div>
+                <p>Equivalent to driving <strong id="driving-equivalent">0</strong> km less in a car</p>
+            </div>
+            
+            <div class="card" style="border-left: 5px solid #2196F3;">
+                <i class="fas fa-tint" style="color: #2196F3; font-size: 2.5rem;"></i>
+                <h3>Water Conservation</h3>
+                <div class="impact-metric">
+                    <span class="impact-number" id="water-conserved">0</span>
+                    <span class="impact-unit">Liters</span>
+                </div>
+                <p>Enough water for <strong id="shower-equivalent">0</strong> average showers</p>
+            </div>
+            
+            <div class="card" style="border-left: 5px solid #8BC34A;">
+                <i class="fas fa-tree" style="color: #8BC34A; font-size: 2.5rem;"></i>
+                <h3>Forest Protection</h3>
+                <div class="impact-metric">
+                    <span class="impact-number" id="trees-protected">0</span>
+                    <span class="impact-unit">Trees</span>
+                </div>
+                <p>Protected <strong id="forest-area">0</strong> m² of forest area</p>
+            </div>
+            
+            <div class="card" style="border-left: 5px solid #FF9800;">
+                <i class="fas fa-bolt" style="color: #FF9800; font-size: 2.5rem;"></i>
+                <h3>Energy Saved</h3>
+                <div class="impact-metric">
+                    <span class="impact-number" id="energy-saved">0</span>
+                    <span class="impact-unit">kWh</span>
+                </div>
+                <p>Powers a home for <strong id="power-equivalent">0</strong> hours</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recent Activities -->
+<section class="container">
+    <div class="section">
+        <h2>📅 Recent Activities</h2>
+        <div class="activity-timeline" id="recent-activities">
+            <div class="activity-item">
+                <div class="activity-icon" style="background: #4CAF50;">
+                    <i class="fas fa-recycle"></i>
+                </div>
+                <div class="activity-content">
+                    <h4>Plastic Bottles Recycled</h4>
+                    <p>15 plastic bottles • +30 points</p>
+                    <span class="activity-date">2 days ago</span>
+                </div>
+                <div class="activity-impact">
+                    <span class="impact-badge" style="background: #4CAF50;">+5kg CO₂ saved</span>
+                </div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon" style="background: #2196F3;">
+                    <i class="fas fa-newspaper"></i>
+                </div>
+                <div class="activity-content">
+                    <h4>Paper & Cardboard</h4>
+                    <p>25kg mixed paper • +50 points</p>
+                    <span class="activity-date">5 days ago</span>
+                </div>
+                <div class="activity-impact">
+                    <span class="impact-badge" style="background: #2196F3;">2 trees saved</span>
+                </div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon" style="background: #FF9800;">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <div class="activity-content">
+                    <h4>E-Waste Collection</h4>
+                    <p>Old mobile phones & cables • +75 points</p>
+                    <span class="activity-date">1 week ago</span>
+                </div>
+                <div class="activity-impact">
+                    <span class="impact-badge" style="background: #FF9800;">Hazards prevented</span>
+                </div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon" style="background: #9C27B0;">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="activity-content">
+                    <h4>Achievement Unlocked</h4>
+                    <p>Eco Warrior Badge earned!</p>
+                    <span class="activity-date">1 week ago</span>
+                </div>
+                <div class="activity-impact">
+                    <span class="impact-badge" style="background: #9C27B0;">Badge earned</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Achievements and Badges -->
+<section class="container">
+    <div class="section">
+        <h2>🏅 Achievements & Badges</h2>
+        <div class="badges-grid">
+            <div class="badge-card earned">
+                <div class="badge-icon">🌱</div>
+                <h4>Green Starter</h4>
+                <p>First recycling action</p>
+                <span class="badge-status">Earned</span>
+            </div>
+            
+            <div class="badge-card earned">
+                <div class="badge-icon">♻️</div>
+                <h4>Recycling Pro</h4>
+                <p>25kg waste recycled</p>
+                <span class="badge-status">Earned</span>
+            </div>
+            
+            <div class="badge-card earned">
+                <div class="badge-icon">🏆</div>
+                <h4>Eco Warrior</h4>
+                <p>100 green points</p>
+                <span class="badge-status">Earned</span>
+            </div>
+            
+            <div class="badge-card locked">
+                <div class="badge-icon">🌟</div>
+                <h4>Sustainability Champion</h4>
+                <p>50kg waste recycled</p>
+                <span class="badge-status">15kg to go</span>
+            </div>
+            
+            <div class="badge-card locked">
+                <div class="badge-icon">🌍</div>
+                <h4>Planet Protector</h4>
+                <p>Save 100 trees equivalent</p>
+                <span class="badge-status">85 trees to go</span>
+            </div>
+            
+            <div class="badge-card locked">
+                <div class="badge-icon">💎</div>
+                <h4>Diamond Recycler</h4>
+                <p>500 green points</p>
+                <span class="badge-status">350 points to go</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Impact Comparison -->
+<section class="container">
+    <div class="section" style="background: linear-gradient(135deg, #E8F5E8, #F1F8E9); padding: 3rem; border-radius: 20px;">
+        <h2>📈 Community Impact</h2>
+        <div class="comparison-grid">
+            <div class="comparison-card">
+                <h3>Your Contribution</h3>
+                <div class="comparison-bar">
+                    <div class="progress-bar" style="width: 35%; background: #4CAF50;"></div>
+                </div>
+                <p><strong>35%</strong> above average recycler</p>
+            </div>
+            
+            <div class="comparison-card">
+                <h3>Community Total</h3>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="stat-value">1,245</span>
+                        <span class="stat-label">Active Users</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">25,890</span>
+                        <span class="stat-label">kg Recycled</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comparison-card">
+                <h3>Global Impact</h3>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="stat-value">2,580</span>
+                        <span class="stat-label">Trees Saved</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">15.6</span>
+                        <span class="stat-label">Tons CO₂ Reduced</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Leaderboard -->
+<section class="container">
+    <div class="section">
+        <h2>🏆 Monthly Leaderboard</h2>
+        <div class="leaderboard">
+            <div class="leaderboard-item rank-1">
+                <div class="rank">🥇</div>
+                <div class="user-info">
+                    <strong>EcoChampion2025</strong>
+                    <span>156 points this month</span>
+                </div>
+                <div class="points">1,245 pts</div>
+            </div>
+            
+            <div class="leaderboard-item rank-2">
+                <div class="rank">🥈</div>
+                <div class="user-info">
+                    <strong>GreenHero</strong>
+                    <span>142 points this month</span>
+                </div>
+                <div class="points">1,180 pts</div>
+            </div>
+            
+            <div class="leaderboard-item rank-3">
+                <div class="rank">🥉</div>
+                <div class="user-info">
+                    <strong>RecycleRanger</strong>
+                    <span>128 points this month</span>
+                </div>
+                <div class="points">1,095 pts</div>
+            </div>
+            
+            <div class="leaderboard-item current-user">
+                <div class="rank">#8</div>
+                <div class="user-info">
+                    <strong>You (EcoWarrior)</strong>
+                    <span>85 points this month</span>
+                </div>
+                <div class="points">850 pts</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="container">
+    <div class="section text-center">
+        <div style="background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white; padding: 3rem; border-radius: 20px;">
+            <h2 style="color: white;">🚀 Keep Making an Impact!</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; color: rgba(255,255,255,0.9);">
+                Your efforts are making a real difference. Let's do even more together!
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="{{ url_for('request_pickup') }}" class="cta-button" style="background: white; color: #2E7D32;">
+                    <i class="fas fa-truck"></i> Schedule Pickup
+                </a>
+                <a href="{{ url_for('rewards') }}" class="cta-button" style="background: rgba(255,255,255,0.2); border: 2px solid white;">
+                    <i class="fas fa-gift"></i> Redeem Rewards
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Impact data calculation and display
+    function updateImpactDisplay() {
+        const baseWaste = Math.floor(Math.random() * 40) + 20; // 20-60 kg
+        const data = {
+            wasteSubmitted: baseWaste,
+            pointsEarned: baseWaste * 2,
+            treesSaved: Math.floor(baseWaste / 5),
+            waterSaved: baseWaste * 8,
+            carbonSaved: Math.floor(baseWaste * 2.3),
+            energySaved: Math.floor(baseWaste * 1.5)
+        };
+
+        // Update main stats
+        animateNumber(document.getElementById('waste-amount'), 0, data.wasteSubmitted, 2000);
+        animateNumber(document.getElementById('points-earned'), 0, data.pointsEarned, 2000);
+        animateNumber(document.getElementById('trees-saved'), 0, data.treesSaved, 2000);
+        animateNumber(document.getElementById('water-saved'), 0, data.waterSaved, 2000);
+
+        // Update impact breakdown
+        setTimeout(() => {
+            animateNumber(document.getElementById('carbon-saved'), 0, data.carbonSaved, 1500);
+            animateNumber(document.getElementById('water-conserved'), 0, data.waterSaved, 1500);
+            animateNumber(document.getElementById('trees-protected'), 0, data.treesSaved, 1500);
+            animateNumber(document.getElementById('energy-saved'), 0, data.energySaved, 1500);
+            
+            // Update equivalents
+            document.getElementById('driving-equivalent').textContent = Math.floor(data.carbonSaved * 4.2);
+            document.getElementById('shower-equivalent').textContent = Math.floor(data.waterSaved / 65);
+            document.getElementById('forest-area').textContent = Math.floor(data.treesSaved * 12);
+            document.getElementById('power-equivalent').textContent = Math.floor(data.energySaved * 3);
+        }, 1000);
+    }
+
+    function animateNumber(element, start, end, duration) {
+        if (!element) return;
+        
+        const range = end - start;
+        const minTimer = 50;
+        const stepTime = Math.abs(Math.floor(duration / range));
+        const timer = Math.max(stepTime, minTimer);
+        
+        const startTime = Date.now();
+        const endTime = startTime + duration;
+        
+        function run() {
+            const now = Date.now();
+            const remaining = Math.max((endTime - now) / duration, 0);
+            const value = Math.round(end - (remaining * range));
+            
+            element.textContent = value;
+            
+            if (value !== end) {
+                setTimeout(run, timer);
+            }
+        }
+        
+        run();
+    }
+
+    // Achievement animation
+    function animateAchievements() {
+        const badges = document.querySelectorAll('.badge-card.earned');
+        badges.forEach((badge, index) => {
+            setTimeout(() => {
+                badge.style.animation = 'bounceIn 0.6s ease';
+            }, index * 200);
+        });
+    }
+
+    // Progress bar animation
+    function animateProgressBars() {
+        const progressBars = document.querySelectorAll('.progress-bar');
+        progressBars.forEach(bar => {
+            const width = bar.style.width;
+            bar.style.width = '0%';
+            setTimeout(() => {
+                bar.style.transition = 'width 2s ease';
+                bar.style.width = width;
+            }, 500);
+        });
+    }
+
+    // Activity timeline animation
+    function animateTimeline() {
+        const items = document.querySelectorAll('.activity-item');
+        items.forEach((item, index) => {
+            setTimeout(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'translateX(0)';
+            }, index * 200);
+        });
+    }
+
+    // Download certificate function
+    function downloadCertificate() {
+        showMessage('🏆 Generating your impact certificate...', 'info');
+        
+        setTimeout(() => {
+            showMessage('📄 Certificate downloaded! Check your downloads folder.', 'success');
+            
+            // In a real application, this would generate and download a PDF
+            const certificateData = {
+                name: 'Eco Warrior',
+                wasteRecycled: document.getElementById('waste-amount').textContent + ' kg',
+                pointsEarned: document.getElementById('points-earned').textContent,
+                impactDate: new Date().toLocaleDateString(),
+                carbonSaved: document.getElementById('carbon-saved').textContent + ' kg CO₂'
+            };
+            
+            console.log('Certificate Data:', certificateData);
+        }, 2000);
+    }
+
+    // Add certificate download button
+    function addCertificateButton() {
+        const section = document.querySelector('.section');
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'text-center mt-2';
+        buttonContainer.innerHTML = `
+            <button onclick="downloadCertificate()" class="cta-button" style="background: linear-gradient(135deg, #9C27B0, #7B1FA2);">
+                <i class="fas fa-download"></i> Download Impact Certificate
+            </button>
+        `;
+        section.appendChild(buttonContainer);
+    }
+
+    // Initialize all animations when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set initial states for timeline items
+        document.querySelectorAll('.activity-item').forEach(item => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateX(-20px)';
+            item.style.transition = 'all 0.5s ease';
+        });
+
+        // Start animations
+        updateImpactDisplay();
+        
+        setTimeout(() => {
+            animateProgressBars();
+            animateTimeline();
+        }, 2500);
+        
+        setTimeout(() => {
+            animateAchievements();
+        }, 3500);
+
+        // Add certificate download option
+        setTimeout(() => {
+            addCertificateButton();
+        }, 4000);
+    });
+
+    // Add custom CSS for animations
+    const animationStyles = document.createElement('style');
+    animationStyles.textContent = `
+        .impact-metric {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .impact-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        
+        .impact-unit {
+            font-size: 1rem;
+            color: #666;
+            font-weight: normal;
+        }
+        
+        .activity-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .activity-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-content h4 {
+            margin: 0 0 0.5rem 0;
+            color: #333;
+        }
+        
+        .activity-content p {
+            margin: 0;
+            color: #666;
+        }
+        
+        .activity-date {
+            font-size: 0.9rem;
+            color: #999;
+        }
+        
+        .impact-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .badge-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .badge-card.earned {
+            border: 3px solid #4CAF50;
+        }
+        
+        .badge-card.locked {
+            opacity: 0.6;
+            border: 3px solid #ddd;
+        }
+        
+        .badge-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .badge-status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        
+        .badge-card.earned .badge-status {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .badge-card.locked .badge-status {
+            background: #ddd;
+            color: #666;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .comparison-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-bar {
+            background: #ddd;
+            height: 20px;
+            border-radius: 10px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 2s ease;
+        }
+        
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            display: block;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .leaderboard {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            gap: 1rem;
+        }
+        
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+        
+        .leaderboard-item.current-user {
+            background: linear-gradient(135deg, #E8F5E8, #F1F8E9);
+            border: 2px solid #4CAF50;
+        }
+        
+        .rank {
+            font-size: 1.5rem;
+            font-weight: bold;
+            width: 50px;
+            text-align: center;
+        }
+        
+        .user-info {
+            flex: 1;
+        }
+        
+        .user-info strong {
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+        
+        .user-info span {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .points {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .activity-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .stats-row {
+                flex-direction: column;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    `;
+    document.head.appendChild(animationStyles);
+</script>
+{% endblock %}
