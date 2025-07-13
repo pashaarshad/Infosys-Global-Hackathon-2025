@@ -161,9 +161,9 @@
                     </label>
                     <select id="timingFilter" class="filter-select-ultra">
                         <option value="all">Any Time</option>
-                        <option value="24x7">24/7 Available</option>
-                        <option value="weekend">Weekend Available</option>
-                        <option value="extended">Extended Hours</option>
+                        <option value="24hrs">24/7 Available</option>
+                        <option value="weekdays">Weekdays Only</option>
+                        <option value="weekends">Weekends Available</option>
                     </select>
                 </div>
                 
@@ -174,9 +174,9 @@
                     </label>
                     <select id="certificationFilter" class="filter-select-ultra">
                         <option value="all">All Centers</option>
-                        <option value="government">Government Certified</option>
-                        <option value="iso">ISO Certified</option>
-                        <option value="green">Green Certified</option>
+                        <option value="certified">Certified Only</option>
+                        <option value="government">Government Approved</option>
+                        <option value="private">Private Facilities</option>
                     </select>
                 </div>
             </div>
@@ -197,142 +197,51 @@
             <div class="recycler-card-ultra featured" data-aos="zoom-in" data-aos-delay="300">
                 <div class="recycler-badge">Featured</div>
                 <div class="recycler-header">
-                    <div class="recycler-icon">
-                        <i class="fas fa-industry"></i>
-                    </div>
+                    <h3>EcoGreen Recycling Center</h3>
                     <div class="recycler-rating">
-                        <span class="rating-value">4.8</span>
-                        <div class="rating-stars">★★★★★</div>
+                        <span class="stars">⭐⭐⭐⭐⭐</span>
+                        <span class="rating-text">4.8 (142 reviews)</span>
                     </div>
                 </div>
                 <div class="recycler-info">
-                    <h3>EcoRecycle Industries</h3>
-                    <p class="recycler-location">
-                        <i class="fas fa-map-marker-alt"></i>
-                        Electronic City, Bangalore - 2.3 km away
-                    </p>
-                    <div class="recycler-specialties">
-                        <span class="specialty-tag plastic">Plastic</span>
-                        <span class="specialty-tag paper">Paper</span>
-                        <span class="specialty-tag ewaste">E-Waste</span>
+                    <p><i class="fas fa-map-marker-alt"></i> Electronic City, Bangalore</p>
+                    <p><i class="fas fa-clock"></i> Mon-Sat: 9AM-6PM</p>
+                    <p><i class="fas fa-phone"></i> +91 9876543210</p>
+                    <div class="waste-types">
+                        <span class="waste-tag">Plastic</span>
+                        <span class="waste-tag">Paper</span>
+                        <span class="waste-tag">E-waste</span>
                     </div>
-                    <div class="recycler-details">
-                        <div class="detail-item">
-                            <i class="fas fa-clock"></i>
-                            <span>Mon-Sat: 8 AM - 6 PM</span>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-phone"></i>
-                            <span>+91 9876543210</span>
-                        </div>
+                    <div class="recycler-actions">
+                        <button class="btn-action">📍 Get Directions</button>
+                        <button class="btn-action">📞 Call Now</button>
                     </div>
-                </div>
-                <div class="recycler-actions">
-                    <button onclick="getDirections('EcoRecycle Industries')" class="action-btn primary">
-                        <i class="fas fa-route"></i>
-                        Get Directions
-                    </button>
-                    <button onclick="showRecyclerDetails('eco-recycle')" class="action-btn secondary">
-                        <i class="fas fa-info-circle"></i>
-                        Details
-                    </button>
                 </div>
             </div>
             
             <div class="recycler-card-ultra" data-aos="zoom-in" data-aos-delay="400">
                 <div class="recycler-header">
-                    <div class="recycler-icon">
-                        <i class="fas fa-recycle"></i>
-                    </div>
+                    <h3>Green Earth Collection</h3>
                     <div class="recycler-rating">
-                        <span class="rating-value">4.6</span>
-                        <div class="rating-stars">★★★★☆</div>
+                        <span class="stars">⭐⭐⭐⭐</span>
+                        <span class="rating-text">4.2 (89 reviews)</span>
                     </div>
                 </div>
                 <div class="recycler-info">
-                    <h3>Green Valley Recyclers</h3>
-                    <p class="recycler-location">
-                        <i class="fas fa-map-marker-alt"></i>
-                        Koramangala, Bangalore - 3.7 km away
-                    </p>
-                    <div class="recycler-specialties">
-                        <span class="specialty-tag glass">Glass</span>
-                        <span class="specialty-tag metal">Metal</span>
-                        <span class="specialty-tag organic">Organic</span>
+                    <p><i class="fas fa-map-marker-alt"></i> Koramangala, Bangalore</p>
+                    <p><i class="fas fa-clock"></i> Mon-Fri: 8AM-5PM</p>
+                    <p><i class="fas fa-phone"></i> +91 9876543211</p>
+                    <div class="waste-types">
+                        <span class="waste-tag">Glass</span>
+                        <span class="waste-tag">Metal</span>
+                        <span class="waste-tag">Paper</span>
                     </div>
-                    <div class="recycler-details">
-                        <div class="detail-item">
-                            <i class="fas fa-clock"></i>
-                            <span>24/7 Available</span>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-phone"></i>
-                            <span>+91 8765432109</span>
-                        </div>
+                    <div class="recycler-actions">
+                        <button class="btn-action">📍 Get Directions</button>
+                        <button class="btn-action">📞 Call Now</button>
                     </div>
-                </div>
-                <div class="recycler-actions">
-                    <button onclick="getDirections('Green Valley Recyclers')" class="action-btn primary">
-                        <i class="fas fa-route"></i>
-                        Get Directions
-                    </button>
-                    <button onclick="showRecyclerDetails('green-valley')" class="action-btn secondary">
-                        <i class="fas fa-info-circle"></i>
-                        Details
-                    </button>
                 </div>
             </div>
-            
-            <div class="recycler-card-ultra" data-aos="zoom-in" data-aos-delay="500">
-                <div class="recycler-header">
-                    <div class="recycler-icon">
-                        <i class="fas fa-laptop"></i>
-                    </div>
-                    <div class="recycler-rating">
-                        <span class="rating-value">4.9</span>
-                        <div class="rating-stars">★★★★★</div>
-                    </div>
-                </div>
-                <div class="recycler-info">
-                    <h3>TechWaste Solutions</h3>
-                    <p class="recycler-location">
-                        <i class="fas fa-map-marker-alt"></i>
-                        HSR Layout, Bangalore - 4.1 km away
-                    </p>
-                    <div class="recycler-specialties">
-                        <span class="specialty-tag ewaste">E-Waste</span>
-                        <span class="specialty-tag battery">Batteries</span>
-                        <span class="specialty-tag certified">Certified</span>
-                    </div>
-                    <div class="recycler-details">
-                        <div class="detail-item">
-                            <i class="fas fa-clock"></i>
-                            <span>Mon-Fri: 9 AM - 5 PM</span>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-phone"></i>
-                            <span>+91 7654321098</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="recycler-actions">
-                    <button onclick="getDirections('TechWaste Solutions')" class="action-btn primary">
-                        <i class="fas fa-route"></i>
-                        Get Directions
-                    </button>
-                    <button onclick="showRecyclerDetails('techworks')" class="action-btn secondary">
-                        <i class="fas fa-info-circle"></i>
-                        Details
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="load-more-container" data-aos="fade-up" data-aos-delay="600">
-            <button onclick="loadMoreRecyclers()" class="btn-ultra btn-outline-ultra">
-                <i class="fas fa-plus"></i>
-                <span>Load More Centers</span>
-            </button>
         </div>
     </div>
 </section>
@@ -341,141 +250,232 @@
 <section class="section-ultra section-alt">
     <div class="container-ultra">
         <div class="section-header" data-aos="fade-up">
-            <h2 class="section-title">ℹ️ What to Expect</h2>
-            <p class="section-subtitle">Important information for visiting recycling centers</p>
+            <h2 class="section-title">💡 Recycling Tips & Guidelines</h2>
+            <p class="section-subtitle">Make the most of your recycling efforts</p>
         </div>
         
-        <div class="info-grid-ultra" data-aos="fade-up" data-aos-delay="200">
-            <div class="info-card-ultra" data-aos="zoom-in" data-aos-delay="300">
-                <div class="info-icon">
-                    <i class="fas fa-certificate"></i>
-                </div>
-                <h3>Certified Centers</h3>
-                <p>All listed recyclers are verified and certified by environmental authorities for proper waste processing and environmental compliance.</p>
-                <div class="info-badge">✓ Verified</div>
+        <div class="tips-grid" data-aos="fade-up" data-aos-delay="200">
+            <div class="tip-card">
+                <div class="tip-icon">🧽</div>
+                <h4>Clean Before You Bring</h4>
+                <p>Rinse containers and remove labels to ensure better recycling rates</p>
             </div>
-            
-            <div class="info-card-ultra" data-aos="zoom-in" data-aos-delay="400">
-                <div class="info-icon">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <h3>Operating Hours</h3>
-                <p>Check individual timings before visiting. Many centers offer extended hours, weekend availability, and 24/7 drop-off options.</p>
-                <div class="info-badge">⏰ Varied</div>
+            <div class="tip-card">
+                <div class="tip-icon">📋</div>
+                <h4>Check Accepted Materials</h4>
+                <p>Call ahead to confirm what materials each facility accepts</p>
             </div>
-            
-            <div class="info-card-ultra" data-aos="zoom-in" data-aos-delay="500">
-                <div class="info-icon">
-                    <i class="fas fa-phone"></i>
-                </div>
-                <h3>Contact First</h3>
-                <p>Call ahead to confirm they accept your specific waste type, check current availability, and get special instructions.</p>
-                <div class="info-badge">📞 Required</div>
+            <div class="tip-card">
+                <div class="tip-icon">⏰</div>
+                <h4>Plan Your Visit</h4>
+                <p>Check operating hours and plan your route to visit multiple centers</p>
             </div>
-            
-            <div class="info-card-ultra" data-aos="zoom-in" data-aos-delay="600">
-                <div class="info-icon">
-                    <i class="fas fa-sort"></i>
-                </div>
-                <h3>Pre-Sorted Waste</h3>
-                <p>Bring clean, sorted materials for faster processing, better acceptance rates, and sometimes better pricing.</p>
-                <div class="info-badge">🧹 Clean</div>
+            <div class="tip-card">
+                <div class="tip-icon">💰</div>
+                <h4>Know the Rates</h4>
+                <p>Some centers pay for materials - compare rates for best value</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Emergency & Special Waste -->
-<section class="section-ultra">
-    <div class="container-ultra">
-        <div class="section-header" data-aos="fade-up">
-            <h2 class="section-title">🚨 Emergency & Special Waste</h2>
-            <p class="section-subtitle">Contacts for hazardous and special waste disposal</p>
-        </div>
-        
-        <div class="emergency-grid-ultra" data-aos="fade-up" data-aos-delay="200">
-            <div class="emergency-card-ultra hazardous" data-aos="slide-up" data-aos-delay="300">
-                <div class="emergency-header">
-                    <div class="emergency-icon">🔋</div>
-                    <div class="emergency-urgency">High Priority</div>
-                </div>
-                <h3>Hazardous E-Waste</h3>
-                <p>Batteries, electronics with toxic materials, and other dangerous electronic waste</p>
-                <div class="emergency-contacts">
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <span>1800-123-4567</span>
-                        <button onclick="callEmergency('1800-123-4567')" class="call-btn">Call Now</button>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>ewaste@gov.in</span>
-                        <button onclick="emailEmergency('ewaste@gov.in')" class="email-btn">Email</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="emergency-card-ultra chemical" data-aos="slide-up" data-aos-delay="400">
-                <div class="emergency-header">
-                    <div class="emergency-icon">⚗️</div>
-                    <div class="emergency-urgency">High Priority</div>
-                </div>
-                <h3>Chemical Waste</h3>
-                <p>Paints, solvents, cleaning chemicals, and other household hazardous materials</p>
-                <div class="emergency-contacts">
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <span>1800-567-8901</span>
-                        <button onclick="callEmergency('1800-567-8901')" class="call-btn">Call Now</button>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>hazwaste@pollution.gov.in</span>
-                        <button onclick="emailEmergency('hazwaste@pollution.gov.in')" class="email-btn">Email</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="emergency-card-ultra medical" data-aos="slide-up" data-aos-delay="500">
-                <div class="emergency-header">
-                    <div class="emergency-icon">🏥</div>
-                    <div class="emergency-urgency">Critical</div>
-                </div>
-                <h3>Medical Waste</h3>
-                <p>Syringes, medicines, medical equipment, and other healthcare-related waste</p>
-                <div class="emergency-contacts">
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <span>1800-234-5678</span>
-                        <button onclick="callEmergency('1800-234-5678')" class="call-btn">Call Now</button>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>medwaste@health.gov.in</span>
-                        <button onclick="emailEmergency('medwaste@health.gov.in')" class="email-btn">Email</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+{% endblock %}
 
-<!-- Smart Tips -->
-<section class="tips-section-ultra">
-    <div class="container-ultra">
-        <div class="section-header" data-aos="fade-up">
-            <h2 class="section-title">💡 Smart Drop-off Tips</h2>
-            <p class="section-subtitle">Expert advice for successful recycling center visits</p>
-        </div>
-        
-        <div class="tips-grid-ultra" data-aos="fade-up" data-aos-delay="200">
-            <div class="tip-card-ultra" data-aos="flip-left" data-aos-delay="300">
-                <div class="tip-icon">📞</div>
-                <h4>Call Ahead</h4>
-                <p>Confirm operating hours, accepted materials, and any special requirements before visiting</p>
-                <div class="tip-benefit">Saves time & ensures acceptance</div>
-            </div>
-            
+{% block extra_scripts %}
+<script>
+function goHome() {
+    window.location.href = '/';
+}
+
+function getCurrentLocation() {
+    showMessage('📍 Getting your location...', 'info');
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                showMessage('✅ Location found! Updating map...', 'success');
+                // Here you would update the map with user's location
+            },
+            error => {
+                showMessage('❌ Unable to get location. Please enable location services.', 'error');
+            }
+        );
+    } else {
+        showMessage('❌ Geolocation is not supported by this browser.', 'error');
+    }
+}
+
+function filterRecyclers() {
+    const wasteType = document.getElementById('wasteTypeFilter').value;
+    showMessage(`🔍 Filtering by ${wasteType === 'all' ? 'all recyclers' : wasteType}`, 'info');
+    // Here you would implement the actual filtering logic
+}
+
+function filterByDistance() {
+    const distance = document.getElementById('distanceFilter').value;
+    showMessage(`📏 Showing recyclers within ${distance} km`, 'info');
+    // Here you would implement the actual distance filtering
+}
+
+function refreshMap() {
+    showMessage('🔄 Refreshing map data...', 'info');
+    // Here you would refresh the map and recycler data
+}
+
+function searchByLocation() {
+    const searchInput = document.getElementById('locationSearch');
+    const location = searchInput.value.trim();
+    
+    if (!location) {
+        showMessage('Please enter a location to search', 'warning');
+        return;
+    }
+    
+    showMessage(`🔍 Searching for recyclers near "${location}"...`, 'info');
+    // Here you would implement the location search
+}
+
+function handleSearchKeypress(event) {
+    if (event.key === 'Enter') {
+        searchByLocation();
+    }
+}
+
+function showMessage(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px; z-index: 1000;
+        padding: 1rem 1.5rem; border-radius: 8px; color: white;
+        background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#F44336' : type === 'warning' ? '#FF9800' : '#2196F3'};
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        animation: slideIn 0.3s ease;
+    `;
+    notification.innerHTML = `
+        ${message}
+        <button onclick="this.parentElement.remove()" style="background:none;border:none;color:white;margin-left:1rem;cursor:pointer;">×</button>
+    `;
+    
+    document.body.appendChild(notification);
+    setTimeout(() => notification.remove(), 5000);
+}
+
+// Add CSS for the missing elements
+const style = document.createElement('style');
+style.textContent = `
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.recycler-card-ultra {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.recycler-card-ultra:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.recycler-badge {
+    background: #4CAF50;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.recycler-header h3 {
+    margin: 0.5rem 0;
+    color: #2E7D32;
+}
+
+.recycler-rating {
+    margin: 0.5rem 0;
+}
+
+.rating-text {
+    color: #666;
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+}
+
+.recycler-info p {
+    margin: 0.5rem 0;
+    color: #666;
+}
+
+.recycler-info i {
+    width: 16px;
+    margin-right: 0.5rem;
+    color: #4CAF50;
+}
+
+.waste-types {
+    margin: 1rem 0;
+}
+
+.waste-tag {
+    background: #E8F5E8;
+    color: #2E7D32;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+    border: 1px solid #4CAF50;
+}
+
+.recycler-actions {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-action {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.btn-action:hover {
+    background: #2E7D32;
+    transform: translateY(-2px);
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.tip-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.tip-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+`;
+document.head.appendChild(style);
+</script>
+{% endblock %}
             <div class="tip-card-ultra" data-aos="flip-left" data-aos-delay="400">
                 <div class="tip-icon">🧹</div>
                 <h4>Clean Materials</h4>

@@ -223,7 +223,6 @@ function setupUserDropdown() {
 function checkWaste() {
     const itemInput = document.getElementById('waste-item');
     const resultContainer = document.getElementById('result-container');
-    const submitBtn = document.querySelector('.form-button');
     
     if (!itemInput || !itemInput.value.trim()) {
         showMessage('Please enter a waste item to check', 'warning');
@@ -233,8 +232,9 @@ function checkWaste() {
     const item = itemInput.value.trim();
     
     // Show loading state
+    const submitBtn = document.querySelector('.scanner-btn');
     if (submitBtn) {
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
         submitBtn.disabled = true;
     }
     
@@ -261,7 +261,7 @@ function checkWaste() {
     .finally(() => {
         // Reset button
         if (submitBtn) {
-            submitBtn.innerHTML = '<i class="fas fa-search"></i> Check Item';
+            submitBtn.innerHTML = '<i class="fas fa-search"></i>';
             submitBtn.disabled = false;
         }
     });
@@ -277,7 +277,7 @@ function displayWasteResult(data, container) {
     if (data.recyclable === true) {
         resultClass = 'result-recyclable';
         statusText = 'Recyclable ✅';
-        actionMessage = '<div style="margin-top: 1rem;"><a href="/request-pickup" class="cta-button">📞 Request Pickup</a></div>';
+        actionMessage = '<div style="margin-top: 1rem;"><a href="/request-pickup" class="btn btn-primary">📞 Request Pickup</a></div>';
     } else if (data.recyclable === false) {
         resultClass = 'result-non-recyclable';
         statusText = 'Not Recyclable ❌';
@@ -285,16 +285,16 @@ function displayWasteResult(data, container) {
     }
 
     container.innerHTML = `
-        <div class="result-container ${resultClass} fade-in">
-            <div class="result-emoji">${data.emoji}</div>
-            <h3 class="result-title">${data.item}</h3>
-            <div class="result-status">
+        <div class="result-card ${resultClass} show">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">${data.emoji}</div>
+            <h3>${data.item}</h3>
+            <div style="font-size: 1.2rem; margin: 1rem 0;">
                 <strong>${statusText}</strong>
             </div>
-            <div class="result-category" style="background-color: ${data.color}; color: white;">
+            <div style="display: inline-block; padding: 0.5rem 1rem; background-color: ${data.color}; color: white; border-radius: 20px; margin: 1rem 0;">
                 ${data.category}
             </div>
-            <p class="result-tip">💡 ${data.tip}</p>
+            <p style="font-style: italic; margin-top: 1rem;">💡 ${data.tip}</p>
             ${actionMessage}
         </div>
     `;
@@ -308,22 +308,52 @@ function displayWasteResult(data, container) {
     }
 }
 
+function createCelebrationEffect() {
+    // Simple celebration effect
+    const celebration = document.createElement('div');
+    celebration.innerHTML = '🎉';
+    celebration.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        font-size: 4rem;
+        z-index: 1000;
+        animation: celebrationBounce 1s ease-out;
+        pointer-events: none;
+    `;
+    
+    document.body.appendChild(celebration);
+    setTimeout(() => celebration.remove(), 1000);
+}
+
+// Quick check function for waste guide
+function quickCheck(item) {
+    const itemInput = document.getElementById('waste-item');
+    if (itemInput) {
+        itemInput.value = item;
+        checkWaste();
+    }
+}
+
 // Enhanced Pickup Request Functions
 function submitPickupRequest() {
     const form = document.getElementById('pickup-form');
-    const submitBtn = document.querySelector('.form-button');
+    const submitBtn = document.querySelector('.btn-step');
     
-    if (!form) return;
+    if (!form) {
+        showMessage('Form not found', 'error');
+        return;
+    }
     
+    // Get form data
     const formData = new FormData(form);
-    
     const data = {
-        name: formData.get('name'),
-        address: formData.get('address'),
-        contact: formData.get('contact'),
-        waste_type: formData.get('waste_type'),
-        quantity: formData.get('quantity'),
-        pickup_time: formData.get('pickup_time'),
+        name: formData.get('name') || '',
+        address: formData.get('address') || '',
+        contact: formData.get('contact') || '',
+        waste_type: formData.get('waste_type') || '',
+        quantity: formData.get('estimated_weight') || '',
+        pickup_time: formData.get('pickup_time') || '',
         notes: formData.get('notes') || ''
     };
 
@@ -371,9 +401,6 @@ function submitPickupRequest() {
             setTimeout(() => {
                 showMessage('🎉 You earned 10 green points for this request!', 'success');
             }, 2000);
-            
-            // Show success details
-            showPickupSuccessDetails();
         } else {
             showMessage(result.message || 'Error submitting request. Please try again.', 'error');
         }
@@ -1010,3 +1037,48 @@ window.SmartRecycle = {
     handleWasteCheck,
     validateField
 };
+
+// Add missing celebration animation CSS
+const celebrationStyles = document.createElement('style');
+celebrationStyles.textContent = `
+@keyframes celebrationBounce {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1) translateY(-100px); opacity: 0; }
+}
+
+.hidden { display: none !important; }
+
+.result-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+}
+
+.result-card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.result-card.result-recyclable {
+    border: 3px solid #4CAF50;
+    background: linear-gradient(135deg, #E8F5E8, #F1F8E9);
+}
+
+.result-card.result-non-recyclable {
+    border: 3px solid #F44336;
+    background: linear-gradient(135deg, #FFEBEE, #FFCDD2);
+}
+
+.result-card.result-unknown {
+    border: 3px solid #9E9E9E;
+    background: linear-gradient(135deg, #F5F5F5, #EEEEEE);
+}
+`;
+document.head.appendChild(celebrationStyles);

@@ -5,8 +5,7 @@
 # Features: Waste identification, pickup requests, impact tracking, rewards system
 
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
-import mysql.connector
-from mysql.connector import Error
+import sqlite3
 from datetime import datetime
 import os
 import hashlib
@@ -15,23 +14,17 @@ import re
 app = Flask(__name__)
 app.secret_key = 'smartrecycle_secret_key_2025'
 
-# MySQL Database Configuration
-DB_CONFIG = {
-    'host': 'localhost',
-    'user': 'arshad',
-    'password': 'arshad',
-    'database': 'SmartRecycle',
-    'charset': 'utf8mb4',
-    'collation': 'utf8mb4_unicode_ci'
-}
+# SQLite Database Configuration
+DATABASE = 'smartrecycle.db'
 
 def get_db_connection():
     """Get database connection"""
     try:
-        connection = mysql.connector.connect(**DB_CONFIG)
+        connection = sqlite3.connect(DATABASE)
+        connection.row_factory = sqlite3.Row  # This enables column access by name
         return connection
-    except Error as e:
-        print(f"Error connecting to MySQL: {e}")
+    except Exception as e:
+        print(f"Error connecting to SQLite: {e}")
         return None
 
 def hash_password(password):
@@ -50,22 +43,20 @@ def get_user_by_email(email):
     
     try:
         cursor = connection.cursor()
-        cursor.execute('SELECT * FROM users WHERE email = %s', (email,))
+        cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
         user = cursor.fetchone()
         return user
     except Exception as e:
         print(f"Error fetching user: {e}")
         return None
     finally:
-        if connection.is_connected():
-            cursor.close()
-            connection.close()
+        connection.close()
 
 def init_db():
     """Initialize database tables"""
     connection = get_db_connection()
     if not connection:
-        print("Failed to connect to MySQL database!")
+        print("Failed to connect to SQLite database!")
         return
     
     try:
@@ -74,37 +65,37 @@ def init_db():
         # Enhanced Users table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS users (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                name VARCHAR(255) NOT NULL,
-                email VARCHAR(255) UNIQUE NOT NULL,
-                password VARCHAR(255) NOT NULL,
-                points INT DEFAULT 0,
-                total_waste_submitted DECIMAL(10,2) DEFAULT 0,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                email TEXT UNIQUE NOT NULL,
+                password TEXT NOT NULL,
+                points INTEGER DEFAULT 0,
+                total_waste_submitted REAL DEFAULT 0,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 last_login TIMESTAMP NULL,
-                profile_picture VARCHAR(500) NULL,
-                location VARCHAR(255) NULL,
-                phone VARCHAR(20) NULL
+                profile_picture TEXT NULL,
+                location TEXT NULL,
+                phone TEXT NULL
             )
         ''')
         
         # Enhanced Pickup requests table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS pickup_requests (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                user_id INT NULL,
-                name VARCHAR(255) NOT NULL,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER,
+                name TEXT NOT NULL,
                 address TEXT NOT NULL,
-                contact VARCHAR(255) NOT NULL,
-                waste_type VARCHAR(255) NOT NULL,
-                quantity VARCHAR(255) NOT NULL,
-                pickup_time VARCHAR(255) NOT NULL,
+                contact TEXT NOT NULL,
+                waste_type TEXT NOT NULL,
+                quantity TEXT NOT NULL,
+                pickup_time TEXT NOT NULL,
                 notes TEXT NULL,
-                status VARCHAR(50) DEFAULT 'pending',
-                points_earned INT DEFAULT 10,
-                estimated_weight DECIMAL(8,2) NULL,
+                status TEXT DEFAULT 'pending',
+                points_earned INTEGER DEFAULT 10,
+                estimated_weight REAL NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL
             )
         ''')
@@ -112,13 +103,13 @@ def init_db():
         # Enhanced Contact messages table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS contact_messages (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                name VARCHAR(255) NOT NULL,
-                email VARCHAR(255) NOT NULL,
-                phone VARCHAR(20) NULL,
-                subject VARCHAR(255) NULL,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                email TEXT NOT NULL,
+                phone TEXT NULL,
+                subject TEXT NULL,
                 message TEXT NOT NULL,
-                status VARCHAR(50) DEFAULT 'new',
+                status TEXT DEFAULT 'new',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 responded_at TIMESTAMP NULL
             )
@@ -127,26 +118,24 @@ def init_db():
         # User achievements table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS user_achievements (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                user_id INT NOT NULL,
-                achievement_type VARCHAR(100) NOT NULL,
-                achievement_name VARCHAR(255) NOT NULL,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                achievement_type TEXT NOT NULL,
+                achievement_name TEXT NOT NULL,
                 description TEXT,
-                points_awarded INT DEFAULT 0,
+                points_awarded INTEGER DEFAULT 0,
                 earned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
             )
         ''')
         
         connection.commit()
-        print("Database tables created successfully!")
+        print("✅ Database tables created successfully!")
         
     except Exception as e:
-        print(f"Error creating tables: {e}")
+        print(f"❌ Error creating tables: {e}")
     finally:
-        if connection.is_connected():
-            cursor.close()
-            connection.close()
+        connection.close()
 
 # Waste categorization data
 WASTE_CATEGORIES = {
@@ -293,7 +282,7 @@ def submit_pickup():
         
         cursor.execute('''
             INSERT INTO pickup_requests (user_id, name, address, contact, waste_type, quantity, pickup_time, notes, points_earned)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (user_id, data['name'], data['address'], data['contact'], 
               data['waste_type'], data['quantity'], data['pickup_time'], 
               data.get('notes', ''), total_points))
@@ -301,7 +290,7 @@ def submit_pickup():
         # Award points to user if logged in
         if user_id:
             cursor.execute('''
-                UPDATE users SET points = points + %s WHERE id = %s
+                UPDATE users SET points = points + ? WHERE id = ?
             ''', (total_points, user_id))
         
         connection.commit()
@@ -316,9 +305,7 @@ def submit_pickup():
         print(f"Error submitting pickup: {e}")
         return jsonify({'success': False, 'message': 'Error submitting request'})
     finally:
-        if connection.is_connected():
-            cursor.close()
-            connection.close()
+        connection.close()
 
 @app.route('/track-impact')
 def track_impact():
@@ -377,7 +364,7 @@ def submit_contact():
         cursor = connection.cursor()
         cursor.execute('''
             INSERT INTO contact_messages (name, email, phone, subject, message)
-            VALUES (%s, %s, %s, %s, %s)
+            VALUES (?, ?, ?, ?, ?)
         ''', (name, email, phone, subject, message))
         
         connection.commit()
@@ -387,9 +374,7 @@ def submit_contact():
         print(f"Error submitting contact: {e}")
         return jsonify({'success': False, 'message': 'Failed to send message. Please try again.'})
     finally:
-        if connection.is_connected():
-            cursor.close()
-            connection.close()
+        connection.close()
 
 @app.route('/get-user-stats')
 def get_user_stats():
@@ -407,18 +392,18 @@ def get_user_stats():
         cursor = connection.cursor()
         
         # Get user info
-        cursor.execute('SELECT name, points, total_waste_submitted FROM users WHERE id = %s', (user_id,))
+        cursor.execute('SELECT name, points, total_waste_submitted FROM users WHERE id = ?', (user_id,))
         user = cursor.fetchone()
         
         # Get pickup requests count
-        cursor.execute('SELECT COUNT(*) FROM pickup_requests WHERE user_id = %s', (user_id,))
+        cursor.execute('SELECT COUNT(*) FROM pickup_requests WHERE user_id = ?', (user_id,))
         pickup_count = cursor.fetchone()[0]
         
         # Get recent pickups
         cursor.execute('''
             SELECT waste_type, quantity, created_at, status 
             FROM pickup_requests 
-            WHERE user_id = %s 
+            WHERE user_id = ? 
             ORDER BY created_at DESC 
             LIMIT 5
         ''', (user_id,))
@@ -448,7 +433,7 @@ def get_user_stats():
                     {
                         'type': pickup[0],
                         'quantity': pickup[1],
-                        'date': pickup[2].strftime('%Y-%m-%d') if pickup[2] else '',
+                        'date': pickup[2],
                         'status': pickup[3]
                     } for pickup in recent_pickups
                 ]
@@ -460,9 +445,7 @@ def get_user_stats():
         print(f"Error getting user stats: {e}")
         return jsonify({'authenticated': False})
     finally:
-        if connection.is_connected():
-            cursor.close()
-            connection.close()
+        connection.close()
 
 # Authentication Routes
 @app.route('/auth/register', methods=['POST'])
@@ -504,7 +487,7 @@ def auth_register():
         cursor = connection.cursor()
         cursor.execute('''
             INSERT INTO users (name, email, password)
-            VALUES (%s, %s, %s)
+            VALUES (?, ?, ?)
         ''', (name, email, password_hash))
         
         user_id = cursor.lastrowid
@@ -522,15 +505,13 @@ def auth_register():
             'redirect': '/track-impact'
         })
         
-    except mysql.connector.IntegrityError:
+    except sqlite3.IntegrityError:
         return jsonify({'success': False, 'message': 'Email already registered'})
     except Exception as e:
         print(f"Error registering user: {e}")
         return jsonify({'success': False, 'message': 'Registration failed'})
     finally:
-        if connection.is_connected():
-            cursor.close()
-            connection.close()
+        connection.close()
 
 @app.route('/auth/login', methods=['POST'])
 def auth_login():
@@ -581,9 +562,12 @@ def login_required(f):
 
 if __name__ == '__main__':
     # Initialize database on first run
-    print("Initializing SmartRecycle with MySQL database...")
+    print("🚀 Initializing SmartRecycle with SQLite database...")
     init_db()
     
-    # Run the Flask application
-    print("Starting SmartRecycle server...")
+    # Run the Flask application on port 5001
+    print("🌟 Starting SmartRecycle server...")
+    print("📱 Open your browser and go to: http://localhost:5001")
+    print("🔗 Your SmartRecycle platform is ready!")
+    
     app.run(debug=True, host='0.0.0.0', port=5001)

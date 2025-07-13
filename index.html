@@ -3,12 +3,666 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>SmartRecycle - Eco-Champion Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#..."></a>
-    </nav>
+    <!-- Header with Logo and Navigation -->
+    <header class="header">
+        <div class="logo-container">
+            <div class="logo">
+                <i class="fas fa-recycle"></i>
+                <span>SmartRecycle</span>
+            </div>
+            <p class="tagline">Eco-Champion Hub</p>
+        </div>
+        
+        <nav class="navbar" id="navbar">
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#waste-guide" class="nav-link"><i class="fas fa-search"></i> Waste Guide</a></li>
+                <li><a href="#request-pickup" class="nav-link"><i class="fas fa-truck"></i> Request Pickup</a></li>
+                <li><a href="#track-impact" class="nav-link"><i class="fas fa-chart-bar"></i> Track Impact</a></li>
+                <li><a href="#rewards" class="nav-link"><i class="fas fa-gift"></i> Rewards</a></li>
+                <li><a href="#nearby-recyclers" class="nav-link"><i class="fas fa-map-marker-alt"></i> Nearby Recyclers</a></li>
+                <li><a href="#about" class="nav-link"><i class="fas fa-leaf"></i> About Us</a></li>
+                <li><a href="#contact" class="nav-link"><i class="fas fa-phone"></i> Contact</a></li>
+                <li><a href="#login" class="nav-link login-btn"><i class="fas fa-user"></i> <span id="auth-text">Login</span></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="section home-section">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1 class="hero-title">Recycle Smart. <span class="highlight">Save Earth.</span></h1>
+                        <p class="hero-subtitle">Transform waste into rewards while building a sustainable future. Join the circular economy revolution!</p>
+                        <div class="hero-buttons">
+                            <button class="btn btn-primary" onclick="scrollToSection('waste-guide')">Get Started</button>
+                            <button class="btn btn-secondary" onclick="scrollToSection('about')">Learn More</button>
+                        </div>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="tree-animation">
+                            <div class="tree-trunk"></div>
+                            <div class="tree-leaves"></div>
+                            <div class="floating-leaves">
+                                <div class="leaf"></div>
+                                <div class="leaf"></div>
+                                <div class="leaf"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <i class="fas fa-recycle"></i>
+                        <h3>1M+ kg</h3>
+                        <p>Waste Recycled</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-tree"></i>
+                        <h3>50K+</h3>
+                        <p>Trees Saved</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <h3>100K+</h3>
+                        <p>Active Users</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-award"></i>
+                        <h3>₹2M+</h3>
+                        <p>Rewards Distributed</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Waste Guide Section -->
+        <section id="waste-guide" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Waste Guide</h2>
+                    <p>Check if your item is recyclable and learn proper disposal methods</p>
+                </div>
+                
+                <div class="waste-guide-content">
+                    <div class="search-container">
+                        <input type="text" id="waste-search" placeholder="Enter waste type (e.g., plastic bottle, battery)">
+                        <select id="waste-dropdown">
+                            <option value="">Select waste type</option>
+                            <option value="plastic">Plastic Bottles</option>
+                            <option value="paper">Paper</option>
+                            <option value="ewaste">E-Waste</option>
+                            <option value="food">Food Waste</option>
+                            <option value="glass">Glass</option>
+                            <option value="metal">Metal</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="checkWasteType()">Check</button>
+                    </div>
+                    
+                    <div id="waste-result" class="waste-result hidden">
+                        <div class="result-content">
+                            <span class="result-icon"></span>
+                            <h3 class="result-title"></h3>
+                            <p class="result-description"></p>
+                            <div class="result-tips"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Request Pickup Section -->
+        <section id="request-pickup" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Request Pickup</h2>
+                    <p>Schedule a waste collection and earn rewards</p>
+                </div>
+                
+                <div class="pickup-form-container">
+                    <form id="pickup-form" class="pickup-form">
+                        <div class="form-group">
+                            <label for="pickup-name">Full Name</label>
+                            <input type="text" id="pickup-name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pickup-phone">Phone Number</label>
+                            <input type="tel" id="pickup-phone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pickup-address">Address</label>
+                            <textarea id="pickup-address" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="waste-type">Waste Type</label>
+                            <select id="waste-type" required>
+                                <option value="">Select waste type</option>
+                                <option value="plastic">Plastic (₹5/kg)</option>
+                                <option value="paper">Paper (₹3/kg)</option>
+                                <option value="ewaste">E-Waste (₹15/kg)</option>
+                                <option value="metal">Metal (₹20/kg)</option>
+                                <option value="glass">Glass (₹2/kg)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="waste-quantity">Estimated Quantity (kg)</label>
+                            <input type="number" id="waste-quantity" min="1" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pickup-date">Preferred Pickup Date</label>
+                            <input type="date" id="pickup-date" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Submit Request</button>
+                    </form>
+                </div>
+                
+                <div id="pickup-success" class="success-message hidden">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Request Submitted Successfully!</h3>
+                    <p>Our team will contact you within 24 hours to confirm the pickup.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Track Impact Section -->
+        <section id="track-impact" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Track Your Impact</h2>
+                    <p>See how your actions are making a difference</p>
+                </div>
+                
+                <div class="impact-dashboard">
+                    <div class="impact-card">
+                        <div class="impact-icon">
+                            <i class="fas fa-recycle"></i>
+                        </div>
+                        <div class="impact-content">
+                            <h3 id="waste-recycled">0 kg</h3>
+                            <p>Waste Recycled</p>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-card">
+                        <div class="impact-icon">
+                            <i class="fas fa-tree"></i>
+                        </div>
+                        <div class="impact-content">
+                            <h3 id="trees-saved">0</h3>
+                            <p>Trees Saved</p>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-card">
+                        <div class="impact-icon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <div class="impact-content">
+                            <h3 id="water-saved">0 L</h3>
+                            <p>Water Conserved</p>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-card">
+                        <div class="impact-icon">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <div class="impact-content">
+                            <h3 id="co2-saved">0 kg</h3>
+                            <p>CO₂ Reduced</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="achievements">
+                    <h3>Your Achievements</h3>
+                    <div class="badges">
+                        <div class="badge">
+                            <i class="fas fa-seedling"></i>
+                            <span>Eco Warrior</span>
+                        </div>
+                        <div class="badge">
+                            <i class="fas fa-star"></i>
+                            <span>Green Champion</span>
+                        </div>
+                        <div class="badge locked">
+                            <i class="fas fa-lock"></i>
+                            <span>Planet Saver</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rewards Section -->
+        <section id="rewards" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Rewards & Incentives</h2>
+                    <p>Earn points and redeem amazing rewards</p>
+                </div>
+                
+                <div class="rewards-content">
+                    <div class="points-display">
+                        <div class="points-card">
+                            <h3>Your Green Points</h3>
+                            <div class="points-value">
+                                <span id="user-points">0</span>
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <p>Keep recycling to earn more!</p>
+                        </div>
+                    </div>
+                    
+                    <div class="rewards-grid">
+                        <div class="reward-card">
+                            <div class="reward-icon">
+                                <i class="fab fa-amazon"></i>
+                            </div>
+                            <h4>Amazon Voucher</h4>
+                            <p class="reward-price">₹800</p>
+                            <p class="points-required">500 points</p>
+                            <button class="btn btn-primary" onclick="redeemReward('amazon', 500)">Redeem</button>
+                        </div>
+                        
+                        <div class="reward-card">
+                            <div class="reward-icon">
+                                <i class="fas fa-coffee"></i>
+                            </div>
+                            <h4>Café Coffee Day</h4>
+                            <p class="reward-price">₹400</p>
+                            <p class="points-required">250 points</p>
+                            <button class="btn btn-primary" onclick="redeemReward('ccd', 250)">Redeem</button>
+                        </div>
+                        
+                        <div class="reward-card">
+                            <div class="reward-icon">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <h4>Restaurant Voucher</h4>
+                            <p class="reward-price">₹2000</p>
+                            <p class="points-required">1000 points</p>
+                            <button class="btn btn-primary" onclick="redeemReward('restaurant', 1000)">Redeem</button>
+                        </div>
+                        
+                        <div class="reward-card">
+                            <div class="reward-icon">
+                                <i class="fab fa-flipkart"></i>
+                            </div>
+                            <h4>Flipkart Voucher</h4>
+                            <p class="reward-price">₹1500</p>
+                            <p class="points-required">750 points</p>
+                            <button class="btn btn-primary" onclick="redeemReward('flipkart', 750)">Redeem</button>
+                        </div>
+                        
+                        <div class="reward-card special">
+                            <div class="reward-icon">
+                                <i class="fas fa-apple-alt"></i>
+                            </div>
+                            <h4>1kg Fresh Fruits</h4>
+                            <p class="reward-price">Free</p>
+                            <p class="points-required">For 1kg plastic</p>
+                            <button class="btn btn-secondary">Exchange Now</button>
+                        </div>
+                        
+                        <div class="reward-card special">
+                            <div class="reward-icon">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <h4>Eco Certificate</h4>
+                            <p class="reward-price">Career Boost</p>
+                            <p class="points-required">Students Only</p>
+                            <button class="btn btn-secondary">Download</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nearby Recyclers Section -->
+        <section id="nearby-recyclers" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Nearby Recyclers</h2>
+                    <p>Find verified recycling centers near you</p>
+                </div>
+                
+                <div class="recyclers-content">
+                    <div class="search-filter">
+                        <input type="text" id="location-search" placeholder="Enter your location">
+                        <select id="recycler-filter">
+                            <option value="">All Types</option>
+                            <option value="plastic">Plastic</option>
+                            <option value="paper">Paper</option>
+                            <option value="ewaste">E-Waste</option>
+                            <option value="metal">Metal</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="findRecyclers()">Search</button>
+                    </div>
+                    
+                    <div class="recyclers-grid">
+                        <div class="recycler-card">
+                            <div class="recycler-info">
+                                <h4>GreenCycle Hub</h4>
+                                <p><i class="fas fa-map-marker-alt"></i> 2.3 km away</p>
+                                <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+                                <div class="accepted-waste">
+                                    <span class="waste-tag">Plastic</span>
+                                    <span class="waste-tag">Paper</span>
+                                    <span class="waste-tag">Metal</span>
+                                </div>
+                            </div>
+                            <div class="recycler-actions">
+                                <button class="btn btn-secondary">Call</button>
+                                <button class="btn btn-primary">Directions</button>
+                            </div>
+                        </div>
+                        
+                        <div class="recycler-card">
+                            <div class="recycler-info">
+                                <h4>EcoWaste Solutions</h4>
+                                <p><i class="fas fa-map-marker-alt"></i> 3.7 km away</p>
+                                <p><i class="fas fa-phone"></i> +91 87654 32109</p>
+                                <div class="accepted-waste">
+                                    <span class="waste-tag">E-Waste</span>
+                                    <span class="waste-tag">Plastic</span>
+                                </div>
+                            </div>
+                            <div class="recycler-actions">
+                                <button class="btn btn-secondary">Call</button>
+                                <button class="btn btn-primary">Directions</button>
+                            </div>
+                        </div>
+                        
+                        <div class="recycler-card">
+                            <div class="recycler-info">
+                                <h4>Clean Earth Center</h4>
+                                <p><i class="fas fa-map-marker-alt"></i> 5.1 km away</p>
+                                <p><i class="fas fa-phone"></i> +91 76543 21098</p>
+                                <div class="accepted-waste">
+                                    <span class="waste-tag">Paper</span>
+                                    <span class="waste-tag">Glass</span>
+                                    <span class="waste-tag">Metal</span>
+                                </div>
+                            </div>
+                            <div class="recycler-actions">
+                                <button class="btn btn-secondary">Call</button>
+                                <button class="btn btn-primary">Directions</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>About SmartRecycle</h2>
+                    <p>Empowering communities through sustainable waste management</p>
+                </div>
+                
+                <div class="about-content">
+                    <div class="mission-section">
+                        <h3>Our Mission</h3>
+                        <p>To create a circular economy where waste becomes a resource, poverty is reduced through eco-action, and every individual contributes to a sustainable future.</p>
+                    </div>
+                    
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <i class="fas fa-shield-alt"></i>
+                            <h4>AI Verification</h4>
+                            <p>Advanced AI and manual verification ensures authentic eco-actions</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <i class="fas fa-heart"></i>
+                            <h4>Social Impact</h4>
+                            <p>Exchange plastic for food, supporting underprivileged communities</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h4>Career Boost</h4>
+                            <p>Students earn verified certificates for job applications</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <i class="fas fa-globe"></i>
+                            <h4>SDG Aligned</h4>
+                            <p>Supporting UN Sustainable Development Goals</p>
+                        </div>
+                    </div>
+                    
+                    <div class="team-section">
+                        <h3>Meet Our Team</h3>
+                        <div class="team-grid">
+                            <div class="team-member">
+                                <div class="member-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <h4>Deeksha Raj M N</h4>
+                                <p>Project Lead</p>
+                            </div>
+                            
+                            <div class="team-member">
+                                <div class="member-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <h4>Rohini N K</h4>
+                                <p>Technical Lead</p>
+                            </div>
+                            
+                            <div class="team-member">
+                                <div class="member-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <h4>Harini D</h4>
+                                <p>UI/UX Designer</p>
+                            </div>
+                            
+                            <div class="team-member">
+                                <div class="member-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <h4>Arshad Pasha</h4>
+                                <p>Backend Developer</p>
+                            </div>
+                            
+                            <div class="team-member">
+                                <div class="member-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <h4>Tharun Gowda HD</h4>
+                                <p>Frontend Developer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Contact Us</h2>
+                    <p>Get in touch with our team</p>
+                </div>
+                
+                <div class="contact-content">
+                    <div class="contact-form-container">
+                        <form id="contact-form" class="contact-form">
+                            <div class="form-group">
+                                <label for="contact-name">Name</label>
+                                <input type="text" id="contact-name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact-email">Email</label>
+                                <input type="email" id="contact-email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact-subject">Subject</label>
+                                <input type="text" id="contact-subject" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact-message">Message</label>
+                                <textarea id="contact-message" rows="5" required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                        </form>
+                    </div>
+                    
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>Email</h4>
+                                <p>contact@smartrecycle.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h4>Phone</h4>
+                                <p>+91 98765 43210</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h4>Address</h4>
+                                <p>Bangalore, Karnataka, India</p>
+                            </div>
+                        </div>
+                        
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-facebook"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Login Modal -->
+        <div id="login-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                
+                <div class="auth-container">
+                    <div class="auth-tabs">
+                        <button class="tab-btn active" onclick="showTab('login')">Login</button>
+                        <button class="tab-btn" onclick="showTab('register')">Register</button>
+                    </div>
+                    
+                    <div id="login-tab" class="auth-tab active">
+                        <h3>Welcome Back!</h3>
+                        <form id="login-form" class="auth-form">
+                            <div class="form-group">
+                                <label for="login-email">Email</label>
+                                <input type="email" id="login-email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="login-password">Password</label>
+                                <input type="password" id="login-password" required>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </form>
+                    </div>
+                    
+                    <div id="register-tab" class="auth-tab">
+                        <h3>Join SmartRecycle</h3>
+                        <form id="register-form" class="auth-form">
+                            <div class="form-group">
+                                <label for="register-name">Full Name</label>
+                                <input type="text" id="register-name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="register-email">Email</label>
+                                <input type="email" id="register-email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="register-password">Password</label>
+                                <input type="password" id="register-password" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="register-phone">Phone Number</label>
+                                <input type="tel" id="register-phone" required>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>SmartRecycle</h4>
+                    <p>Building a sustainable future through innovative waste management solutions.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#waste-guide">Waste Guide</a></li>
+                        <li><a href="#rewards">Rewards</a></li>
+                        <li><a href="#about">About Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 SmartRecycle. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>

@@ -3,6 +3,8 @@
 /* Enhanced CSS Variables for a Premium Look */
 :root {
     /* Primary Colors - Modern Green Palette */
+    --primary-color: #1B5E20;
+    --secondary-color: #4CAF50;
     --primary-green: #1B5E20;
     --secondary-green: #4CAF50;
     --accent-green: #66BB6A;

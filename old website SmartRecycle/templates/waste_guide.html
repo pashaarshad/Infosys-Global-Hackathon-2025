@@ -178,6 +178,10 @@
         margin: 1.5rem 0;
         border: 1px solid rgba(255, 255, 255, 0.2);
     }
+
+    .hidden {
+        display: none;
+    }
 </style>
 {% endblock %}
 
@@ -263,14 +267,14 @@
                 <p>Paper & cardboard</p>
             </div>
             <div class="quick-check-item" onclick="quickCheck('glass bottle')">
-                <span class="item-emoji">🍷</span>
+                <span class="item-emoji">🍾</span>
                 <h3>Glass Bottle</h3>
-                <p>Clear & colored glass</p>
+                <p>Glass containers</p>
             </div>
             <div class="quick-check-item" onclick="quickCheck('aluminum can')">
-                <span class="item-emoji">🥤</span>
+                <span class="item-emoji">🥫</span>
                 <h3>Aluminum Can</h3>
-                <p>Beverage cans</p>
+                <p>Metal containers</p>
             </div>
             <div class="quick-check-item" onclick="quickCheck('electronic device')">
                 <span class="item-emoji">📱</span>
@@ -278,9 +282,9 @@
                 <p>Phones, tablets, laptops</p>
             </div>
             <div class="quick-check-item" onclick="quickCheck('food waste')">
-                <span class="item-emoji">🍎</span>
+                <span class="item-emoji">🍽️</span>
                 <h3>Food Waste</h3>
-                <p>Organic materials</p>
+                <p>Organic compostable</p>
             </div>
             <div class="quick-check-item" onclick="quickCheck('plastic bag')">
                 <span class="item-emoji">🛍️</span>
@@ -295,8 +299,8 @@
 <section class="categories-showcase">
     <div class="container">
         <div class="section-header text-center">
-            <h2 class="section-title">📋 Waste Categories Guide</h2>
-            <p class="section-subtitle">Understanding different types of recyclable materials</p>
+            <h2 class="section-title">🗂️ Waste Categories</h2>
+            <p class="section-subtitle">Learn about different types of waste and how to handle them properly</p>
         </div>
         
         <div class="row">
@@ -304,46 +308,21 @@
                 <div class="category-card">
                     <h3>♻️ Recyclable Materials</h3>
                     <ul>
-                        <li><strong>Paper & Cardboard:</strong> Newspapers, magazines, cardboard boxes</li>
-                        <li><strong>Plastics:</strong> PET bottles (#1), HDPE containers (#2)</li>
-                        <li><strong>Glass:</strong> Bottles, jars (clear, brown, green)</li>
-                        <li><strong>Metals:</strong> Aluminum cans, steel cans, copper wire</li>
+                        <li><strong>Plastic:</strong> Bottles, containers (check recycling codes)</li>
+                        <li><strong>Paper:</strong> Newspapers, magazines, cardboard</li>
+                        <li><strong>Glass:</strong> Bottles and jars (remove lids)</li>
+                        <li><strong>Metal:</strong> Aluminum cans, steel containers</li>
                     </ul>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="category-card">
-                    <h3>⚡ Special Handling</h3>
+                    <h3>🔋 Special Handling</h3>
                     <ul>
-                        <li><strong>E-Waste:</strong> Electronics, batteries, mobile phones</li>
-                        <li><strong>Hazardous:</strong> Chemicals, paints, motor oil</li>
-                        <li><strong>Organic:</strong> Food waste, garden clippings</li>
-                        <li><strong>Textiles:</strong> Clothes, shoes, fabric materials</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-6">
-                <div class="category-card">
-                    <h3>🚫 Non-Recyclable</h3>
-                    <ul>
-                        <li><strong>Contaminated Items:</strong> Food-soiled paper, greasy boxes</li>
-                        <li><strong>Mixed Materials:</strong> Composite packaging, laminated items</li>
-                        <li><strong>Certain Plastics:</strong> Styrofoam, plastic film, utensils</li>
-                        <li><strong>Broken Glass:</strong> Window glass, mirrors, light bulbs</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="category-card">
-                    <h3>💡 Pro Tips</h3>
-                    <ul>
-                        <li><strong>Clean First:</strong> Rinse containers before recycling</li>
-                        <li><strong>Remove Labels:</strong> When possible, remove adhesive labels</li>
-                        <li><strong>Separate Materials:</strong> Don't mix different material types</li>
-                        <li><strong>Check Local Rules:</strong> Recycling rules vary by location</li>
+                        <li><strong>E-waste:</strong> Electronics, batteries, cables</li>
+                        <li><strong>Organic:</strong> Food scraps, yard waste</li>
+                        <li><strong>Hazardous:</strong> Chemicals, paints, oils</li>
+                        <li><strong>Textiles:</strong> Clothing, fabrics</li>
                     </ul>
                 </div>
             </div>
@@ -351,31 +330,31 @@
     </div>
 </section>
 
-<!-- Expert Tips Section -->
+<!-- Tips Section -->
 <section class="tips-section">
     <div class="container">
         <div class="section-header text-center">
-            <h2 class="section-title">� Expert Recycling Tips</h2>
-            <p class="section-subtitle">Maximize your environmental impact with these pro tips</p>
+            <h2 class="section-title">💡 Pro Recycling Tips</h2>
+            <p class="section-subtitle">Maximize your environmental impact with these expert tips</p>
         </div>
         
         <div class="row">
             <div class="col-md-4">
                 <div class="tip-card">
-                    <h4>🧹 Clean Before Recycling</h4>
-                    <p>Rinse food containers and remove labels to ensure proper processing. Clean materials have a higher chance of being successfully recycled.</p>
+                    <h4>🧽 Clean Before Recycling</h4>
+                    <p>Rinse containers to remove food residue. Clean items are more likely to be successfully recycled.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="tip-card">
-                    <h4>🔍 Know Your Numbers</h4>
-                    <p>Check the recycling symbols on plastic items. Numbers 1, 2, and 5 are most commonly accepted in recycling programs.</p>
+                    <h4>🏷️ Check Recycling Codes</h4>
+                    <p>Look for the recycling symbol with numbers 1-7. Your local facility may only accept certain types.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="tip-card">
-                    <h4>🌱 Reduce First</h4>
-                    <p>The best waste is no waste. Reduce consumption, reuse items when possible, then recycle as the last resort.</p>
+                    <h4>📦 Break Down Cardboard</h4>
+                    <p>Flatten boxes to save space and make processing easier for recycling facilities.</p>
                 </div>
             </div>
         </div>
@@ -390,115 +369,136 @@
     </a>
 </div>
 {% endblock %}
-                <p>Click to check recyclability</p>
-            </div>
-            <div class="card" onclick="quickCheck('newspaper')">
-                <div class="result-emoji">📰</div>
-                <h3>Newspaper</h3>
-                <p>Click to check recyclability</p>
-            </div>
-            <div class="card" onclick="quickCheck('banana peel')">
-                <div class="result-emoji">🍌</div>
-                <h3>Banana Peel</h3>
-                <p>Click to check recyclability</p>
-            </div>
-            <div class="card" onclick="quickCheck('glass bottle')">
-                <div class="result-emoji">🍾</div>
-                <h3>Glass Bottle</h3>
-                <p>Click to check recyclability</p>
-            </div>
-            <div class="card" onclick="quickCheck('cardboard')">
-                <div class="result-emoji">📦</div>
-                <h3>Cardboard</h3>
-                <p>Click to check recyclability</p>
-            </div>
-        </div>
-    </div>
-</section>
 
-<!-- Waste Categories Guide -->
-<section class="container">
-    <div class="section">
-        <h2>📋 Waste Categories Guide</h2>
-        <div class="cards-grid">
-            <div class="card" style="border-left: 5px solid #4CAF50;">
-                <i class="fas fa-recycle" style="color: #4CAF50;"></i>
-                <h3>♻️ Plastic</h3>
-                <p><strong>Examples:</strong> Bottles, containers, bags, packaging</p>
-                <p><strong>Tip:</strong> Remove caps, rinse clean, check recycling number</p>
-            </div>
-            <div class="card" style="border-left: 5px solid #2196F3;">
-                <i class="fas fa-newspaper" style="color: #2196F3;"></i>
-                <h3>📰 Paper</h3>
-                <p><strong>Examples:</strong> Newspapers, magazines, cardboard, office paper</p>
-                <p><strong>Tip:</strong> Keep dry, remove staples and tape</p>
-            </div>
-            <div class="card" style="border-left: 5px solid #00BCD4;">
-                <i class="fas fa-wine-glass" style="color: #00BCD4;"></i>
-                <h3>🍾 Glass</h3>
-                <p><strong>Examples:</strong> Bottles, jars, containers</p>
-                <p><strong>Tip:</strong> Remove lids, rinse clean, separate by color</p>
-            </div>
-            <div class="card" style="border-left: 5px solid #9E9E9E;">
-                <i class="fas fa-cog" style="color: #9E9E9E;"></i>
-                <h3>🥫 Metal</h3>
-                <p><strong>Examples:</strong> Cans, foil, small appliances</p>
-                <p><strong>Tip:</strong> Rinse containers, remove labels</p>
-            </div>
-            <div class="card" style="border-left: 5px solid #FF9800;">
-                <i class="fas fa-mobile-alt" style="color: #FF9800;"></i>
-                <h3>🔋 E-Waste</h3>
-                <p><strong>Examples:</strong> Electronics, batteries, phones, computers</p>
-                <p><strong>Tip:</strong> Take to certified e-waste centers</p>
-            </div>
-            <div class="card" style="border-left: 5px solid #8BC34A;">
-                <i class="fas fa-leaf" style="color: #8BC34A;"></i>
-                <h3>🍌 Organic</h3>
-                <p><strong>Examples:</strong> Food scraps, yard waste, biodegradable items</p>
-                <p><strong>Tip:</strong> Perfect for composting</p>
-            </div>
-        </div>
-    </div>
-</section>
+{% block scripts %}
+<script>
+    // Quick check function for popular items
+    function quickCheck(item) {
+        document.getElementById('waste-item').value = item;
+        checkWaste();
+    }
 
-<!-- Recycling Tips -->
-<section class="container">
-    <div class="section" style="background: linear-gradient(135deg, #E8F5E8, #F1F8E9); padding: 3rem; border-radius: 20px;">
-        <h2>💡 Smart Recycling Tips</h2>
-        <div class="cards-grid">
-            <div class="card">
-                <i class="fas fa-tint" style="color: #2196F3;"></i>
-                <h3>Clean Before Recycling</h3>
-                <p>Rinse containers to remove food residue. Clean items are more likely to be recycled successfully.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-compress-arrows-alt" style="color: #FF9800;"></i>
-                <h3>Separate Materials</h3>
-                <p>Remove caps, labels, and different materials. Sort by material type for better processing.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-question-circle" style="color: #9C27B0;"></i>
-                <h3>When in Doubt</h3>
-                <p>Check with local recycling centers or use our tool. It's better to ask than contaminate recycling.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-shopping-bag" style="color: #4CAF50;"></i>
-                <h3>Reduce First</h3>
-                <p>The best waste is no waste. Choose reusable items and avoid single-use products when possible.</p>
-            </div>
-        </div>
-    </div>
-</section>
+    // Enhanced checkWaste function with loading state
+    function checkWaste() {
+        const itemInput = document.getElementById('waste-item');
+        const resultContainer = document.getElementById('result-container');
+        const submitBtn = document.querySelector('.scanner-btn');
+        
+        if (!itemInput || !itemInput.value.trim()) {
+            showMessage('Please enter a waste item to check', 'warning');
+            return;
+        }
 
-<!-- Educational Infographics -->
-<section class="container">
-    <div class="section">
-        <h2>📊 Did You Know?</h2>
-        <div class="stats-grid">
-            <div class="stat-card" style="background: linear-gradient(135deg, #4CAF50, #388E3C);">
-                <span class="stat-number">20x</span>
-                <span class="stat-label">Less Energy to Recycle Aluminum</span>
+        // Show loading state
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        submitBtn.disabled = true;
+
+        const item = itemInput.value.trim();
+        
+        fetch('/check-waste', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ item: item })
+        })
+        .then(response => response.json())
+        .then(data => {
+            displayWasteResult(data, resultContainer);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showMessage('Error checking waste item. Please try again.', 'error');
+        })
+        .finally(() => {
+            submitBtn.innerHTML = '<i class="fas fa-search"></i>';
+            submitBtn.disabled = false;
+        });
+    }
+
+    // Enhanced result display with animations
+    function displayWasteResult(data, container) {
+        if (!container) return;
+        
+        let resultClass = 'result-unknown';
+        let statusText = 'Unknown ❓';
+        let actionMessage = '';
+        
+        if (data.recyclable === true) {
+            resultClass = 'result-recyclable';
+            statusText = 'Recyclable ✅';
+            actionMessage = '<div style="margin-top: 1rem;"><a href="/request-pickup" class="btn btn-primary">📞 Request Pickup</a></div>';
+        } else if (data.recyclable === false) {
+            resultClass = 'result-non-recyclable';
+            statusText = 'Not Recyclable ❌';
+            actionMessage = '<div style="margin-top: 1rem; color: #666;"><em>Consider reducing use of this item in the future</em></div>';
+        }
+
+        container.innerHTML = `
+            <div class="result-card ${resultClass} show">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">${data.emoji}</div>
+                <h3>${data.item}</h3>
+                <div style="font-size: 1.2rem; margin: 1rem 0;">
+                    <strong>${statusText}</strong>
+                </div>
+                <div style="display: inline-block; padding: 0.5rem 1rem; background-color: ${data.color}; color: white; border-radius: 20px; margin: 1rem 0;">
+                    ${data.category}
+                </div>
+                <p style="font-style: italic; margin-top: 1rem;">💡 ${data.tip}</p>
+                ${actionMessage}
             </div>
+        `;
+        
+        container.classList.remove('hidden');
+        container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function quickCheck(item) {
+        const itemInput = document.getElementById('waste-item');
+        if (itemInput) {
+            itemInput.value = item;
+            checkWaste();
+        }
+    }
+
+    function openPhotoScanner() {
+        showMessage('📷 Photo scanner feature coming soon!', 'info');
+    }
+
+    function openVoiceScanner() {
+        showMessage('🎤 Voice scanner feature coming soon!', 'info');
+    }
+
+    function showMessage(message, type) {
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.style.cssText = `
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
+            padding: 1rem 1.5rem; border-radius: 8px; color: white;
+            background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#F44336' : type === 'warning' ? '#FF9800' : '#2196F3'};
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            animation: slideIn 0.3s ease;
+        `;
+        notification.innerHTML = `
+            ${message}
+            <button onclick="this.parentElement.remove()" style="background:none;border:none;color:white;margin-left:1rem;cursor:pointer;">×</button>
+        `;
+        
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 5000);
+    }
+
+    // Add CSS animation
+    const style = document.createElement('style');
+    style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    `;
+    document.head.appendChild(style);
+</script>
+{% endblock %}
             <div class="stat-card" style="background: linear-gradient(135deg, #2196F3, #1976D2);">
                 <span class="stat-number">1 Ton</span>
                 <span class="stat-label">Recycled Paper Saves 17 Trees</span>
